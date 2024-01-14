@@ -1,8 +1,8 @@
 {
-  "name": "gateway",
+  "name": "microservices-graphql-nestjs-apollo-typeorm-postgres-gateway",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Orlando J. Enamorado Rosabal",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -17,7 +17,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "doc": "compodoc -p tsconfig.json -s"
   },
   "dependencies": {
     "@apollo/server": "^4.10.0",
