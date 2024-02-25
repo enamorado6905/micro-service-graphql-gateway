@@ -1,0 +1,24 @@
+type ManagerPermission {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateManagerPermissionInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateManagerPermissionInput {
+  id: Int!
+}
+
+type Query {
+  managerPermission: [ManagerPermission]!
+  managerPermission(id: Int!): ManagerPermission
+}
+
+type Mutation {
+  createManagerPermission(createManagerPermissionInput: CreateManagerPermissionInput!): ManagerPermission!
+  updateManagerPermission(updateManagerPermissionInput: UpdateManagerPermissionInput!): ManagerPermission!
+  removeManagerPermission(id: Int!): ManagerPermission
+}
