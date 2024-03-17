@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
+import { SigUpDto } from './dto/sig-up-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { ProxyRabbitMQ } from '../../common/util/class/proxy-rabbit-mq.class';
 import { RabbitMqEnum } from '../../common/enum/msg/rabbit-mq.enum';
@@ -47,10 +47,10 @@ export class AuthService {
    * const createAuthDto = { username: 'test', password: 'password' };
    * const result = await authService.registerUserCognito(createAuthDto);
    */
-  public async registerUserCognito(createAuthDto: CreateAuthDto): Promise<any> {
+  public async registerUserCognito(sigUpDto: SigUpDto): Promise<any> {
     return await this.proxyRabbitMQ.operations(
       AuthUsersMsgEnum.CREATE,
-      createAuthDto,
+      sigUpDto,
     );
   }
 

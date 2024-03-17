@@ -4,8 +4,6 @@ import {
   Injectable,
   PipeTransform,
 } from '@nestjs/common';
-import { errorExceptions } from '../errors/exception-errors';
-import { ApolloServerErrorCode } from '@apollo/server/errors';
 
 /**
  * A NestJS pipe to validate the size and type of an uploaded file.
@@ -31,10 +29,7 @@ export class FileSizeValidationPipe implements PipeTransform {
 
     // Validate file size, throw an exception if it exceeds the limit.
     if (file.size > 3000000000000000) {
-      errorExceptions(
-        ApolloServerErrorCode.PERSISTED_QUERY_NOT_FOUND,
-        'Validation failed: size too large',
-      );
+      return file;
     }
 
     // Validate file type, allowing only jpg, jpeg, and png.
@@ -43,10 +38,7 @@ export class FileSizeValidationPipe implements PipeTransform {
       file.mimetype !== 'image/jpeg' &&
       file.mimetype !== 'image/png'
     ) {
-      errorExceptions(
-        ApolloServerErrorCode.PERSISTED_QUERY_NOT_FOUND,
-        'Validation failed: incorrect file type',
-      );
+      return file;
     }
 
     // Return the file if all validations pass.

@@ -1,10 +1,13 @@
 import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { ConfigSigUpDto } from './dto/confirm-sig-up.dto';
 import { LogoutAuthDto } from './dto/logout-auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { SigUpDto } from './dto/sig-up-auth.dto';
+import { ExceptionClass } from '../../common/util/class/exception.class';
+import { ErrorsKeysEnum } from '../../common/enum/error/errors.keys';
+import { ExceptionEnum } from '../../common/enum/error/exception.enum';
 
 /**
  * The `AuthController` class provides endpoints for managing user authentication in the application.
@@ -22,7 +25,10 @@ export class AuthController {
    *
    * @param authService - The `AuthService` to inject into the class.
    */
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly exception: ExceptionClass<any>,
+  ) {}
 
   @Get('test-auth-jwt')
   @UseGuards(JwtAuthGuard)
@@ -46,8 +52,14 @@ export class AuthController {
    * const user = await authController.registerUser(createAuthDto);
    */
   @Post('login')
-  loginUserCognito(@Body() loginAuthDto: LoginAuthDto): Promise<any> {
-    return this.authService.loginUserCognito(loginAuthDto);
+  public async loginUserCognito(
+    @Body() loginAuthDto: LoginAuthDto,
+  ): Promise<any> {
+    return await this.exception.verifyPromise(
+      this.authService.loginUserCognito(loginAuthDto),
+      ExceptionEnum.UnauthorizedException,
+      ErrorsKeysEnum.LOGIN_ERROR,
+    );
   }
 
   /**
@@ -66,8 +78,12 @@ export class AuthController {
    * const user = await authController.loginUser(loginAuthDto);
    */
   @Post('register')
-  registerUserCognito(@Body() createAuthDto: CreateAuthDto): Promise<any> {
-    return this.authService.registerUserCognito(createAuthDto);
+  public async registerUserCognito(@Body() sigUpDto: SigUpDto): Promise<any> {
+    return await this.exception.verifyPromise(
+      this.authService.registerUserCognito(sigUpDto),
+      ExceptionEnum.BadRequestException,
+      ErrorsKeysEnum.SIG_UP_ERROR,
+    );
   }
 
   /**
@@ -86,8 +102,14 @@ export class AuthController {
    * await authController.confirmSignUpCognito(configSigUpDto);
    */
   @Post('confirm-sign-up')
-  confirmSignUpCognito(@Body() configSigUpDto: ConfigSigUpDto): Promise<any> {
-    return this.authService.confirmSignUpCognito(configSigUpDto);
+  public async confirmSignUpCognito(
+    @Body() configSigUpDto: ConfigSigUpDto,
+  ): Promise<any> {
+    return await this.exception.verifyPromise(
+      this.authService.confirmSignUpCognito(configSigUpDto),
+      ExceptionEnum.UnauthorizedException,
+      ErrorsKeysEnum.CONFIRM_SIGN_UP_ERROR,
+    );
   }
 
   /**
@@ -106,7 +128,13 @@ export class AuthController {
    * await authController.logoutUserCognito(logoutAuthDto);
    */
   @Post('logout')
-  logoutUserCognito(@Body() logoutAuthDto: LogoutAuthDto): Promise<any> {
-    return this.authService.logoutUserCognito(logoutAuthDto);
+  public async logoutUserCognito(
+    @Body() logoutAuthDto: LogoutAuthDto,
+  ): Promise<any> {
+    return await this.exception.verifyPromise(
+      this.authService.logoutUserCognito(logoutAuthDto),
+      ExceptionEnum.UnauthorizedException,
+      ErrorsKeysEnum.LOGOUT_ERROR,
+    );
   }
 }

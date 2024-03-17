@@ -7,7 +7,6 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { ErrorsKeysEnum } from '../enum/error/errors.keys';
 
 /**
  * A filter that catches all exceptions thrown within the application.
@@ -65,7 +64,8 @@ export class AllExceptionFilter implements ExceptionFilter {
     // Set the body of the response and send it.
     const body = {
       status,
-      key: exception?.response?.key ?? ErrorsKeysEnum.UNKNOWN_ERROR,
+      path: response.req.url,
+      codeError: exception?.response?.codeError ?? 'A0',
       message: error?.message,
     };
 

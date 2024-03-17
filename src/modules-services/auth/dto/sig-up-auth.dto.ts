@@ -12,10 +12,10 @@ import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
  * @example
  * const configSigUpDto = new ConfigSigUpDto();
  * configSigUpDto.username = 'JohnDoe';
- * configSigUpDto.phoneNumber = '1234567890';
- * configSigUpDto.code = 'ABCDEFG';
+ * configSigUpDto.phoneNumber = '+11234567890';
+ * configSigUpDto.password = 'Assdsd121s';
  */
-export class ConfigSigUpDto {
+export class SigUpDto {
   /**
    * The username of the user.
    *
@@ -24,7 +24,7 @@ export class ConfigSigUpDto {
   @IsNotEmpty()
   @MaxLength(255)
   @IsString()
-  username: string;
+  user: string;
 
   /**
    * The phone number of the user.
@@ -37,12 +37,11 @@ export class ConfigSigUpDto {
   phoneNumber: string;
 
   /**
-   * The code for confirming sign up.
+   * The password for confirming sign up.
    *
    * @type {string}
    */
   @IsNotEmpty()
-  @MaxLength(255)
   @IsString()
-  code: string;
+  password: string;
 }
