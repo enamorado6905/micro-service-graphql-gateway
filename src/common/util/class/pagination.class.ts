@@ -1,27 +1,45 @@
+import { Injectable } from '@nestjs/common';
 import { PaginateInterface } from '../../interfaces/paginated.interface';
 
-export class PaginationClass {
-  private readonly paginationPage: number;
-  private readonly paginationPerPage: number;
-  private readonly paginationNodes: Array<any>;
-  private readonly paginationTotal: number;
+@Injectable()
+export class PaginationClass<T> {
+  private readonly page: number;
+  private readonly limit: number;
+  private readonly nodes: Array<any>;
+  private readonly totalDocument: number;
 
-  constructor(page: number, limit: number, nodes: Array<any>, total: number) {
-    this.paginationPage = page;
-    this.paginationNodes = nodes;
-    this.paginationTotal = total;
-    this.paginationPerPage = limit;
+  constructor(page: number, limit: number, nodes: Array<T>, total: number) {
+    this.page = page;
+    this.nodes = nodes;
+    this.limit = limit;
+    this.totalDocument = total;
   }
 
   /**
    * This function created object type pagination
    */
-  public paginated(): PaginateInterface<any> {
+  public paginated(): PaginateInterface<T> {
+    const skip = (this.page - 1) * this.limit;
+    const totalPages = Math.ceil(this.totalDocument / this.limit);
+    const docs = this.nodes;
+
+    const nextPage = this.page < totalPages ? this.page + 1 : null;
+    const prevPage = this.page > 1 ? this.page - 1 : null;
+    const hasNextPage = nextPage !== null;
+    const hasPrevPage = prevPage !== null;
+
     return {
-      page: this.paginationPage,
-      limit: this.paginationPerPage,
-      total: this.paginationTotal,
-      nodes: this.paginationNodes,
+      totalDocs: this.totalDocument,
+      docs,
+      limit: this.limit,
+      page: this.page,
+      nextPage,
+      prevPage,
+      hasNextPage,
+      hasPrevPage,
+      totalPages,
+      pagingCounter: skip + 1,
+      meta: {},
     };
   }
 }

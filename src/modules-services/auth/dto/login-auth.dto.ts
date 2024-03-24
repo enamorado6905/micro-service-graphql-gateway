@@ -7,17 +7,17 @@ import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
  */
 export class LoginAuthDto {
   /**
-   * The username of the user.
+   * The surnames of the user.
    *
    * @type {string}
-   * @IsNotEmpty() Ensures the username is not empty.
-   * @MaxLength(255) Ensures the username is not longer than 255 characters.
-   * @IsString() Ensures the username is a string.
+   * @IsNotEmpty() Ensures the surnames is not empty.
+   * @MaxLength(255) Ensures the surnames is not longer than 255 characters.
+   * @IsString() Ensures the surnames is a string.
    */
   @IsNotEmpty()
   @MaxLength(255)
   @IsString()
-  username: string;
+  surnames: string;
 
   /**
    * The password of the user.

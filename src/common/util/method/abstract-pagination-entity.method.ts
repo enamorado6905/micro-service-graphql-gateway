@@ -14,18 +14,41 @@ export function Paginated<T>(classRef: Type<T>): Type<PaginateInterface<T>> {
   @ObjectType({ isAbstract: true })
   abstract class PaginatedType implements PaginateInterface<T> {
     @Field(() => Int, { nullable: true })
-    total?: number; // The total number of items across all pages.
+    limit: number; // The number of items per page.
 
     @Field(() => Int, { nullable: true })
-    limit?: number; // The number of items per page.
-
-    @Field(() => Int, { nullable: true })
-    page?: number; // The current page number.
+    page: number; // The current page number.
 
     @Field(() => [classRef], { nullable: true })
-    nodes: T[]; // The list of items of type T on the current page.
+    docs: T[];
+
+    @Field(() => Int, { nullable: true })
+    totalCount: number; // The total count of items in the entire list.
+
+    @Field(() => Boolean, { nullable: true })
+    hasNextPage: boolean; // A boolean flag indicating if there is a next page.
+
+    @Field(() => Boolean, { nullable: true })
+    hasPrevPage: boolean; // A boolean flag indicating if there is a previous page.
+
+    @Field(() => Int, { nullable: true })
+    totalPages: number; // The total number of pages.
+
+    @Field(() => Int, { nullable: true })
+    nextPage: number | null; // The next page number.
+
+    @Field(() => Int, { nullable: true })
+    prevPage: number | null; // The previous page number.
+
+    @Field(() => Int, { nullable: true })
+    pagingCounter: number; // The current page number.
+
+    @Field(() => Int, { nullable: true })
+    totalDocs: number; // The total number of items across all pages.
+
+    meta?: object;
   }
 
   // Returns the abstract class as a GraphQL object type.
-  return PaginatedType as Type<PaginateInterface<T>>;
+  return PaginatedType as unknown as Type<PaginateInterface<T>>;
 }

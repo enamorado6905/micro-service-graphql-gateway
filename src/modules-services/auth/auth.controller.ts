@@ -39,7 +39,7 @@ export class AuthController {
   /**
    * The `registerUser` method handles the register user operation.
    *
-   * @param {CreateAuthDto} loginAuthDto - The DTO containing the user's username and password.
+   * @param {CreateAuthDto} loginAuthDto - The DTO containing the user's surnames and password.
    * @returns {Promise<any>} A promise that resolves to the registered user.
    *
    * @description
@@ -48,7 +48,7 @@ export class AuthController {
    * 2. It returns the result of the `registerUserCognito` method.
    *
    * @example
-   * const createAuthDto = { username: 'test', password: 'password' };
+   * const createAuthDto = { surnames: 'test', password: 'password' };
    * const user = await authController.registerUser(createAuthDto);
    */
   @Post('login')
@@ -65,7 +65,7 @@ export class AuthController {
   /**
    * The `loginUser` method handles the login user operation.
    *
-   * @param {CreateAuthDto} createAuthDto - The DTO containing the user's username and password.
+   * @param {CreateAuthDto} createAuthDto - The DTO containing the user's surnames and password.
    * @returns {Promise<any>} A promise that resolves to the logged in user.
    *
    * @description
@@ -74,7 +74,7 @@ export class AuthController {
    * 2. It returns the result of the `loginUserCognito` method.
    *
    * @example
-   * const loginAuthDto = { username: 'test', password: 'password' };
+   * const loginAuthDto = { surnames: 'test', password: 'password' };
    * const user = await authController.loginUser(loginAuthDto);
    */
   @Post('register')
@@ -89,7 +89,7 @@ export class AuthController {
   /**
    * Confirms the sign up of a user.
    *
-   * @param {ConfigSigUpDto} configSigUpDto - The DTO containing the user's username and confirmation code.
+   * @param {ConfigSigUpDto} configSigUpDto - The DTO containing the user's surnames and confirmation code.
    * @returns {Promise<any>} A promise that resolves when the user's sign up is confirmed.
    *
    * @description
@@ -98,7 +98,7 @@ export class AuthController {
    * 2. It returns the result of the `confirmSignUpCognito` method.
    *
    * @example
-   * const configSigUpDto = { username: 'test', code: 'confirmation_code' };
+   * const configSigUpDto = { surnames: 'test', code: 'confirmation_code' };
    * await authController.confirmSignUpCognito(configSigUpDto);
    */
   @Post('confirm-sign-up')

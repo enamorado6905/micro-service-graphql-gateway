@@ -1,5 +1,4 @@
 import {
-  Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
@@ -20,35 +19,25 @@ export abstract class AbstractEntity {
   @Field(() => ID)
   @ApiProperty({ description: 'ID of the entity, unique globally.' })
   @PrimaryGeneratedColumn('uuid')
-  readonly id: string;
+  readonly _id: string;
 
   /**
    * Date when the entity instance was created.
    */
-  @Field(() => Date)
+  @Field(() => String)
   @ApiProperty({
     description: 'Date when the entity instance was created.',
   })
   @CreateDateColumn()
-  readonly created_at: Date;
+  readonly createdAt: string;
 
   /**
    * Date when the entity instance was last updated.
    */
-  @Field(() => Date)
+  @Field(() => String)
   @ApiProperty({
     description: 'Date when the entity instance was last updated.',
   })
   @UpdateDateColumn()
-  readonly updated_at: Date;
-
-  /**
-   * Status of the entity instance.
-   */
-  @Field(() => Boolean)
-  @ApiProperty({
-    description: 'Status of the entity instance.',
-  })
-  @Column({ default: false })
-  readonly status: boolean;
+  readonly updatedAt: string;
 }

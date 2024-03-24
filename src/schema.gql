@@ -3,46 +3,82 @@
 # ------------------------------------------------------
 
 type User {
-  id: ID!
-  created_at: DateTime!
-  updated_at: DateTime!
-  status: Boolean!
+  _id: ID!
+  createdAt: String!
+  updatedAt: String!
   name: String!
+  surnames: String!
   email: String!
-  address: String!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type PaginatedAuthor {
-  total: Int
   limit: Int
   page: Int
-  nodes: [User!]
+  docs: [User!]
+  totalCount: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  totalPages: Int
+  nextPage: Int
+  prevPage: Int
+  pagingCounter: Int
+  totalDocs: Int
 }
 
 type Query {
   sayHello: String!
-  TotalUser: Float!
-  findUser(limit: Int = 10, page: Int = 0, query: DateTime, projection: DateTime, sort: DateTime, isPaginate: Boolean! = true): PaginatedAuthor!
-  findByIdUser(id: ID!): User!
+  userTotal: Float!
+  userList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean! = true): PaginatedAuthor!
+  userId(id: ID!): User!
+}
+
+input QueryInput {
+  name: String
+  surnames: Int
+  email: Int
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
+}
+
+input SortInput {
+  fields: [SortField!]!
+}
+
+input SortField {
+  field: String!
+  order: SortOrder!
+}
+
+enum SortOrder {
+  DESC
+  ASC
+}
+
+input PopulateInput {
+  path: String!
+  select: String
+  model: String
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-  findOneUser(filter: FindOneUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: ID!): User!
+  userRegister(createUserInput: CreateUserInput!): User!
+  userFindOne(filter: FindOneUserInput!): User!
+  userUpdate(updateUserInput: UpdateUserInput!): User!
+  userRemove(id: ID!): User!
 }
 
 input CreateUserInput {
   name: String!
+  surnames: String!
   email: String!
-  address: String!
   password: String!
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
 }
 
 input FindOneUserInput {
@@ -51,7 +87,7 @@ input FindOneUserInput {
 }
 
 input UpdateUserInput {
-  id: ID!
+  _id: ID!
   name: String
   email: String
   address: String

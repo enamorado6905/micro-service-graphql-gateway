@@ -2,6 +2,9 @@ import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 import { toNumber } from '../../helpers/cast.helper';
+import { QueryInput } from '../input/query.input.dto';
+import { SortInput } from '../input/sort.input.dto';
+import { PopulateInput } from '../input/populate.input.dto';
 
 /**
  * Represents the pagination arguments for retrieving a list of items.
@@ -31,32 +34,21 @@ export class PaginationArgsDto {
   readonly page?: number = 0;
 
   @IsOptional()
-  @Field(() => Date, { nullable: true })
-  readonly query?: object;
+  @Field(() => QueryInput, { nullable: true })
+  readonly query: QueryInput;
 
   @IsOptional()
-  @Field(() => Date, { nullable: true })
-  readonly projection?: object;
+  @Field(() => String, { nullable: true })
+  readonly select?: string;
 
   @IsOptional()
-  @Field(() => Date, { nullable: true })
-  readonly sort?:
-    | string
-    | { [key: string]: any | { $meta: any } }
-    | [string, any][]
-    | undefined
-    | null;
+  @Field(() => SortInput, { nullable: true })
+  sort?: SortInput;
 
   @IsOptional()
-  readonly select?: Array<string> | string = [];
+  @Field(() => [PopulateInput], { nullable: true })
+  populate?: PopulateInput[];
 
-  @IsOptional()
-  readonly paginated?: string;
-
-  /**
-   * Indicates whether pagination is enabled.
-   * Default value: true
-   */
   @Field(() => Boolean, { defaultValue: true })
   @IsBoolean()
   @IsOptional()

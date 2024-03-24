@@ -1,4 +1,11 @@
-import { IsEmail, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
@@ -7,21 +14,37 @@ export class CreateUserInput {
   @IsNotEmpty()
   @MaxLength(255)
   @IsString()
-  name: string;
+  readonly name: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  @IsString()
+  @MaxLength(255)
+  readonly surnames: string;
 
   @Field(() => String)
   @IsNotEmpty()
   @IsEmail()
   @IsString()
-  email: string;
+  readonly email: string;
 
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
-  address: string;
+  readonly password: string;
 
-  @Field(() => String)
-  @IsNotEmpty()
-  @IsString()
-  password: string;
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  readonly isLocked?: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  readonly isDisabled: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  readonly isVerified: boolean;
 }

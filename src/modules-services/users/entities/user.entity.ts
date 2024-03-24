@@ -8,20 +8,29 @@ import { Paginated } from '../../../common/util/method/abstract-pagination-entit
 export class User extends AbstractEntity {
   @Column()
   @Field(() => String)
-  name: string;
+  readonly name: string;
+
+  @Column()
+  @Field(() => String)
+  readonly surnames: string;
 
   @Column({
     unique: true,
   })
   @Field(() => String)
-  email: string;
+  readonly email: string;
 
-  @Column()
-  password: string;
+  @Column({ default: false })
+  @Field(() => Boolean, { defaultValue: false })
+  readonly isLocked: boolean;
 
-  @Column()
-  @Field(() => String)
-  address: string;
+  @Column({ default: false })
+  @Field(() => Boolean, { defaultValue: false })
+  readonly isDisabled: boolean;
+
+  @Column({ default: false })
+  @Field(() => Boolean, { defaultValue: false })
+  readonly isVerified: boolean;
 }
 
 @ObjectType()

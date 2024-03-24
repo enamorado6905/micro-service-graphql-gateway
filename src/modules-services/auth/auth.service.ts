@@ -44,7 +44,7 @@ export class AuthService {
    * 2. It returns the result of the `operations` method.
    *
    * @example
-   * const createAuthDto = { username: 'test', password: 'password' };
+   * const createAuthDto = { surnames: 'test', password: 'password' };
    * const result = await authService.registerUserCognito(createAuthDto);
    */
   public async registerUserCognito(sigUpDto: SigUpDto): Promise<any> {
@@ -75,7 +75,7 @@ export class AuthService {
    * 2. It returns the result of the `operations` method.
    *
    * @example
-   * const loginAuthDto = { username: 'test', password: 'password' };
+   * const loginAuthDto = { surnames: 'test', password: 'password' };
    * const result = await authService.loginUserCognito(loginAuthDto);
    */
   public async loginUserCognito(loginAuthDto: LoginAuthDto): Promise<any> {

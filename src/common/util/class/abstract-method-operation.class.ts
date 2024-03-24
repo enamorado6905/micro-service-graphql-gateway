@@ -43,7 +43,7 @@ export abstract class AbstractMethodOperation<T> {
    * @param item The instance of type T to be created.
    * @returns A Promise containing the newly created instance of type T.
    */
-  abstract create(item: T): Promise<T>;
+  abstract create(item: object): Promise<T>;
 
   /**
    * Abstract method to update an existing instance of type T by its identifier.

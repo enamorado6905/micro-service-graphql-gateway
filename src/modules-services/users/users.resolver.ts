@@ -6,6 +6,9 @@ import { FindOneUserInput } from './dto/find-one-user.input';
 import { PaginatedAuthor, User } from './entities/user.entity';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
 import { AbstractMethodOperation } from '../../common/util/class/abstract-method-operation.class';
+import { UseInterceptors } from '@nestjs/common';
+import { PasswordEncryptionInterceptor } from '../../common/intercertors/password-encryption.interceptor';
+import { RemovePasswordInterceptor } from '../../common/intercertors/remove-password.interceptor';
 
 /**
  * The `UsersResolver` class provides GraphQL resolvers for managing users in the application.
@@ -36,7 +39,8 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param createUserInput - The input data for creating a user.
    * @returns The created user.
    */
-  @Mutation(() => User, { name: 'createUser' })
+  @Mutation(() => User, { name: 'userRegister' })
+  @UseInterceptors(PasswordEncryptionInterceptor)
   async create(
     @Args('createUserInput') createUserInput: CreateUserInput,
   ): Promise<User> {
@@ -47,7 +51,7 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * Query to get the total number of users.
    * @returns The total number of users.
    */
-  @Query(() => Number, { name: 'TotalUser' })
+  @Query(() => Number, { name: 'userTotal' })
   async total(): Promise<number> {
     return await this.usersService.total();
   }
@@ -57,7 +61,8 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param paginationArgsDto - The pagination arguments.
    * @returns The paginated list of users.
    */
-  @Query(() => PaginatedAuthor, { name: 'findUser' })
+  @Query(() => PaginatedAuthor, { name: 'userList' })
+  @UseInterceptors(RemovePasswordInterceptor)
   async find(@Args() paginationArgsDto: PaginationArgsDto) {
     return await this.usersService.find(paginationArgsDto);
   }
@@ -67,7 +72,7 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param id - The ID of the user.
    * @returns The found user.
    */
-  @Query(() => User, { name: 'findByIdUser' })
+  @Query(() => User, { name: 'userId' })
   async getById(@Args('id', { type: () => ID }) id: string): Promise<User> {
     return await this.usersService.getById(id);
   }
@@ -77,7 +82,8 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param filter - The filter criteria.
    * @returns The found user.
    */
-  @Mutation(() => User, { name: 'findOneUser' })
+  @Mutation(() => User, { name: 'userFindOne' })
+  @UseInterceptors(RemovePasswordInterceptor)
   async getOne(@Args('filter') filter: FindOneUserInput): Promise<User> {
     return await this.usersService.getOne(filter);
   }
@@ -87,7 +93,8 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param updateUserInput - The input data for updating a user.
    * @returns The updated user.
    */
-  @Mutation(() => User, { name: 'updateUser' })
+  @Mutation(() => User, { name: 'userUpdate' })
+  @UseInterceptors(RemovePasswordInterceptor)
   async update(
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ): Promise<User> {
@@ -99,7 +106,8 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param id - The ID of the user to remove.
    * @returns The removed user.
    */
-  @Mutation(() => User, { name: 'removeUser' })
+  @Mutation(() => User, { name: 'userRemove' })
+  @UseInterceptors(RemovePasswordInterceptor)
   async delete(@Args('id', { type: () => ID }) id: string): Promise<User> {
     return this.usersService.delete(id);
   }
