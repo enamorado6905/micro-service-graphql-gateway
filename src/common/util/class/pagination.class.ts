@@ -6,11 +6,11 @@ export class PaginationClass {
   private readonly paginationNodes: Array<any>;
   private readonly paginationTotal: number;
 
-  constructor(page: number, perPage: number, nodes: Array<any>, total: number) {
+  constructor(page: number, limit: number, nodes: Array<any>, total: number) {
     this.paginationPage = page;
     this.paginationNodes = nodes;
     this.paginationTotal = total;
-    this.paginationPerPage = perPage;
+    this.paginationPerPage = limit;
   }
 
   /**
@@ -19,7 +19,7 @@ export class PaginationClass {
   public paginated(): PaginateInterface<any> {
     return {
       page: this.paginationPage,
-      per_page: this.paginationPerPage,
+      limit: this.paginationPerPage,
       total: this.paginationTotal,
       nodes: this.paginationNodes,
     };

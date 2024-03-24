@@ -17,7 +17,7 @@ export function Paginated<T>(classRef: Type<T>): Type<PaginateInterface<T>> {
     total?: number; // The total number of items across all pages.
 
     @Field(() => Int, { nullable: true })
-    per_page?: number; // The number of items per page.
+    limit?: number; // The number of items per page.
 
     @Field(() => Int, { nullable: true })
     page?: number; // The current page number.

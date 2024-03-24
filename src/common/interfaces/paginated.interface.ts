@@ -14,7 +14,7 @@ export interface PaginateInterface<T> {
    * The number of items per page. This is an optional field and can be used
    * to indicate how many items are displayed on one page.
    */
-  per_page?: number;
+  limit?: number;
 
   /**
    * The current page number. This is an optional field and helps in identifying

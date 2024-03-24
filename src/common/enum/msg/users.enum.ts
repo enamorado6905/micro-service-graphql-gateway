@@ -12,4 +12,5 @@ export enum UsersMsgEnum {
   PATCH_PASSWORD = 'PATCH_PASSWORD', // Represents the action of updating a user's password.
   DELETE = 'DELETE_USER', // Represents the action of deleting a user.
   VALID = 'VALID_USER', // Represents the action of validating a user.
+  TOTAL = 'TOTAL_USER', // Represents the action of retrieving the total number of users.
 }

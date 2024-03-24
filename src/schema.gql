@@ -19,7 +19,7 @@ scalar DateTime
 
 type PaginatedAuthor {
   total: Int
-  per_page: Int
+  limit: Int
   page: Int
   nodes: [User!]
 }
@@ -27,7 +27,7 @@ type PaginatedAuthor {
 type Query {
   sayHello: String!
   TotalUser: Float!
-  findUser(per_page: Int = 10, page: Int = 0, sort_by: String, created_at: DateTime, updated_at: DateTime, sort_desc: String! = "DESC", is_paginate: Boolean! = true): PaginatedAuthor!
+  findUser(limit: Int = 10, page: Int = 0, query: DateTime, projection: DateTime, sort: DateTime, isPaginate: Boolean! = true): PaginatedAuthor!
   findByIdUser(id: ID!): User!
 }
 

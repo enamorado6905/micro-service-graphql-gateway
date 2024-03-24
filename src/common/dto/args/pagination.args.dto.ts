@@ -1,8 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 import { toNumber } from '../../helpers/cast.helper';
-import { SortDescEnum } from '../../enum/system/sort.enum';
 
 /**
  * Represents the pagination arguments for retrieving a list of items.
@@ -18,7 +17,7 @@ export class PaginationArgsDto {
   @Transform(({ value }) => toNumber(value, { default: 10, min: 10 }))
   @IsOptional()
   @IsNumber()
-  readonly per_page?: number = 10;
+  readonly limit?: number = 10;
 
   /**
    * The page number.
@@ -31,36 +30,28 @@ export class PaginationArgsDto {
   @IsNumber()
   readonly page?: number = 0;
 
-  /**
-   * The field to sort the items by.
-   */
-  @Field(() => String, { nullable: true })
   @IsOptional()
-  @IsString()
-  sort_by?: string;
-
-  /**
-   * The creation date of the items.
-   */
   @Field(() => Date, { nullable: true })
-  @IsOptional()
-  created_at?: any;
+  readonly query?: object;
 
-  /**
-   * The last update date of the items.
-   */
+  @IsOptional()
   @Field(() => Date, { nullable: true })
-  @IsOptional()
-  updated_at?: any;
+  readonly projection?: object;
 
-  /**
-   * The sorting order.
-   * Default value: SortDescEnum.DESC
-   */
-  @Field(() => String, { defaultValue: SortDescEnum.DESC })
-  @IsString()
   @IsOptional()
-  sort_desc?: SortDescEnum.DESC | SortDescEnum.ASC;
+  @Field(() => Date, { nullable: true })
+  readonly sort?:
+    | string
+    | { [key: string]: any | { $meta: any } }
+    | [string, any][]
+    | undefined
+    | null;
+
+  @IsOptional()
+  readonly select?: Array<string> | string = [];
+
+  @IsOptional()
+  readonly paginated?: string;
 
   /**
    * Indicates whether pagination is enabled.
@@ -69,5 +60,5 @@ export class PaginationArgsDto {
   @Field(() => Boolean, { defaultValue: true })
   @IsBoolean()
   @IsOptional()
-  is_paginate?: boolean;
+  readonly isPaginate?: boolean;
 }

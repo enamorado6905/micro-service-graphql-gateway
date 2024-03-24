@@ -28,21 +28,21 @@ export function arrayCheckElement(element: any, array: Array<any>): boolean {
 /**
  * Generates a paginated response object.
  * @param total - The total number of items.
- * @param perPage - The number of items per page.
+ * @param limit - The number of items per page.
  * @param page - The current page number.
  * @returns A `PaginateInterface` object representing the paginated response.
  */
 export async function paginated(
   total: number,
-  perPage: number,
+  limit: number,
   page: number,
 ): Promise<PaginateInterface<any>> {
   const [_total, _perPage, _page] = await Promise.all([
     total ? total : 0,
-    perPage ? perPage : 10,
+    limit ? limit : 10,
     page <= 0 ? 0 : page,
   ]);
-  return { total: _total, per_page: _perPage, page: _page, nodes: [] };
+  return { total: _total, limit: _perPage, page: _page, nodes: [] };
 }
 
 /**
