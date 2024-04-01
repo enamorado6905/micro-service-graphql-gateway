@@ -1,54 +1,60 @@
-import { Field, InputType } from '@nestjs/graphql';
 import {
+  ArrayNotEmpty,
+  ArrayUnique,
+  IsArray,
   IsBoolean,
-  IsNotEmpty,
+  IsMongoId,
   IsOptional,
   IsString,
   MaxLength,
 } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
+import { ObjectId } from 'typeorm';
 
 /**
- * The `CreateManagerPermissionInput` class is a data transfer object (DTO) that is used to define
- * the input parameters for the `createManagerPermission` mutation.
- * It is used to create a new `ManagerPermission` entity.
+ * The `FilterRoleInput` class is a data transfer object (DTO) that is used to define
+ * the input parameters for the `filterRole` query.
+ * It is used to filter `ManagerRole` entities.
  */
 @InputType()
-export class CreateManagerPermissionInput {
+export class FilterRoleInput {
   /**
-   * The name of the permission to filter by.
-   * It is requerid.
+   * The name of the role to filter by.
+   * It is optional.
    * If provided, it must be a string and its maximum length is 255 characters.
    */
   @Field(() => String)
-  @IsNotEmpty()
+  @IsOptional()
   @MaxLength(255)
   @IsString()
   readonly name: string;
 
   /**
-   * The description of the permission to filter by.
-   * It is requerid.
+   * The description of the role to filter by.
+   * It is optional.
    * If provided, it must be a string and its maximum length is 255 characters.
    */
   @Field(() => String)
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MaxLength(255)
   readonly description: string;
 
   /**
-   * The path of the permission to filter by.
-   * It is requerid.
+   * The path of the role to filter by.
+   * It is optional.
    * If provided, it must be a string and its maximum length is 255 characters.
    */
   @Field(() => String)
-  @IsNotEmpty()
-  @IsString()
-  @MaxLength(255)
-  readonly path: string;
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  @IsMongoId({ each: true })
+  readonly permission: ObjectId[];
 
   /**
-   * A flag indicating whether to filter by whether the permission is locked.
+   * A flag indicating whether to filter by whether the role is locked.
    * It is optional.
    * If provided, it must be a boolean.
    */
@@ -58,7 +64,7 @@ export class CreateManagerPermissionInput {
   readonly isLocked?: boolean;
 
   /**
-   * A flag indicating whether to filter by whether the permission is disabled.
+   * A flag indicating whether to filter by whether the role is disabled.
    * It is optional.
    * If provided, it must be a boolean.
    */
@@ -68,7 +74,7 @@ export class CreateManagerPermissionInput {
   readonly isDisabled: boolean;
 
   /**
-   * A flag indicating whether to filter by whether the permission is verified.
+   * A flag indicating whether to filter by whether the role is verified.
    * It is optional.
    * If provided, it must be a boolean.
    */

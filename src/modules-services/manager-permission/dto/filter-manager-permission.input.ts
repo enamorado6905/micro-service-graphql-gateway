@@ -1,48 +1,42 @@
+import { IsBoolean, IsOptional, IsString, MaxLength } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MaxLength,
-} from 'class-validator';
 
 /**
- * The `CreateManagerPermissionInput` class is a data transfer object (DTO) that is used to define
- * the input parameters for the `createManagerPermission` mutation.
- * It is used to create a new `ManagerPermission` entity.
+ * The `FilterPermissionInput` class is a data transfer object (DTO) that is used to define
+ * the input parameters for the `filterPermission` query.
+ * It is used to filter `ManagerPermission` entities.
  */
 @InputType()
-export class CreateManagerPermissionInput {
+export class FilterPermissionInput {
   /**
    * The name of the permission to filter by.
-   * It is requerid.
+   * It is optional.
    * If provided, it must be a string and its maximum length is 255 characters.
    */
   @Field(() => String)
-  @IsNotEmpty()
+  @IsOptional()
   @MaxLength(255)
   @IsString()
   readonly name: string;
 
   /**
    * The description of the permission to filter by.
-   * It is requerid.
+   * It is optional.
    * If provided, it must be a string and its maximum length is 255 characters.
    */
   @Field(() => String)
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MaxLength(255)
   readonly description: string;
 
   /**
    * The path of the permission to filter by.
-   * It is requerid.
+   * It is optional.
    * If provided, it must be a string and its maximum length is 255 characters.
    */
   @Field(() => String)
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MaxLength(255)
   readonly path: string;

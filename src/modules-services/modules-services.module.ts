@@ -1,9 +1,15 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { ManagerPermission } from './manager-permission/entities/manager-permission.entity';
+import { ManagerRolesModule } from './manager-roles/manager-roles.module';
+import { ManagerPermissionModule } from './manager-permission/manager-permission.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, ManagerPermission],
+  imports: [
+    UsersModule,
+    AuthModule,
+    ManagerPermissionModule,
+    ManagerRolesModule,
+  ],
 })
 export class ModulesServicesModule {}

@@ -28,11 +28,34 @@ type PaginatedAuthor {
   totalDocs: Int
 }
 
+type ManagerRole {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type ManagerPermission {
+  _id: ID!
+  createdAt: String!
+  updatedAt: String!
+  name: String!
+  description: String!
+  path: String!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
+}
+
 type Query {
   sayHello: String!
   userTotal: Float!
   userList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean! = true): PaginatedAuthor!
   userId(id: ID!): User!
+  permissionTotal: Float!
+  permissionList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean! = true): PaginatedAuthor!
+  permissionId(id: ID!): ManagerPermission!
+  roleTotal: Float!
+  roleList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean! = true): PaginatedAuthor!
+  roleId(id: ID!): ManagerRole!
 }
 
 input QueryInput {
@@ -69,6 +92,14 @@ type Mutation {
   userFindOne(filter: FindOneUserInput!): User!
   userUpdate(updateUserInput: UpdateUserInput!): User!
   userRemove(id: ID!): User!
+  permissionRegister(createPermissionInput: CreateManagerPermissionInput!): ManagerPermission!
+  permissionFindOne(filter: FilterPermissionInput!): ManagerPermission!
+  permissionUpdate(updatePermissionInput: UpdateManagerPermissionInput!): ManagerPermission!
+  permissionRemove(id: ID!): ManagerPermission!
+  roleRegister(createRoleInput: CreateManagerRoleInput!): ManagerRole!
+  roleFindOne(filter: FilterRoleInput!): ManagerRole!
+  roleUpdate(updateRoleInput: UpdateManagerRoleInput!): ManagerRole!
+  roleRemove(id: ID!): ManagerRole!
 }
 
 input CreateUserInput {
@@ -91,4 +122,54 @@ input UpdateUserInput {
   name: String
   email: String
   address: String
+}
+
+input CreateManagerPermissionInput {
+  name: String!
+  description: String!
+  path: String!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
+}
+
+input FilterPermissionInput {
+  name: String!
+  description: String!
+  path: String!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
+}
+
+input UpdateManagerPermissionInput {
+  _id: ID!
+}
+
+input CreateManagerRoleInput {
+  name: String!
+  description: String!
+  permission: String!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
+}
+
+input FilterRoleInput {
+  name: String!
+  description: String!
+  permission: String!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
+}
+
+input UpdateManagerRoleInput {
+  name: String
+  description: String
+  permission: String
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
+  _id: ID!
 }

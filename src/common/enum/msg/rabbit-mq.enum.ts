@@ -5,4 +5,5 @@
 export enum RabbitMqEnum {
   usersQueue = 'users', // Queue name for user-related operations.
   cognitoQueue = 'manager-cognito', // Queue name for manager-cognito operations.
+  permissionsQueue = 'permissions', // Queue name for permission-related operations.
 }
