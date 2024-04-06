@@ -9,7 +9,7 @@ export class ConfigSigUpDto {
   @IsNotEmpty()
   @MaxLength(255)
   @IsString()
-  surnames: string;
+  userName: string;
 
   @IsNotEmpty()
   @MaxLength(255)

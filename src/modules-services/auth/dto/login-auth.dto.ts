@@ -17,7 +17,7 @@ export class LoginAuthDto {
   @IsNotEmpty()
   @MaxLength(255)
   @IsString()
-  surnames: string;
+  userName: string;
 
   /**
    * The password of the user.
