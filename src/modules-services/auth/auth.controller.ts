@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Res,
+  HttpStatus,
+  Query,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { ConfigSigUpDto } from './dto/confirm-sig-up.dto';
@@ -8,6 +17,9 @@ import { SigUpDto } from './dto/sig-up-auth.dto';
 import { ExceptionClass } from '../../common/util/class/exception.class';
 import { ErrorsKeysEnum } from '../../common/enum/error/errors.keys';
 import { ExceptionEnum } from '../../common/enum/error/exception.enum';
+import { Response } from 'express';
+import { AzureAuthService } from './azure-auth.service';
+import { ExchangeCodeForTokensDto } from './dto/exchange-code-for-token.dto';
 
 /**
  * The `AuthController` class provides endpoints for managing user authentication in the application.
@@ -27,6 +39,7 @@ export class AuthController {
    */
   constructor(
     private readonly authService: AuthService,
+    private readonly azureAuthService: AzureAuthService,
     private readonly exception: ExceptionClass<any>,
   ) {}
 
@@ -60,6 +73,34 @@ export class AuthController {
       ExceptionEnum.UnauthorizedException,
       ErrorsKeysEnum.LOGIN_ERROR,
     );
+  }
+
+  /**
+   * TODO : Implement this method validation receivedState http://localhost:3030/auth/login/azure
+   * @param code
+   * @returns
+   */
+  @Get('login/azure')
+  loginWithAzure(@Res() res: Response) {
+    return res.redirect(
+      HttpStatus.TEMPORARY_REDIRECT,
+      this.azureAuthService.loginWithAzure(),
+    );
+  }
+
+  /**
+   * TODO : Implement this method validation receivedState
+   * @param code
+   * @returns
+   */
+  @Get('auth/callback')
+  async handleAzureCallback(@Query() queryParams: ExchangeCodeForTokensDto) {
+    return await this.authService.exchangeCodeForTokenCognito(queryParams);
+  }
+
+  @Get('azure-auth/callback')
+  async callback(@Query() queryParams: any) {
+    return queryParams;
   }
 
   /**

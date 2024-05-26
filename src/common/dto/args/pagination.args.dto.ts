@@ -17,10 +17,10 @@ export class PaginationArgsDto {
    * Minimum value: 10
    */
   @Field(() => Int, { nullable: true })
-  @Transform(({ value }) => toNumber(value, { default: 10, min: 10 }))
+  @Transform(({ value }) => toNumber(value, { default: 10 }))
   @IsOptional()
   @IsNumber()
-  readonly limit?: number = 10;
+  readonly limit: number = 10;
 
   /**
    * The page number.
@@ -28,10 +28,10 @@ export class PaginationArgsDto {
    * Minimum value: 0
    */
   @Field(() => Int, { nullable: true })
-  @Transform(({ value }) => toNumber(value, { default: 0, min: 0 }))
+  @Transform(({ value }) => toNumber(value, { default: 0 }))
   @IsOptional()
   @IsNumber()
-  readonly page?: number = 0;
+  readonly page: number = 0;
 
   @IsOptional()
   @Field(() => QueryInput, { nullable: true })
@@ -49,8 +49,8 @@ export class PaginationArgsDto {
   @Field(() => [PopulateInput], { nullable: true })
   populate?: PopulateInput[];
 
-  @Field(() => Boolean, { defaultValue: true })
+  @Field(() => Boolean, { defaultValue: true, nullable: true })
   @IsBoolean()
   @IsOptional()
-  readonly isPaginate?: boolean;
+  readonly isPaginate: boolean = true;
 }

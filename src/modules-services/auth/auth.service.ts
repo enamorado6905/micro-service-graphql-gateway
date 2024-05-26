@@ -6,6 +6,7 @@ import { RabbitMqEnum } from '../../common/enum/msg/rabbit-mq.enum';
 import { AuthUsersMsgEnum } from '../../common/enum/msg/auth-users.enum';
 import { ConfigSigUpDto } from './dto/confirm-sig-up.dto';
 import { LogoutAuthDto } from './dto/logout-auth.dto';
+import { ExchangeCodeForTokensDto } from './dto/exchange-code-for-token.dto';
 
 /**
  * The `AuthService` class provides methods for managing user authentication in the application.
@@ -82,6 +83,15 @@ export class AuthService {
     return await this.proxyRabbitMQ.operations(
       AuthUsersMsgEnum.LOGIN_USER,
       loginAuthDto,
+    );
+  }
+
+  public async exchangeCodeForTokenCognito(
+    exchangeCodeForTokensDto: ExchangeCodeForTokensDto,
+  ): Promise<any> {
+    return await this.proxyRabbitMQ.operations(
+      AuthUsersMsgEnum.FIND_TOKEN_FOR_CODE,
+      exchangeCodeForTokensDto,
     );
   }
 

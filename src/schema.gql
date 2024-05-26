@@ -4,14 +4,14 @@
 
 type User {
   _id: ID!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
   createdAt: String!
   updatedAt: String!
   name: String!
   surnames: String!
   email: String!
-  isLocked: Boolean!
-  isDisabled: Boolean!
-  isVerified: Boolean!
 }
 
 type PaginatedAuthor {
@@ -35,26 +35,26 @@ type ManagerRole {
 
 type ManagerPermission {
   _id: ID!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
   createdAt: String!
   updatedAt: String!
   name: String!
   description: String!
   path: String!
-  isLocked: Boolean!
-  isDisabled: Boolean!
-  isVerified: Boolean!
 }
 
 type Query {
   sayHello: String!
   userTotal: Float!
-  userList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean! = true): PaginatedAuthor!
+  userList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedAuthor!
   userId(id: ID!): User!
   permissionTotal: Float!
-  permissionList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean! = true): PaginatedAuthor!
+  permissionList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedAuthor!
   permissionId(id: ID!): ManagerPermission!
   roleTotal: Float!
-  roleList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean! = true): PaginatedAuthor!
+  roleList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedAuthor!
   roleId(id: ID!): ManagerRole!
 }
 

@@ -1,6 +1,8 @@
 import { join } from 'path';
 import { writeFile } from 'fs/promises';
 import bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
+
 /**
  * Writes HTTP log data to a file.
  * @param data - The data to be logged.
@@ -72,4 +74,18 @@ export function textRandom(id: string, long: number): string {
  */
 export function textClear(text: string): string {
   return text.replace(/\s+/g, '');
+}
+
+export function generateCodeVerifier() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+export function generateCodeChallenge(codeVerifier) {
+  return crypto
+    .createHash('sha256')
+    .update(codeVerifier)
+    .digest('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
 }

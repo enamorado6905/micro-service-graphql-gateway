@@ -5,11 +5,12 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { AzureAuthService } from './azure-auth.service';
 
 @Module({
   imports: [CommonModule, ConfigModule, PassportModule],
   exports: [PassportModule],
   controllers: [AuthController],
-  providers: [JwtStrategy, AuthService],
+  providers: [JwtStrategy, AuthService, AzureAuthService],
 })
 export class AuthModule {}

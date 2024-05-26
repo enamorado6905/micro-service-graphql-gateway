@@ -1,16 +1,11 @@
-import {
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Prop, Schema } from '@nestjs/mongoose';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 
 /**
  * Represents an abstract entity with common fields such as ID, creation date, update date, and status.
  */
-@Entity()
+@Schema()
 @ObjectType()
 export abstract class AbstractEntity {
   /**
@@ -18,8 +13,28 @@ export abstract class AbstractEntity {
    */
   @Field(() => ID)
   @ApiProperty({ description: 'ID of the entity, unique globally.' })
-  @PrimaryGeneratedColumn('uuid')
   readonly _id: string;
+
+  /**
+   * A flag indicating whether the entity instance is locked.
+   */
+  @Field(() => Boolean, { defaultValue: false })
+  @Prop({ default: false })
+  readonly isLocked: boolean;
+
+  /**
+   * A flag indicating whether the entity instance is disabled.
+   */
+  @Field(() => Boolean, { defaultValue: false })
+  @Prop({ default: false })
+  readonly isDisabled: boolean;
+
+  /**
+   * A flag indicating whether the entity instance is verified.
+   */
+  @Field(() => Boolean, { defaultValue: false })
+  @Prop({ default: false })
+  readonly isVerified: boolean;
 
   /**
    * Date when the entity instance was created.
@@ -28,7 +43,6 @@ export abstract class AbstractEntity {
   @ApiProperty({
     description: 'Date when the entity instance was created.',
   })
-  @CreateDateColumn()
   readonly createdAt: string;
 
   /**
@@ -38,6 +52,5 @@ export abstract class AbstractEntity {
   @ApiProperty({
     description: 'Date when the entity instance was last updated.',
   })
-  @UpdateDateColumn()
   readonly updatedAt: string;
 }

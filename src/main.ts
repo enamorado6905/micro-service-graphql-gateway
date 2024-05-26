@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { VALIDATION_PIPE } from './common/util/constants/constants.conts';
-import { AllExceptionFilter } from './common/filter/all-exception.filter';
+import { RpcExceptionsFilter } from './common/filter/all-exception.filter';
 import { TimeOutInterceptor } from './common/intercertors/timeout.interceptor';
 import { json, urlencoded } from 'express';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -23,7 +23,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe(VALIDATION_PIPE));
 
   // Set up a global exception filter for handling all exceptions.
-  app.useGlobalFilters(new AllExceptionFilter());
+  app.useGlobalFilters(new RpcExceptionsFilter());
 
   // Apply a global interceptor for handling timeouts.
   app.useGlobalInterceptors(new TimeOutInterceptor());

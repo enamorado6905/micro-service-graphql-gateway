@@ -1,37 +1,41 @@
-import { Column, Entity } from 'typeorm';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ObjectType, Field } from '@nestjs/graphql';
+import { Document } from 'mongoose';
 import { AbstractEntity } from '../../../common/abstract-entity/abstract-entity.entity';
 import { Paginated } from '../../../common/util/method/abstract-pagination-entity.method';
 
-@Entity()
+// UserDocument is a type that represents a User document in MongoDB.
+export type UserDocument = User & Document;
+
+@Schema()
 @ObjectType()
 export class User extends AbstractEntity {
-  @Column()
+  @Prop()
   @Field(() => String)
   readonly name: string;
 
-  @Column()
+  @Prop()
   @Field(() => String)
   readonly surnames: string;
 
-  @Column({
-    unique: true,
-  })
+  @Prop({ unique: true })
   @Field(() => String)
   readonly email: string;
 
-  @Column({ default: false })
+  @Prop({ default: false })
   @Field(() => Boolean, { defaultValue: false })
   readonly isLocked: boolean;
 
-  @Column({ default: false })
+  @Prop({ default: false })
   @Field(() => Boolean, { defaultValue: false })
   readonly isDisabled: boolean;
 
-  @Column({ default: false })
+  @Prop({ default: false })
   @Field(() => Boolean, { defaultValue: false })
   readonly isVerified: boolean;
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);
 
 @ObjectType()
 export class PaginatedAuthor extends Paginated(User) {}
