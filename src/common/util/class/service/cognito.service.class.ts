@@ -1,36 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { LoginAuthDto } from './dto/login-auth.dto';
-import { ConfigSigUpDto } from './dto/confirm-sig-up.dto';
-import { LogoutAuthDto } from './dto/logout-auth.dto';
-import { ExchangeCodeForTokensDto } from './dto/exchange-code-for-token.dto';
-import { CognitoServiceClass } from '../../common/util/class/service/cognito.service.class';
-import { UsersServiceClass } from '../../common/util/class/service/user.service.class';
-import { CreateUserInput } from '../users/dto/create-user.input';
+import { ProxyRabbitMQ } from '../proxy-rabbit-mq.class';
+import { RabbitMqEnum } from '../../../enum/msg/rabbit-mq.enum';
+import { SigUpDto } from '../../../../modules-services/auth/dto/sig-up-auth.dto';
+import { AuthUsersMsgEnum } from '../../../enum/msg/auth-users.enum';
+import { ConfigSigUpDto } from '../../../../modules-services/auth/dto/confirm-sig-up.dto';
+import { LoginAuthDto } from '../../../../modules-services/auth/dto/login-auth.dto';
+import { ExchangeCodeForTokensDto } from '../../../../modules-services/auth/dto/exchange-code-for-token.dto';
+import { LogoutAuthDto } from '../../../../modules-services/auth/dto/logout-auth.dto';
 
-/**
- * The `AuthService` class provides methods for managing user authentication in the application.
- *
- * This class uses the `ProxyRabbitMQ` utility class to communicate with a RabbitMQ server. The `ProxyRabbitMQ` instance is created in the constructor of the class and is used in all methods that need to communicate with the RabbitMQ server.
- *
- * The `@Injectable()` decorator is used to mark the class as a provider that can be managed by the NestJS dependency injection container.
- */
 @Injectable()
-export class AuthService {
+export class CognitoServiceClass {
   /**
-   * The constructor of the `AuthService` class.
-   *
-   * The constructor creates a new instance of the `ProxyRabbitMQ` utility class with the `RabbitMqEnum.authUsersQueue` parameter, which specifies the name of the RabbitMQ queue to use for user authentication operations.
-   *
+   * The `cognitoProxyRabbitMQ` property is an instance of the `ProxyRabbitMQ` utility class.
+   * This property is used to communicate with a RabbitMQ server.
+   * The `ProxyRabbitMQ` instance is created with the `RabbitMqEnum.usersQueue` parameter, which
+   * Specifies the name of the RabbitMQ queue to use.
    */
-  constructor(
-    private readonly cognitoServiceClass: CognitoServiceClass,
-    private readonly usersServiceClass: UsersServiceClass,
-  ) {}
+  private readonly cognitoProxyRabbitMQ = new ProxyRabbitMQ(
+    RabbitMqEnum.cognitoQueue,
+  );
+
+  constructor() {}
 
   /**
    * The `registerUserCognito` method registers a new user in the Cognito user pool.
    *
-   * @param {CreateAuthDto} createAuthDto - An object that contains the data for the user to register.
+   * @param {CreateAuthDto} sigUpDto - An object that contains the data for the user to register.
    * @returns {Promise<any>} A promise that resolves to the result of the registration operation.
    *
    * @description
@@ -42,20 +37,20 @@ export class AuthService {
    * const createAuthDto = { surnames: 'test', password: 'password' };
    * const result = await authService.registerUserCognito(createAuthDto);
    */
-  public async registerUserCognito(
-    createUserInput: CreateUserInput,
-  ): Promise<any> {
-    await this.usersServiceClass.create(createUserInput);
-    return this.cognitoServiceClass.registerUserCognito({
-      password: createUserInput.password,
-      user: createUserInput.email,
-    });
+  public async registerUserCognito(sigUpDto: SigUpDto): Promise<any> {
+    return await this.cognitoProxyRabbitMQ.operations(
+      AuthUsersMsgEnum.CREATE,
+      sigUpDto,
+    );
   }
 
   public async confirmSignUpCognito(
     configSigUpDto: ConfigSigUpDto,
   ): Promise<any> {
-    return this.cognitoServiceClass.confirmSignUpCognito(configSigUpDto);
+    return await this.cognitoProxyRabbitMQ.operations(
+      AuthUsersMsgEnum.CONFIG_SIGN_UP,
+      configSigUpDto,
+    );
   }
 
   /**
@@ -74,13 +69,17 @@ export class AuthService {
    * const result = await authService.loginUserCognito(loginAuthDto);
    */
   public async loginUserCognito(loginAuthDto: LoginAuthDto): Promise<any> {
-    return this.cognitoServiceClass.loginUserCognito(loginAuthDto);
+    return await this.cognitoProxyRabbitMQ.operations(
+      AuthUsersMsgEnum.LOGIN_USER,
+      loginAuthDto,
+    );
   }
 
   public async exchangeCodeForTokenCognito(
     exchangeCodeForTokensDto: ExchangeCodeForTokensDto,
   ): Promise<any> {
-    return this.cognitoServiceClass.exchangeCodeForTokenCognito(
+    return await this.cognitoProxyRabbitMQ.operations(
+      AuthUsersMsgEnum.FIND_TOKEN_FOR_CODE,
       exchangeCodeForTokensDto,
     );
   }
@@ -99,6 +98,9 @@ export class AuthService {
    * const result = await authService.logoutUserCognito();
    */
   public async logoutUserCognito(logoutAuthDto: LogoutAuthDto): Promise<any> {
-    return this.cognitoServiceClass.logoutUserCognito(logoutAuthDto);
+    return await this.cognitoProxyRabbitMQ.operations(
+      AuthUsersMsgEnum.LOGOUT_USER,
+      logoutAuthDto,
+    );
   }
 }

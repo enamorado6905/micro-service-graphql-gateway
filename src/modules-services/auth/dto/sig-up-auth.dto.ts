@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 /**
  * A DTO for confirming sign up.
@@ -24,17 +24,17 @@ export class SigUpDto {
   @IsNotEmpty()
   @MaxLength(255)
   @IsString()
-  user: string;
+  readonly user: string;
 
   /**
    * The phone number of the user.
    *
    * @type {string}
    */
-  @IsNotEmpty()
+  @IsOptional()
   @MaxLength(255)
   @IsString()
-  phoneNumber: string;
+  readonly phoneNumber?: string;
 
   /**
    * The password for confirming sign up.
@@ -43,5 +43,5 @@ export class SigUpDto {
    */
   @IsNotEmpty()
   @IsString()
-  password: string;
+  readonly password: string;
 }

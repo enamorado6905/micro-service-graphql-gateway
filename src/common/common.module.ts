@@ -4,6 +4,7 @@ import { GraphQlModule } from '../graph-ql/graph-ql.module';
 import { ExceptionClass } from './util/class/exception.class';
 import { AxiosClass } from './util/class/axios.class';
 import { HttpModule } from '@nestjs/axios';
+import { UsersServiceClass } from './util/class/service/user.service.class';
 
 /**
  * A NestJS module that acts as a common module for the application.
@@ -12,6 +13,6 @@ import { HttpModule } from '@nestjs/axios';
 @Module({
   providers: [ExceptionClass, AxiosClass],
   imports: [GraphQlModule, ConfigModule, HttpModule],
-  exports: [ExceptionClass, AxiosClass],
+  exports: [ExceptionClass, AxiosClass, UsersServiceClass],
 })
 export class CommonModule {}
