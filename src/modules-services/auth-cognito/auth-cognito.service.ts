@@ -6,20 +6,26 @@ import { ExchangeCodeForTokensDto } from './dto/exchange-code-for-token.dto';
 import { CognitoServiceClass } from '../../common/util/class/service/cognito.service.class';
 import { UsersServiceClass } from '../../common/util/class/service/user.service.class';
 import { CreateUserInput } from '../users/dto/create-user.input';
+import { SignInInterface } from '../../common/interfaces/sign-in.interface';
 
 /**
  * The `AuthService` class provides methods for managing user authentication in the application.
  *
- * This class uses the `ProxyRabbitMQ` utility class to communicate with a RabbitMQ server. The `ProxyRabbitMQ` instance is created in the constructor of the class and is used in all methods that need to communicate with the RabbitMQ server.
+ * This class uses the `ProxyRabbitMQ` utility class to communicate with a RabbitMQ server.
+ * The `ProxyRabbitMQ` instance is created in the constructor of the class and is used in
+ * all methods that need to communicate with the RabbitMQ server.
  *
- * The `@Injectable()` decorator is used to mark the class as a provider that can be managed by the NestJS dependency injection container.
+ * The `@Injectable()` decorator is used to mark the class as a provider that can be managed by
+ * the NestJS dependency injection container.
  */
 @Injectable()
-export class AuthService {
+export class AuthCognitoService {
   /**
    * The constructor of the `AuthService` class.
    *
-   * The constructor creates a new instance of the `ProxyRabbitMQ` utility class with the `RabbitMqEnum.authUsersQueue` parameter, which specifies the name of the RabbitMQ queue to use for user authentication operations.
+   * The constructor creates a new instance of the `ProxyRabbitMQ` utility class with the
+   * `RabbitMqEnum.authUsersQueue` parameter, which specifies the name of the RabbitMQ queue
+   * to use for user authentication operations.
    *
    */
   constructor(
@@ -30,7 +36,7 @@ export class AuthService {
   /**
    * The `registerUserCognito` method registers a new user in the Cognito user pool.
    *
-   * @param {CreateAuthDto} createAuthDto - An object that contains the data for the user to register.
+   * @param {CreateUserInput} createUserInput - An object that contains the data for the user to register.
    * @returns {Promise<any>} A promise that resolves to the result of the registration operation.
    *
    * @description
@@ -45,17 +51,17 @@ export class AuthService {
   public async registerUserCognito(
     createUserInput: CreateUserInput,
   ): Promise<any> {
-    await this.usersServiceClass.create(createUserInput);
-    return this.cognitoServiceClass.registerUserCognito({
+    await this.cognitoServiceClass.registerUserCognito({
       password: createUserInput.password,
       user: createUserInput.email,
     });
+    return await this.usersServiceClass.create(createUserInput);
   }
 
   public async confirmSignUpCognito(
     configSigUpDto: ConfigSigUpDto,
-  ): Promise<any> {
-    return this.cognitoServiceClass.confirmSignUpCognito(configSigUpDto);
+  ): Promise<boolean> {
+    return await this.cognitoServiceClass.confirmSignUpCognito(configSigUpDto);
   }
 
   /**
@@ -73,8 +79,10 @@ export class AuthService {
    * const loginAuthDto = { surnames: 'test', password: 'password' };
    * const result = await authService.loginUserCognito(loginAuthDto);
    */
-  public async loginUserCognito(loginAuthDto: LoginAuthDto): Promise<any> {
-    return this.cognitoServiceClass.loginUserCognito(loginAuthDto);
+  public async loginUserCognito(
+    loginAuthDto: LoginAuthDto,
+  ): Promise<SignInInterface> {
+    return await this.cognitoServiceClass.loginUserCognito(loginAuthDto);
   }
 
   public async exchangeCodeForTokenCognito(

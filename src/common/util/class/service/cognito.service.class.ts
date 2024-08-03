@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ProxyRabbitMQ } from '../proxy-rabbit-mq.class';
 import { RabbitMqEnum } from '../../../enum/msg/rabbit-mq.enum';
-import { SigUpDto } from '../../../../modules-services/auth/dto/sig-up-auth.dto';
+import { SigUpDto } from '../../../../modules-services/auth-cognito/dto/sig-up-auth.dto';
 import { AuthUsersMsgEnum } from '../../../enum/msg/auth-users.enum';
-import { ConfigSigUpDto } from '../../../../modules-services/auth/dto/confirm-sig-up.dto';
-import { LoginAuthDto } from '../../../../modules-services/auth/dto/login-auth.dto';
-import { ExchangeCodeForTokensDto } from '../../../../modules-services/auth/dto/exchange-code-for-token.dto';
-import { LogoutAuthDto } from '../../../../modules-services/auth/dto/logout-auth.dto';
+import { ConfigSigUpDto } from '../../../../modules-services/auth-cognito/dto/confirm-sig-up.dto';
+import { LoginAuthDto } from '../../../../modules-services/auth-cognito/dto/login-auth.dto';
+import { ExchangeCodeForTokensDto } from '../../../../modules-services/auth-cognito/dto/exchange-code-for-token.dto';
+import { LogoutAuthDto } from '../../../../modules-services/auth-cognito/dto/logout-auth.dto';
+import { SignInInterface } from '../../../interfaces/sign-in.interface';
 
 @Injectable()
 export class CognitoServiceClass {
@@ -46,7 +47,7 @@ export class CognitoServiceClass {
 
   public async confirmSignUpCognito(
     configSigUpDto: ConfigSigUpDto,
-  ): Promise<any> {
+  ): Promise<boolean> {
     return await this.cognitoProxyRabbitMQ.operations(
       AuthUsersMsgEnum.CONFIG_SIGN_UP,
       configSigUpDto,
@@ -68,7 +69,9 @@ export class CognitoServiceClass {
    * const loginAuthDto = { surnames: 'test', password: 'password' };
    * const result = await authService.loginUserCognito(loginAuthDto);
    */
-  public async loginUserCognito(loginAuthDto: LoginAuthDto): Promise<any> {
+  public async loginUserCognito(
+    loginAuthDto: LoginAuthDto,
+  ): Promise<SignInInterface> {
     return await this.cognitoProxyRabbitMQ.operations(
       AuthUsersMsgEnum.LOGIN_USER,
       loginAuthDto,

@@ -97,7 +97,38 @@ export class ProxyRabbitMQ {
   public async operations(msg: string, data: object): Promise<any> {
     try {
       const clientProxy = this.proxyRabbitMQ();
-      return await firstValueFrom(clientProxy.send(msg, data));
+      const value = await firstValueFrom(clientProxy.send(msg, data));
+      return value.data ? value.data : value;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
+  /**
+   * The `operations` method is an asynchronous method that sends a message to the RabbitMQ server and returns the
+   * First response.
+   *
+   * This method creates a RabbitMQ client proxy by calling the `proxyRabbitMQ` method. It then sends a message to
+   * The RabbitMQ server using the `send` method of the client proxy. The `send` method takes two parameters: `msg`
+   * And `data`.
+   * - `msg`: A string that represents the message to send. This is passed to the `send` method as the first parameter.
+   * - `data`: The data to send with the message. This is passed to the `send` method as the second parameter.
+   *
+   * The method uses the `firstValueFrom` function from the `rxjs` library to return a `Promise` that resolves to the
+   * First value emitted by the `send` method.
+   *
+   * If an error occurs while sending the message or waiting for the response, the method catches the error and throws
+   * A new `Error` with the same message.
+   *
+   * @param msg - The message to send to the RabbitMQ server.
+   * @param data - The data to send with the message.
+   * @returns A `Promise` that resolves to the first response from the RabbitMQ server.
+   * @throws An `Error` if an error occurs while sending the message or waiting for the response.
+   */
+  public async operationsMutation(msg: string, data: object): Promise<any> {
+    try {
+      const clientProxy = this.proxyRabbitMQ();
+      return (await firstValueFrom(clientProxy.send(msg, data))).data;
     } catch (error: any) {
       throw new Error(error.message);
     }
