@@ -54,8 +54,10 @@ export class UsersService implements AbstractMethodOperation<User> {
    * @param id - The ID of the user to retrieve.
    * @returns A `Promise` that resolves to the user with the specified ID.
    */
-  public getById(id: string | number): Promise<User> {
-    return this.usersServiceClass.getById(id);
+  public async getById(id: string | number): Promise<User> {
+    const data = await this.usersServiceClass.getById(id);
+    console.log(data);
+    return data;
   }
 
   /**
@@ -104,6 +106,6 @@ export class UsersService implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the total number of users.
    */
   public async total(): Promise<number> {
-    return await this.total();
+    return await this.usersServiceClass.total();
   }
 }

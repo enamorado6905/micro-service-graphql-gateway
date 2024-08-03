@@ -6,9 +6,12 @@ import { FindOneUserInput } from './dto/find-one-user.input';
 import { PaginatedAuthor, User } from './entities/user.entity';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
 import { AbstractMethodOperation } from '../../common/util/class/abstract-method-operation.class';
-import { UseInterceptors } from '@nestjs/common';
+import { UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { PasswordEncryptionInterceptor } from '../../common/intercertors/password-encryption.interceptor';
 import { RemovePasswordInterceptor } from '../../common/intercertors/remove-password.interceptor';
+import { UserResolverEnum } from '../../common/enum/system/name-resolver/user-resolver.enum';
+import { GqlAuthGuard } from '../../common/guards/graphql.guard';
+import { GraphQLExceptionFilter } from '../../common/filter/gql-exception.filter';
 
 /**
  * The `UsersResolver` class provides GraphQL resolvers for managing users in the application.
@@ -23,6 +26,9 @@ import { RemovePasswordInterceptor } from '../../common/intercertors/remove-pass
  * `User` type.
  */
 @Resolver(() => User)
+@UseGuards(GqlAuthGuard)
+@UseInterceptors(RemovePasswordInterceptor)
+@UseFilters(new GraphQLExceptionFilter())
 export class UsersResolver implements AbstractMethodOperation<User> {
   /**
    * The constructor of the `UsersResolver` class.
@@ -39,7 +45,7 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param createUserInput - The input data for creating a user.
    * @returns The created user.
    */
-  @Mutation(() => User, { name: 'userRegister' })
+  @Mutation(() => User, { name: UserResolverEnum.USER_REGISTER })
   @UseInterceptors(PasswordEncryptionInterceptor)
   async create(
     @Args('createUserInput') createUserInput: CreateUserInput,
@@ -51,7 +57,7 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * Query to get the total number of users.
    * @returns The total number of users.
    */
-  @Query(() => Number, { name: 'userTotal' })
+  @Query(() => Number, { name: UserResolverEnum.USER_TOTAL })
   async total(): Promise<number> {
     return await this.usersService.total();
   }
@@ -61,7 +67,7 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param paginationArgsDto - The pagination arguments.
    * @returns The paginated list of users.
    */
-  @Query(() => PaginatedAuthor, { name: 'userList' })
+  @Query(() => PaginatedAuthor, { name: UserResolverEnum.USER_LIST })
   @UseInterceptors(RemovePasswordInterceptor)
   async find(@Args() paginationArgsDto: PaginationArgsDto) {
     return await this.usersService.find(paginationArgsDto);
@@ -72,7 +78,7 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param id - The ID of the user.
    * @returns The found user.
    */
-  @Query(() => User, { name: 'userId' })
+  @Query(() => User, { name: UserResolverEnum.USER_ID })
   async getById(@Args('id', { type: () => ID }) id: string): Promise<User> {
     return await this.usersService.getById(id);
   }
@@ -82,8 +88,7 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param filter - The filter criteria.
    * @returns The found user.
    */
-  @Mutation(() => User, { name: 'userFindOne' })
-  @UseInterceptors(RemovePasswordInterceptor)
+  @Query(() => User, { name: UserResolverEnum.USER_FIND_ONE })
   async getOne(@Args('filter') filter: FindOneUserInput): Promise<User> {
     return await this.usersService.getOne(filter);
   }
@@ -93,7 +98,7 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param updateUserInput - The input data for updating a user.
    * @returns The updated user.
    */
-  @Mutation(() => User, { name: 'userUpdate' })
+  @Mutation(() => User, { name: UserResolverEnum.USER_UPDATE })
   @UseInterceptors(RemovePasswordInterceptor)
   async update(
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
@@ -106,7 +111,7 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @param id - The ID of the user to remove.
    * @returns The removed user.
    */
-  @Mutation(() => User, { name: 'userRemove' })
+  @Mutation(() => User, { name: UserResolverEnum.USER_REMOVE })
   @UseInterceptors(RemovePasswordInterceptor)
   async delete(@Args('id', { type: () => ID }) id: string): Promise<User> {
     return this.usersService.delete(id);

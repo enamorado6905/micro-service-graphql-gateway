@@ -28,11 +28,21 @@ type PaginatedAuthor {
   totalDocs: Int
 }
 
+type SignInInterface {
+  AccessToken: String!
+  ExpiresIn: Float!
+  TokenType: String!
+  RefreshToken: String!
+  IdToken: String!
+}
+
 type Query {
   sayHello: String!
   userTotal: Float!
   userList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedAuthor!
   userId(id: ID!): User!
+  userFindOne(filter: FindOneUserInput!): User!
+  validateRegistration(configSigUpDto: ConfigSigUpDto!): Boolean!
 }
 
 input QueryInput {
@@ -64,11 +74,22 @@ input PopulateInput {
   model: String
 }
 
+input FindOneUserInput {
+  search: String!
+  value: String!
+}
+
+input ConfigSigUpDto {
+  userName: String!
+  code: String!
+}
+
 type Mutation {
   userRegister(createUserInput: CreateUserInput!): User!
-  userFindOne(filter: FindOneUserInput!): User!
   userUpdate(updateUserInput: UpdateUserInput!): User!
   userRemove(id: ID!): User!
+  loginCognito(loginAuthDto: LoginAuthDto!): SignInInterface!
+  registerCognito(createUserInput: CreateUserInput!): User!
 }
 
 input CreateUserInput {
@@ -81,14 +102,14 @@ input CreateUserInput {
   isVerified: Boolean
 }
 
-input FindOneUserInput {
-  search: String!
-  value: String!
-}
-
 input UpdateUserInput {
   _id: ID!
   name: String
   email: String
   address: String
+}
+
+input LoginAuthDto {
+  userName: String!
+  password: String!
 }

@@ -67,8 +67,10 @@ export class UsersServiceClass implements AbstractMethodOperation<User> {
    * @param id - The ID of the user to retrieve.
    * @returns A `Promise` that resolves to the user with the specified ID.
    */
-  public getById(id: string | number): Promise<User> {
-    return this.proxyRabbitMQ.operations(UsersMsgEnum.FIND_BY_ID, { id });
+  public async getById(id: string | number): Promise<User> {
+    return await this.proxyRabbitMQ.operations(UsersMsgEnum.FIND_BY_ID, {
+      id,
+    });
   }
 
   /**
@@ -77,7 +79,7 @@ export class UsersServiceClass implements AbstractMethodOperation<User> {
    * @param filter - An object that specifies the criteria for the user to retrieve.
    * @returns A `Promise` that resolves to the user that matches the filter.
    */
-  public getOne(filter: object): Promise<User> {
+  public async getOne(filter: object): Promise<User> {
     return this.proxyRabbitMQ.operations(UsersMsgEnum.FIND_ONE, filter);
   }
 
