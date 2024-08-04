@@ -52,7 +52,7 @@ export abstract class AbstractMethodOperation<T> {
    * @param item The updated data for the instance of type T.
    * @returns A Promise containing the updated instance of type T.
    */
-  abstract update(item: object): Promise<T>;
+  abstract update(id: string | number, item: object): Promise<T>;
 
   /**
    * Abstract method to delete an existing instance of type T by its identifier.

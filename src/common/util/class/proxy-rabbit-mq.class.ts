@@ -100,6 +100,7 @@ export class ProxyRabbitMQ {
       const value = await firstValueFrom(clientProxy.send(msg, data));
       return value.data ? value.data : value;
     } catch (error: any) {
+      // private readonly language: LanguageClass
       throw new Error(error.message);
     }
   }

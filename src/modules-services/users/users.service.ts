@@ -86,8 +86,8 @@ export class UsersService implements AbstractMethodOperation<User> {
    * @param item - An object that contains the data for the user to update.
    * @returns A `Promise` that resolves to the updated user.
    */
-  public update(item: UpdateUserInput): Promise<User> {
-    return this.usersServiceClass.update(item);
+  public update(id: string | number, item: UpdateUserInput): Promise<User> {
+    return this.usersServiceClass.update(id, item);
   }
 
   /**

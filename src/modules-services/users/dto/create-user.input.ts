@@ -33,6 +33,16 @@ export class CreateUserInput {
   @IsString()
   readonly password: string;
 
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  readonly address?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  readonly language?: string;
+
   @Field(() => Boolean, { nullable: true })
   @IsOptional()
   @IsBoolean()

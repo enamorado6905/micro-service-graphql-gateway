@@ -28,7 +28,7 @@ import { GraphQLExceptionFilter } from '../../common/filter/gql-exception.filter
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
 @UseInterceptors(RemovePasswordInterceptor)
-@UseFilters(new GraphQLExceptionFilter())
+// @UseFilters(new GraphQLExceptionFilter())
 export class UsersResolver implements AbstractMethodOperation<User> {
   /**
    * The constructor of the `UsersResolver` class.
@@ -101,9 +101,10 @@ export class UsersResolver implements AbstractMethodOperation<User> {
   @Mutation(() => User, { name: UserResolverEnum.USER_UPDATE })
   @UseInterceptors(RemovePasswordInterceptor)
   async update(
+    @Args('id', { type: () => ID }) id: string,
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ): Promise<User> {
-    return this.usersService.update(updateUserInput);
+    return this.usersService.update(id, updateUserInput);
   }
 
   /**
