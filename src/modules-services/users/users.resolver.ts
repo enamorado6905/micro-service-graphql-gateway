@@ -28,7 +28,6 @@ import { GraphQLExceptionFilter } from '../../common/filter/gql-exception.filter
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
 @UseInterceptors(RemovePasswordInterceptor)
-// @UseFilters(new GraphQLExceptionFilter())
 export class UsersResolver implements AbstractMethodOperation<User> {
   /**
    * The constructor of the `UsersResolver` class.

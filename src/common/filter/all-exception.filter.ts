@@ -1,78 +1,102 @@
 import {
-  ExceptionFilter,
   Catch,
+  ArgumentsHost,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { ApolloError } from 'apollo-server-express';
-import { status as grpcStatus, status } from '@grpc/grpc-js';
+import { GqlArgumentsHost, GqlExceptionFilter } from '@nestjs/graphql';
+import { RpcException } from '@nestjs/microservices';
+import { LanguageClass } from '../util/class/language.class';
 
-@Catch()
-export class RpcExceptionsFilter implements ExceptionFilter {
-  catch(exception: any) {
-    console.log('exception', exception);
-    return this.grpcException(exception);
+@Catch(HttpException, RpcException)
+export class GraphQLExceptionFilter implements GqlExceptionFilter {
+  constructor(private readonly language: LanguageClass) {}
+
+  catch(exception: any, host: ArgumentsHost) {
+    const gqlHost = GqlArgumentsHost.create(host);
+    const response = gqlHost.getContext().res;
+
+    if (exception instanceof RpcException) {
+      return this.handleRpcException(exception, response);
+    } else if (exception instanceof HttpException) {
+      return this.handleGqlException(exception, response);
+    } else {
+      return new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
-  private httpException(exception: any) {
-    const httpStatus =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+  private handleGqlException(exception: HttpException, response: any) {
+    const status = exception.getStatus();
+    const exceptionResponse = exception.getResponse();
 
-    const msg =
-      exception instanceof HttpException ? exception.getResponse() : exception;
+    console.error('GraphQL Exception Response:', exceptionResponse);
 
-    throw new ApolloError(
-      msg.message,
-      status[this.httpToGrpcStatus(httpStatus)],
+    const { message, code } = exceptionResponse as any;
+
+    const graphQLErrorCode = this.transformErrorCode(code);
+
+    response.status(status).json({
+      message,
+      extensions: {
+        code: graphQLErrorCode,
+      },
+    });
+
+    return new HttpException(
+      {
+        message,
+        code: graphQLErrorCode,
+        status,
+      },
+      status,
     );
   }
 
-  private grpcException(exception: any) {
-    // const errorException = JSON.parse(exception);
+  private handleRpcException(exception: RpcException, response: any) {
+    const rpcError = exception.getError();
+    const customMessage = this.language.language('exception.RPC_ERROR', {});
 
-    const errorResponse = {
-      statusCode: grpcStatus.INTERNAL,
-      message: 'An unexpected error occurred',
-    };
+    console.error('RPC Exception Response:', rpcError);
 
-    errorResponse.statusCode = grpcStatus.INTERNAL;
+    const { message, code } = rpcError as any;
 
-    errorResponse.message = exception.message;
+    const graphQLErrorCode = this.transformErrorCode(code);
 
-    throw new ApolloError(
-      errorResponse.message,
-      status[errorResponse.statusCode.toString()],
+    response.status(500).json({
+      message,
+      extensions: {
+        code: graphQLErrorCode,
+      },
+    });
+
+    return new HttpException(
+      {
+        message,
+        code: graphQLErrorCode,
+        status: 500,
+      },
+      500,
     );
   }
 
-  private httpToGrpcStatus(httpStatus: number) {
-    switch (httpStatus) {
-      case 200:
-        return grpcStatus.OK;
-      case 400:
-        return grpcStatus.INVALID_ARGUMENT;
-      case 401:
-        return grpcStatus.UNAUTHENTICATED;
-      case 403:
-        return grpcStatus.PERMISSION_DENIED;
-      case 404:
-        return grpcStatus.NOT_FOUND;
-      case 409:
-        return grpcStatus.ABORTED;
-      case 429:
-        return grpcStatus.RESOURCE_EXHAUSTED;
-      case 500:
-        return grpcStatus.INTERNAL;
-      case 501:
-        return grpcStatus.UNIMPLEMENTED;
-      case 503:
-        return grpcStatus.UNAVAILABLE;
-      case 504:
-        return grpcStatus.DEADLINE_EXCEEDED;
+  private transformErrorCode(errorCode: string): string {
+    // Map custom error codes to GraphQL error codes
+    switch (errorCode) {
+      case 'BAD_REQUEST':
+        return 'BAD_USER_INPUT';
+      case 'UNAUTHENTICATED':
+        return 'UNAUTHENTICATED';
+      case 'FORBIDDEN':
+        return 'FORBIDDEN';
+      case 'NOT_FOUND':
+        return 'NOT_FOUND';
+      case 'RPC_ERROR':
+        return 'INTERNAL_SERVER_ERROR';
       default:
-        return grpcStatus.UNKNOWN;
+        return 'INTERNAL_SERVER_ERROR';
     }
   }
 }
