@@ -103,11 +103,11 @@ export class ProxyRabbitMQ {
       const value = await firstValueFrom(clientProxy.send(msg, data));
       return value.data ? value.data : value;
     } catch (error: any) {
-      const { message, code } = extractErrorDetails(error.message);
+      const { message, code, codeMessage } = extractErrorDetails(error.message);
       if (error instanceof RpcException) {
         throw new RpcException({ message, code });
       } else {
-        throw new HttpException({ message, code }, code);
+        throw new HttpException({ message, code, codeMessage }, code);
       }
     }
   }
