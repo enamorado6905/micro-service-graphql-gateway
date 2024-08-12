@@ -1,9 +1,18 @@
 {
+  "DEFAULT_MESSAGE": "An unexpected error occurred, {message}",
   "401": "Unauthorized access. Please log in again.",
-  "COGNITO_AUTH_ERROR_0001": "Failed to authenticate user. Please check your credentials and try again. If you need help, contact support.",
-  "COGNITO_AUTH_ERROR_0002": "Failed to authenticate user, email or password is incorrect.",
   "403": "You do not have permission to access this resource.",
   "404": "Resource not found.",
   "500": "Internal server error. Please try again later.",
-  "DEFAULT_MESSAGE": "An unexpected error occurred, {message}"
+  "COGNITO_AUTH_ERROR_0001": "Failed to authenticate user. Please check your credentials and try again. If you need help, contact support.",
+  "COGNITO_AUTH_ERROR_0002": "Failed to authenticate user, email or password is incorrect.",
+  "COGNITO_AUTH_ERROR_0003": "COGNITO_AUTH_ERROR_0003",
+  "MICRO_MANAGER_USER_ERROR_0001": "MICRO_MANAGER_USER_ERROR_0001",
+  "MICRO_MANAGER_USER_ERROR_0002": "MICRO_MANAGER_USER_ERROR_0002",
+  "MICRO_MANAGER_USER_ERROR_0003": "MICRO_MANAGER_USER_ERROR_0003",
+  "MICRO_MANAGER_USER_ERROR_0004": "MICRO_MANAGER_USER_ERROR_0004",
+  "MICRO_MANAGER_USER_ERROR_0005": "MICRO_MANAGER_USER_ERROR_0005",
+  "MICRO_MANAGER_USER_ERROR_0006": "MICRO_MANAGER_USER_ERROR_0006",
+  "MICRO_MANAGER_USER_ERROR_0007": "MICRO_MANAGER_USER_ERROR_0007",
+  "MICRO_MANAGER_USER_ERROR_0008": "MICRO_MANAGER_USER_ERROR_0008"
 }
