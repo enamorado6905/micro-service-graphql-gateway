@@ -10,38 +10,27 @@ import {
  */
 @Injectable()
 export class FileSizeValidationPipe implements PipeTransform {
-  /**
-   * Transforms and validates an incoming file.
-   *
-   * @param file - The uploaded file to validate.
-   * @param metadata - Additional metadata for the transformation, not used in this pipe.
-   * @throws {BadRequestException} If no file is provided.
-   * @throws {ApolloServerErrorCode.PERSISTED_QUERY_NOT_FOUND} If the file size or type is invalid.
-   * @returns The validated file if no validation errors occur.
-   */
-  transform(file: Express.Multer.File, metadata: ArgumentMetadata) {
-    // Check if the file is provided, throw an exception if not.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  transform(file: any, metadata: ArgumentMetadata) {
     if (!file) {
-      throw new BadRequestException('Validation failed: file is null');
+      throw new BadRequestException('Validation failed: No file uploaded');
     }
 
-    console.log('metadata', metadata);
-
-    // Validate file size, throw an exception if it exceeds the limit.
-    if (file.size > 3000000000000000) {
-      return file;
+    const maxSize = 5 * 1024 * 1024; // 5 MB
+    if (file.size > maxSize) {
+      throw new BadRequestException(
+        `Validation failed: File size exceeds ${maxSize / (1024 * 1024)} MB`,
+      );
     }
 
-    // Validate file type, allowing only jpg, jpeg, and png.
     if (
       file.mimetype !== 'image/jpg' &&
       file.mimetype !== 'image/jpeg' &&
       file.mimetype !== 'image/png'
     ) {
-      return file;
+      throw new BadRequestException('Validation failed: Invalid file type');
     }
 
-    // Return the file if all validations pass.
     return file;
   }
 }
