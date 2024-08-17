@@ -100,7 +100,7 @@ export class ExceptionClass<T> {
   ): Promise<T> {
     try {
       return await promise;
-    } catch (error) {
+    } catch (error: Error | any) {
       return this.throwExceptionByStatusCode(
         type,
         error.message,
