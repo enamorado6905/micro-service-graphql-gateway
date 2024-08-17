@@ -1,23 +1,19 @@
 steps:
   # Gateway
-  - name: "gcr.io/cloud-builders/docker"
+  - name: gcr.io/cloud-builders/docker
     args:
-      [
-        "build",
-        "-t",
-        "us-east4-docker.pkg.dev/study-microservice-nestjs/gateway/develoment:$BUILD_ID",
-        "-f",
-        "./Dockerfile",
-        ".",
-      ]
-  - name: "gcr.io/cloud-builders/docker"
+      - build
+      - "-t"
+      - us-east4-docker.pkg.dev/study-microservice-nestjs/gateway/develoment:$BUILD_ID
+      - "-f"
+      - ./Dockerfile
+      - .
+  - name: gcr.io/cloud-builders/docker
     args:
-      [
-        "push",
-        "us-east4-docker.pkg.dev/study-microservice-nestjs/gateway/develoment:$BUILD_ID",
-      ]
+      - push
+      - us-east4-docker.pkg.dev/study-microservice-nestjs/gateway/develoment:$BUILD_ID
 options:
-  logging: "CLOUD_LOGGING_ONLY"
+  logging: CLOUD_LOGGING_ONLY
 
 # Specify the service account to use
-serviceAccount: "463656342964-compute@developer.gserviceaccount.com"
+serviceAccount: 463656342964-compute@developer.gserviceaccount.com
