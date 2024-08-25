@@ -4,14 +4,14 @@ steps:
     args:
       - build
       - "-t"
-      - us-east4-docker.pkg.dev/study-microservice-nestjs/gateway/develoment:$BUILD_ID
+      - us-east4-docker.pkg.dev/study-microservice-nestjs/gateway/development:latest
       - "-f"
       - ./Dockerfile
       - .
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - us-east4-docker.pkg.dev/study-microservice-nestjs/gateway/develoment:$BUILD_ID
+      - us-east4-docker.pkg.dev/study-microservice-nestjs/gateway/development:latest
 options:
   logging: CLOUD_LOGGING_ONLY
 
