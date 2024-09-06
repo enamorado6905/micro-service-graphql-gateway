@@ -1,5 +1,5 @@
 {
-  "name": "microservices-graphql-nestjs-apollo-typeorm-postgres-gateway",
+  "name": "microservices-graphql-nestjs-gateway",
   "version": "0.0.1",
   "description": "",
   "author": "Orlando J. Enamorado Rosabal",

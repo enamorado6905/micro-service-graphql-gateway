@@ -23,10 +23,13 @@ export class GraphQLExceptionFilter implements GqlExceptionFilter {
     const response = gqlHost.getContext().res;
 
     if (exception instanceof RpcException) {
+      console.error('RPC Exception:', exception);
       return this.handleRpcException(exception, response);
     } else if (exception instanceof HttpException) {
+      console.error('HTTP Exception:', exception);
       return this.handleGqlException(exception);
     } else {
+      console.error('Unknown Exception:', exception);
       return new HttpException(
         'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,

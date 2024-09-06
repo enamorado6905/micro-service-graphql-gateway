@@ -98,12 +98,18 @@ export class ProxyRabbitMQ {
    * @throws An `Error` if an error occurs while sending the message or waiting for the response.
    */
   public async operations(msg: string, data: object): Promise<any> {
+    const clientProxy = this.proxyRabbitMQ();
+
     try {
-      const clientProxy = this.proxyRabbitMQ();
       const value = await firstValueFrom(clientProxy.send(msg, data));
+      await clientProxy.close();
+
       return value.data ? value.data : value;
     } catch (error: any) {
       const { message, code, codeMessage } = extractErrorDetails(error.message);
+
+      await clientProxy.close();
+
       if (error instanceof RpcException) {
         throw new RpcException({ message, code });
       } else {

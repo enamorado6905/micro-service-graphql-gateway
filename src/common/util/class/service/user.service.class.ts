@@ -81,7 +81,7 @@ export class UsersServiceClass implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the user that matches the filter.
    */
   public async getOne(filter: object): Promise<User> {
-    return this.proxyRabbitMQ.operations(UsersMsgEnum.FIND_ONE, filter);
+    return await this.proxyRabbitMQ.operations(UsersMsgEnum.FIND_ONE, filter);
   }
 
   /**

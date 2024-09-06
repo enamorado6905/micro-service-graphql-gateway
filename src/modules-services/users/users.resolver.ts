@@ -6,12 +6,11 @@ import { FindOneUserInput } from './dto/find-one-user.input';
 import { PaginatedAuthor, User } from './entities/user.entity';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
 import { AbstractMethodOperation } from '../../common/util/class/abstract-method-operation.class';
-import { UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { UseGuards, UseInterceptors } from '@nestjs/common';
 import { PasswordEncryptionInterceptor } from '../../common/intercertors/password-encryption.interceptor';
 import { RemovePasswordInterceptor } from '../../common/intercertors/remove-password.interceptor';
 import { UserResolverEnum } from '../../common/enum/system/name-resolver/user-resolver.enum';
 import { GqlAuthGuard } from '../../common/guards/graphql.guard';
-import { GraphQLExceptionFilter } from '../../common/filter/gql-exception.filter';
 
 /**
  * The `UsersResolver` class provides GraphQL resolvers for managing users in the application.
@@ -78,6 +77,7 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    * @returns The found user.
    */
   @Query(() => User, { name: UserResolverEnum.USER_ID })
+  @UseInterceptors(RemovePasswordInterceptor)
   async getById(@Args('id', { type: () => ID }) id: string): Promise<User> {
     return await this.usersService.getById(id);
   }

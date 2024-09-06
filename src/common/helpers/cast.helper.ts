@@ -99,6 +99,7 @@ export function extractErrorDetails(errorString: string): {
   codeMessage: string;
   // Add more error details as needed
 } {
+  console.log('errorString', errorString);
   const jsonString = errorString.substring(errorString.indexOf('{'));
   const errorObject = JSON.parse(jsonString);
   return {

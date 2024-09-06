@@ -6,6 +6,7 @@ import { PaginateInterface } from '../../common/interfaces/paginated.interface';
 import { AbstractMethodOperation } from '../../common/util/class/abstract-method-operation.class';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
 import { UsersServiceClass } from '../../common/util/class/service/user.service.class';
+import { FindOneUserInput } from './dto/find-one-user.input';
 
 /**
  * The `UsersService` class provides methods for managing users in the application.
@@ -55,9 +56,7 @@ export class UsersService implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the user with the specified ID.
    */
   public async getById(id: string | number): Promise<User> {
-    const data = await this.usersServiceClass.getById(id);
-    console.log(data);
-    return data;
+    return await this.usersServiceClass.getById(id);
   }
 
   /**
@@ -66,8 +65,8 @@ export class UsersService implements AbstractMethodOperation<User> {
    * @param filter - An object that specifies the criteria for the user to retrieve.
    * @returns A `Promise` that resolves to the user that matches the filter.
    */
-  public getOne(filter: object): Promise<User> {
-    return this.usersServiceClass.getOne(filter);
+  public async getOne(filter: FindOneUserInput): Promise<User> {
+    return await this.usersServiceClass.getOne(filter);
   }
 
   /**
@@ -76,8 +75,8 @@ export class UsersService implements AbstractMethodOperation<User> {
    * @param item - An object that contains the data for the user to create.
    * @returns A `Promise` that resolves to the created user.
    */
-  public create(item: CreateUserInput): Promise<User> {
-    return this.usersServiceClass.create(item);
+  public async create(item: CreateUserInput): Promise<User> {
+    return await this.usersServiceClass.create(item);
   }
 
   /**
@@ -86,8 +85,11 @@ export class UsersService implements AbstractMethodOperation<User> {
    * @param item - An object that contains the data for the user to update.
    * @returns A `Promise` that resolves to the updated user.
    */
-  public update(id: string | number, item: UpdateUserInput): Promise<User> {
-    return this.usersServiceClass.update(id, item);
+  public async update(
+    id: string | number,
+    item: UpdateUserInput,
+  ): Promise<User> {
+    return await this.usersServiceClass.update(id, item);
   }
 
   /**
@@ -96,8 +98,8 @@ export class UsersService implements AbstractMethodOperation<User> {
    * @param id - The ID of the user to delete.
    * @returns A `Promise` that resolves to the deleted user.
    */
-  public delete(id: string): Promise<User> {
-    return this.delete(id);
+  public async delete(id: string): Promise<User> {
+    return await this.delete(id);
   }
 
   /**
