@@ -12,6 +12,7 @@ type User {
   name: String!
   surnames: String!
   email: String!
+  language: String!
 }
 
 type PaginatedAuthor {
@@ -86,7 +87,7 @@ input ConfigSigUpDto {
 
 type Mutation {
   userRegister(createUserInput: CreateUserInput!): User!
-  userUpdate(updateUserInput: UpdateUserInput!): User!
+  userUpdate(id: ID!, updateUserInput: UpdateUserInput!): User!
   userRemove(id: ID!): User!
   loginCognito(loginAuthDto: LoginAuthDto!): SignInInterface!
   registerCognito(createUserInput: CreateUserInput!): User!
@@ -97,16 +98,22 @@ input CreateUserInput {
   surnames: String!
   email: String!
   password: String!
+  address: String
+  language: String
   isLocked: Boolean
   isDisabled: Boolean
   isVerified: Boolean
 }
 
 input UpdateUserInput {
-  _id: ID!
   name: String
   email: String
   address: String
+  surnames: String
+  language: String
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
 }
 
 input LoginAuthDto {

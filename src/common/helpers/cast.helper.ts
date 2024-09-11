@@ -1,4 +1,6 @@
+import { Status } from '@grpc/grpc-js/build/src/constants';
 import { ToNumberOptions } from '../interfaces/to-number-options.interface';
+import { ExceptionErrorMessageEnum } from '../enum/error/exception-error-message.enum';
 
 /**
  * Converts a string to lowercase.
@@ -65,4 +67,79 @@ export function toNumber(value: string, opts: ToNumberOptions = {}): number {
   }
 
   return newValue;
+}
+
+export function getErrorCode(status: number): string {
+  switch (status) {
+    case 400 || Status.INVALID_ARGUMENT:
+      return 'BAD_REQUEST';
+    case 401 || Status.UNAUTHENTICATED:
+      return 'UNAUTHENTICATED';
+    case 403 || Status.PERMISSION_DENIED:
+      return 'FORBIDDEN';
+    case 404 || Status.NOT_FOUND:
+      return 'NOT_FOUND';
+    case 500 || Status.INTERNAL:
+      return 'INTERNAL_SERVER_ERROR';
+    default:
+      return 'UNKNOWN_ERROR';
+  }
+}
+
+export function getCodeErrorMessage(code: number): string {
+  return (
+    ExceptionErrorMessageEnum[code] ||
+    ExceptionErrorMessageEnum.COGNITO_AUTH_ERROR_0000
+  );
+}
+
+export function extractErrorDetails(errorString: string): {
+  message: string;
+  code: number;
+  codeMessage: string;
+  // Add more error details as needed
+} {
+  console.log('errorString', errorString);
+  const jsonString = errorString.substring(errorString.indexOf('{'));
+  const errorObject = JSON.parse(jsonString);
+  return {
+    message: errorObject.message,
+    code: errorObject.code,
+    codeMessage: errorObject.codeMessage,
+  };
+}
+
+export function transformErrorCodeGraphQL(errorCode: string | number): string {
+  // Map custom error codes to GraphQL error codes
+  switch (errorCode) {
+    case 'BAD_REQUEST' || 400:
+      return 'BAD_USER_INPUT';
+    case 'UNAUTHENTICATED' || 401:
+      return 'UNAUTHENTICATED';
+    case 'FORBIDDEN' || 403:
+      return 'FORBIDDEN';
+    case 'NOT_FOUND' || 404:
+      return 'NOT_FOUND';
+    case 'RPC_ERROR' || 500:
+      return 'INTERNAL_SERVER_ERROR';
+    default:
+      return 'INTERNAL_SERVER_ERROR';
+  }
+}
+
+export function transformErrorCode(errorCode: string | number): string {
+  const errorCodeMapping: { [key: string]: string } = {
+    BAD_REQUEST: 'BAD_USER_INPUT',
+    400: 'BAD_USER_INPUT',
+    UNAUTHENTICATED: 'UNAUTHENTICATED',
+    401: 'UNAUTHENTICATED',
+    FORBIDDEN: 'FORBIDDEN',
+    403: 'FORBIDDEN',
+    NOT_FOUND: 'NOT_FOUND',
+    404: 'NOT_FOUND',
+    RPC_ERROR: 'INTERNAL_SERVER_ERROR',
+    500: 'INTERNAL_SERVER_ERROR',
+  };
+
+  return errorCodeMapping[errorCode] || 'INTERNAL_SERVER_ERROR';
 }

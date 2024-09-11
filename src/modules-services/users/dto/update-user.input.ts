@@ -1,20 +1,33 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsUUID } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
 import { CreateUserInput } from './create-user.input';
+import { UserEntityEnum } from '../../../common/enum/entity/user/user-language.enum';
+import { IsEnum } from 'class-validator';
 
 @InputType()
 export class UpdateUserInput extends PartialType(CreateUserInput) {
-  @Field(() => ID)
-  @IsUUID()
-  _id: string;
+  @Field(() => String, { nullable: true })
+  readonly name?: string;
 
   @Field(() => String, { nullable: true })
-  name?: string;
+  readonly email?: string;
 
   @Field(() => String, { nullable: true })
-  email?: string;
+  readonly address?: string;
 
   @Field(() => String, { nullable: true })
-  address?: string;
+  readonly surnames?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsEnum(UserEntityEnum)
+  readonly language?: UserEntityEnum;
+
+  @Field(() => Boolean, { nullable: true })
+  readonly isLocked?: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  readonly isDisabled?: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  readonly isVerified?: boolean;
 }

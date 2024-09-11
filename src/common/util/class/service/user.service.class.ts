@@ -8,6 +8,7 @@ import { UsersMsgEnum } from '../../../enum/msg/users.enum';
 import { User } from '../../../../modules-services/users/entities/user.entity';
 import { CreateUserInput } from '../../../../modules-services/users/dto/create-user.input';
 import { UpdateUserInput } from '../../../../modules-services/users/dto/update-user.input';
+import { LanguageClass } from '../language.class';
 
 /**
  * The `UsersService` class provides methods for managing users in the application.
@@ -44,7 +45,7 @@ export class UsersServiceClass implements AbstractMethodOperation<User> {
    */
   private readonly proxyRabbitMQ = new ProxyRabbitMQ(RabbitMqEnum.usersQueue);
 
-  constructor() {}
+  constructor(private readonly language: LanguageClass) {}
 
   /**
    * The `find` method is an asynchronous method that retrieves a paginated list of users.
@@ -80,7 +81,7 @@ export class UsersServiceClass implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the user that matches the filter.
    */
   public async getOne(filter: object): Promise<User> {
-    return this.proxyRabbitMQ.operations(UsersMsgEnum.FIND_ONE, filter);
+    return await this.proxyRabbitMQ.operations(UsersMsgEnum.FIND_ONE, filter);
   }
 
   /**
@@ -99,8 +100,8 @@ export class UsersServiceClass implements AbstractMethodOperation<User> {
    * @param item - An object that contains the data for the user to update.
    * @returns A `Promise` that resolves to the updated user.
    */
-  public update(item: UpdateUserInput): Promise<User> {
-    return this.proxyRabbitMQ.operations(UsersMsgEnum.UPDATE, item);
+  public update(id: string | number, item: UpdateUserInput): Promise<User> {
+    return this.proxyRabbitMQ.operations(UsersMsgEnum.UPDATE, { id, item });
   }
 
   /**
@@ -119,6 +120,11 @@ export class UsersServiceClass implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the total number of users.
    */
   public async total(): Promise<number> {
-    return await this.proxyRabbitMQ.operations(UsersMsgEnum.TOTAL, {});
+    try {
+      return await this.proxyRabbitMQ.operations(UsersMsgEnum.TOTAL, {});
+    } catch (error) {
+      // Handle error if needed.
+      throw error;
+    }
   }
 }
