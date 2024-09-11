@@ -6,6 +6,7 @@ import { Query, Resolver } from '@nestjs/graphql';
  */
 @Resolver()
 export class GraphQlResolver {
+  constructor() {}
   /**
    * A GraphQL query that returns a simple greeting message.
    * When called, it returns the string 'Hello World!'.

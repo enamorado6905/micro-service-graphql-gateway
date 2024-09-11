@@ -1,11 +1,14 @@
+import { HttpException } from '@nestjs/common';
 import {
   ClientProxy,
   ClientProxyFactory,
   Closeable,
+  RpcException,
   Transport,
 } from '@nestjs/microservices';
 import { RmqUrl } from '@nestjs/microservices/external/rmq-url.interface';
 import { firstValueFrom } from 'rxjs';
+import { extractErrorDetails } from '../../helpers/cast.helper';
 
 /**
  * The `ProxyRabbitMQ` class is a utility class for creating and managing a RabbitMQ client proxy.
@@ -95,12 +98,23 @@ export class ProxyRabbitMQ {
    * @throws An `Error` if an error occurs while sending the message or waiting for the response.
    */
   public async operations(msg: string, data: object): Promise<any> {
+    const clientProxy = this.proxyRabbitMQ();
+
     try {
-      const clientProxy = this.proxyRabbitMQ();
       const value = await firstValueFrom(clientProxy.send(msg, data));
+      await clientProxy.close();
+
       return value.data ? value.data : value;
     } catch (error: any) {
-      throw new Error(error.message);
+      const { message, code, codeMessage } = extractErrorDetails(error.message);
+
+      await clientProxy.close();
+
+      if (error instanceof RpcException) {
+        throw new RpcException({ message, code });
+      } else {
+        throw new HttpException({ message, code, codeMessage }, code);
+      }
     }
   }
 

@@ -1,0 +1,15 @@
+export enum ExceptionErrorMessageEnum {
+  COGNITO_AUTH_ERROR_0000 = 'COGNITO_AUTH_ERROR_0000', //'Invalid request payload.',
+  COGNITO_AUTH_ERROR_0001 = 'COGNITO_AUTH_ERROR_0001', //'Invalid request payload.',
+  COGNITO_AUTH_ERROR_0002 = 'COGNITO_AUTH_ERROR_0002', //'Authentication failed.',
+  COGNITO_AUTH_ERROR_0003 = 'COGNITO_AUTH_ERROR_0003', //'User does not exist.',
+  COGNITO_AUTH_ERROR_0004 = 'COGNITO_AUTH_ERROR_0004', //'Invalid user credentials.',
+  MICRO_MANAGER_USER_ERROR_0001 = 'MICRO_MANAGER_USER_ERROR_0001', //'Invalid request payload.',
+  MICRO_MANAGER_USER_ERROR_0002 = 'MICRO_MANAGER_USER_ERROR_0002', //'Authentication failed.',
+  MICRO_MANAGER_USER_ERROR_0003 = 'MICRO_MANAGER_USER_ERROR_0003', //'User does not exist.',
+  MICRO_MANAGER_USER_ERROR_0004 = 'MICRO_MANAGER_USER_ERROR_0004', //'Invalid user credentials.',
+  MICRO_MANAGER_USER_ERROR_0005 = 'MICRO_MANAGER_USER_ERROR_0005', //'Invalid user credentials.',
+  MICRO_MANAGER_USER_ERROR_0006 = 'MICRO_MANAGER_USER_ERROR_0006', //'Invalid user credentials.',
+  MICRO_MANAGER_USER_ERROR_0007 = 'MICRO_MANAGER_USER_ERROR_0007', //'Invalid user credentials.',
+  MICRO_MANAGER_USER_ERROR_0008 = 'MICRO_MANAGER_USER_ERROR_0008', //'Invalid user credentials.',
+}

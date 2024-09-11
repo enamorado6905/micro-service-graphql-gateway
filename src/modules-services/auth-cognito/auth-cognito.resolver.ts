@@ -12,14 +12,6 @@ export class AuthCognitoResolver {
   constructor(private readonly authCognitoService: AuthCognitoService) {}
 
   /**
-   * A protected resource.
-   * @returns The protected resource.
-   */
-  public getProtectedResource() {
-    return { message: 'This is a protected resource.' };
-  }
-
-  /**
    * Mutation to login a user.
    * @param {LoginAuthDto} loginAuthDto - The input data for creating a user.
    * @returns The created user and register user to cognito.
