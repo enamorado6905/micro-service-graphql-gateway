@@ -1,6 +1,9 @@
 import { Status } from '@grpc/grpc-js/build/src/constants';
 import { ToNumberOptions } from '../interfaces/to-number-options.interface';
 import { ExceptionErrorMessageEnum } from '../enum/error/exception-error-message.enum';
+import { INestApplication, Logger } from '@nestjs/common';
+import { GraphQLSchemaHost } from '@nestjs/graphql';
+import { printSchema } from 'graphql';
 
 /**
  * Converts a string to lowercase.
@@ -71,15 +74,15 @@ export function toNumber(value: string, opts: ToNumberOptions = {}): number {
 
 export function getErrorCode(status: number): string {
   switch (status) {
-    case 400 || Status.INVALID_ARGUMENT:
+    case 400 | Status.INVALID_ARGUMENT:
       return 'BAD_REQUEST';
-    case 401 || Status.UNAUTHENTICATED:
+    case 401 | Status.UNAUTHENTICATED:
       return 'UNAUTHENTICATED';
-    case 403 || Status.PERMISSION_DENIED:
+    case 403 | Status.PERMISSION_DENIED:
       return 'FORBIDDEN';
-    case 404 || Status.NOT_FOUND:
+    case 404 | Status.NOT_FOUND:
       return 'NOT_FOUND';
-    case 500 || Status.INTERNAL:
+    case 500 | Status.INTERNAL:
       return 'INTERNAL_SERVER_ERROR';
     default:
       return 'UNKNOWN_ERROR';
@@ -109,24 +112,6 @@ export function extractErrorDetails(errorString: string): {
   };
 }
 
-export function transformErrorCodeGraphQL(errorCode: string | number): string {
-  // Map custom error codes to GraphQL error codes
-  switch (errorCode) {
-    case 'BAD_REQUEST' || 400:
-      return 'BAD_USER_INPUT';
-    case 'UNAUTHENTICATED' || 401:
-      return 'UNAUTHENTICATED';
-    case 'FORBIDDEN' || 403:
-      return 'FORBIDDEN';
-    case 'NOT_FOUND' || 404:
-      return 'NOT_FOUND';
-    case 'RPC_ERROR' || 500:
-      return 'INTERNAL_SERVER_ERROR';
-    default:
-      return 'INTERNAL_SERVER_ERROR';
-  }
-}
-
 export function transformErrorCode(errorCode: string | number): string {
   const errorCodeMapping: { [key: string]: string } = {
     BAD_REQUEST: 'BAD_USER_INPUT',
@@ -142,4 +127,11 @@ export function transformErrorCode(errorCode: string | number): string {
   };
 
   return errorCodeMapping[errorCode] || 'INTERNAL_SERVER_ERROR';
+}
+
+export async function listGraphQLRoutes(app: INestApplication) {
+  const gqlSchemaHost = app.get(GraphQLSchemaHost);
+  const schema = gqlSchemaHost.schema;
+  const printedSchema = printSchema(schema);
+  Logger.log('GraphQL Schema:', printedSchema);
 }
