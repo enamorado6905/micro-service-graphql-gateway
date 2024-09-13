@@ -1,9 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ObjectType, Field } from '@nestjs/graphql';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { AbstractEntity } from '../../../common/abstract-entity/abstract-entity.entity';
 import { Paginated } from '../../../common/util/method/abstract-pagination-entity.method';
 import { UserEntityEnum } from '../../../common/enum/entity/user/user-language.enum';
+import { Role } from '../../role/entities/role.entity';
 
 // UserDocument is a type that represents a User document in MongoDB.
 export type UserDocument = User & Document;
@@ -13,15 +14,15 @@ export type UserDocument = User & Document;
 export class User extends AbstractEntity {
   @Prop()
   @Field(() => String)
-  readonly name: string;
+  name: string;
 
   @Prop()
   @Field(() => String)
-  readonly surnames: string;
+  surnames: string;
 
   @Prop({ unique: true })
   @Field(() => String)
-  readonly email: string;
+  email: string;
 
   @Prop({
     required: true,
@@ -38,19 +39,14 @@ export class User extends AbstractEntity {
     default: UserEntityEnum.LANGUAGE_ENGLISH, // Default language is English.
   })
   @Field(() => String)
-  readonly language: string;
+  language: string;
 
-  @Prop({ default: false })
-  @Field(() => Boolean, { defaultValue: false })
-  readonly isLocked: boolean;
-
-  @Prop({ default: false })
-  @Field(() => Boolean, { defaultValue: false })
-  readonly isDisabled: boolean;
-
-  @Prop({ default: false })
-  @Field(() => Boolean, { defaultValue: false })
-  readonly isVerified: boolean;
+  @Prop({
+    required: true,
+    type: [{ type: Types.ObjectId, ref: 'Role' }], // Referencia a la colección de roles
+  })
+  @Field(() => [Role]) // Aquí aseguramos que GraphQL reconozca el tipo Role
+  roles: Role[]; // Cambiamos a un array de la clase Role
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -1,5 +1,5 @@
 export enum AuthResolverEnum {
-  LOGIN_COGNITO = 'loginCognito',
-  AUTH_COGNITO = 'registerCognito',
-  AUTH_VALIDATE_REGISTRATION = 'validateRegistration',
+  LOGIN_COGNITO = 'LOGIN_COGNITO',
+  AUTH_COGNITO = 'AUTH_COGNITO',
+  AUTH_VALIDATE_REGISTRATION = 'AUTH_VALIDATE_REGISTRATION',
 }
