@@ -89,7 +89,7 @@ export function getErrorCode(status: number): string {
   }
 }
 
-export function getCodeErrorMessage(code: number): string {
+export function getCodeErrorMessage(code: any): string {
   return (
     ExceptionErrorMessageEnum[code] ||
     ExceptionErrorMessageEnum.COGNITO_AUTH_ERROR_0000
@@ -102,7 +102,6 @@ export function extractErrorDetails(errorString: string): {
   codeMessage: string;
   // Add more error details as needed
 } {
-  console.log('errorString', errorString);
   const jsonString = errorString.substring(errorString.indexOf('{'));
   const errorObject = JSON.parse(jsonString);
   return {
@@ -114,18 +113,35 @@ export function extractErrorDetails(errorString: string): {
 
 export function transformErrorCode(errorCode: string | number): string {
   const errorCodeMapping: { [key: string]: string } = {
-    BAD_REQUEST: 'BAD_USER_INPUT',
+    BAD_REQUEST: 'BAD_USER_INPUT', // Bad request error codes
     400: 'BAD_USER_INPUT',
-    UNAUTHENTICATED: 'UNAUTHENTICATED',
+
+    UNAUTHENTICATED: 'UNAUTHENTICATED', // Authentication error codes
     401: 'UNAUTHENTICATED',
-    FORBIDDEN: 'FORBIDDEN',
+
+    FORBIDDEN: 'FORBIDDEN', // Permission/authorization error codes
     403: 'FORBIDDEN',
-    NOT_FOUND: 'NOT_FOUND',
+
+    NOT_FOUND: 'NOT_FOUND', // Resource not found error codes
     404: 'NOT_FOUND',
-    RPC_ERROR: 'INTERNAL_SERVER_ERROR',
+
+    RPC_ERROR: 'INTERNAL_SERVER_ERROR', // Internal server or RPC errors
     500: 'INTERNAL_SERVER_ERROR',
+
+    CONFLICT: 'CONFLICT', // Data conflict error codes
+    409: 'CONFLICT',
+
+    REQUEST_TIMEOUT: 'REQUEST_TIMEOUT', // Request timeout error
+    408: 'REQUEST_TIMEOUT',
+
+    UNPROCESSABLE_ENTITY: 'UNPROCESSABLE_ENTITY', // Unprocessable entity error codes
+    422: 'UNPROCESSABLE_ENTITY',
+
+    TOO_MANY_REQUESTS: 'TOO_MANY_REQUESTS', // Too many requests error
+    429: 'TOO_MANY_REQUESTS',
   };
 
+  // Return the corresponding GraphQL error code, or INTERNAL_SERVER_ERROR by default
   return errorCodeMapping[errorCode] || 'INTERNAL_SERVER_ERROR';
 }
 

@@ -105,9 +105,7 @@ export class RoleResolver implements AbstractMethodOperation<Role> {
    * @returns The removed role.
    */
   @Mutation(() => Role, { name: RoleResolverEnum.ROLE_REMOVE })
-  async delete(
-    @Args('id', { type: () => ID }) id: string | number,
-  ): Promise<Role> {
+  async delete(@Args('id', { type: () => ID }) id: string): Promise<Role> {
     return this.roleService.delete(id);
   }
 }

@@ -2,32 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Permission {
-  _id: ID!
-  isLocked: Boolean!
-  isDisabled: Boolean!
-  isVerified: Boolean!
-  createdAt: String!
-  updatedAt: String!
-  name: String!
-  url: String!
-  description: String!
-}
-
-type PaginatedPermission {
-  limit: Int
-  page: Int
-  docs: [Permission!]
-  totalCount: Int
-  hasNextPage: Boolean
-  hasPrevPage: Boolean
-  totalPages: Int
-  nextPage: Int
-  prevPage: Int
-  pagingCounter: Int
-  totalDocs: Int
-}
-
 type Role {
   _id: ID!
   isLocked: Boolean!
@@ -36,7 +10,7 @@ type Role {
   createdAt: String!
   updatedAt: String!
   name: String!
-  permissions: [Permission!]!
+  permissions: [String!]!
   allPermission: Boolean!
 }
 
@@ -88,6 +62,32 @@ type SignInInterface {
   TokenType: String!
   RefreshToken: String!
   IdToken: String!
+}
+
+type Permission {
+  _id: ID!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
+  createdAt: String!
+  updatedAt: String!
+  name: String!
+  resourcePath: String!
+  description: String!
+}
+
+type PaginatedPermission {
+  limit: Int
+  page: Int
+  docs: [Permission!]
+  totalCount: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  totalPages: Int
+  nextPage: Int
+  prevPage: Int
+  pagingCounter: Int
+  totalDocs: Int
 }
 
 type Query {
@@ -199,23 +199,37 @@ input LoginAuthDto {
 }
 
 input CreateRoleInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  name: String!
+  permissions: [ID!]
+  allPermission: Boolean
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
 }
 
 input UpdateRoleInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  name: String
+  permissions: [ID!]
+  allPermission: Boolean
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
 }
 
 input CreatePermissionInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  name: String!
+  resourcePath: String!
+  description: String
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
 }
 
 input UpdatePermissionInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  name: String
+  resourcePath: String
+  description: String
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
 }

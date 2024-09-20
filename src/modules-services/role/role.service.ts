@@ -98,7 +98,7 @@ export class RoleService implements AbstractMethodOperation<Role> {
    * @param id - The ID of the role to delete.
    * @returns A `Promise` that resolves to the deleted role.
    */
-  public async delete(id: string | number): Promise<Role> {
+  public async delete(id: string): Promise<Role> {
     return await this.roleServiceClass.delete(id);
   }
 

@@ -22,6 +22,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { GraphQLExceptionFilter } from './filter/gql-exception.filter';
 import { RoleServiceClass } from './util/class/service/role.service.class';
 import { PermissionServiceClass } from './util/class/service/permission.service.class';
+import { LoggerClass } from './util/class/logger.class';
 
 /**
  * A NestJS module that acts as a common module for the application.
@@ -36,6 +37,7 @@ import { PermissionServiceClass } from './util/class/service/permission.service.
     RoleServiceClass,
     PermissionServiceClass,
     LanguageClass,
+    LoggerClass,
     {
       provide: APP_FILTER,
       useClass: GraphQLExceptionFilter,
@@ -81,6 +83,7 @@ import { PermissionServiceClass } from './util/class/service/permission.service.
     RoleServiceClass,
     PermissionServiceClass,
     LanguageClass,
+    LoggerClass,
   ],
 })
 export class CommonModule {}

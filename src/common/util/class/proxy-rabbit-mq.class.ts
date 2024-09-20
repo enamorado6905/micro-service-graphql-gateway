@@ -99,22 +99,16 @@ export class ProxyRabbitMQ {
    */
   public async operations(msg: string, data: object): Promise<any> {
     const clientProxy = this.proxyRabbitMQ();
-
     try {
       const value = await firstValueFrom(clientProxy.send(msg, data));
       await clientProxy.close();
-
       return value.data ? value.data : value;
     } catch (error: any) {
       const { message, code, codeMessage } = extractErrorDetails(error.message);
-
       await clientProxy.close();
-
-      if (error instanceof RpcException) {
-        throw new RpcException({ message, code });
-      } else {
-        throw new HttpException({ message, code, codeMessage }, code);
-      }
+      throw error instanceof RpcException
+        ? new RpcException({ message, code })
+        : new HttpException({ message, code, codeMessage }, code);
     }
   }
 

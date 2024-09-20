@@ -10,8 +10,8 @@ export class Permission extends AbstractEntity {
   readonly name: string; // Immutable property
 
   @Prop({ required: true, unique: true })
-  @Field(() => String) // A GraphQL field for the role's name.
-  readonly url: string; // Immutable property
+  @Field(() => String) // A GraphQL field for the role's resourcePath.
+  readonly resourcePath: string; // Immutable property
 
   @Prop({})
   @Field(() => String) // A GraphQL field for the role's name.

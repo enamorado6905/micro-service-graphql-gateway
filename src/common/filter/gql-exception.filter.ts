@@ -13,27 +13,42 @@ import {
   transformErrorCode,
 } from '../helpers/cast.helper';
 import { ExceptionErrorMessageEnum } from '../enum/error/exception-error-message.enum';
+import { LoggerClass } from '../util/class/logger.class';
+import { ErrorsKeysEnum } from '../enum/error/errors.keys';
 
 @Catch(HttpException, RpcException)
 export class GraphQLExceptionFilter implements GqlExceptionFilter {
-  constructor(private readonly language: LanguageClass) {}
+  constructor(
+    private readonly language: LanguageClass,
+    private readonly logger: LoggerClass,
+  ) {}
 
   catch(exception: any, host: ArgumentsHost) {
     const gqlHost = GqlArgumentsHost.create(host);
     const response = gqlHost.getContext().res;
 
     if (exception instanceof RpcException) {
-      console.error('RPC Exception:', exception);
+      this.logger.error(exception.message, exception.stack, ErrorsKeysEnum.RPC);
       return this.handleRpcException(exception, response);
     } else if (exception instanceof HttpException) {
-      console.error('HTTP Exception:', exception);
+      this.logger.error(
+        exception.message,
+        exception.stack,
+        ErrorsKeysEnum.HTTP,
+      );
       return this.handleGqlException(exception);
     } else {
-      console.error('Unknown Exception:', exception);
-      return new HttpException(
-        'Internal server error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+      this.logger.error(
+        exception.message,
+        exception.stack,
+        ErrorsKeysEnum.UNKNOWN,
       );
+      return new GraphQLError(exception.message, {
+        extensions: {
+          code: HttpStatus.INTERNAL_SERVER_ERROR,
+          messages: exception.message,
+        },
+      });
     }
   }
 
@@ -43,13 +58,32 @@ export class GraphQLExceptionFilter implements GqlExceptionFilter {
     const status = code || statusCode;
 
     const graphQLErrorCodeMessage = getCodeErrorMessage(codeMessage);
-
     const graphQLErrorCode = transformErrorCode(status);
-
     const graphQLErrorMessage = this.getCustomMessage(
       graphQLErrorCodeMessage,
-      message,
+      message || '',
     );
+
+    if (Array.isArray(message)) {
+      const graphQLErrorMessages = message.map((msg: string) => {
+        return this.getCustomMessage(getCodeErrorMessage(msg), msg);
+      });
+
+      this.logger.error(
+        graphQLErrorMessages,
+        exception.stack,
+        ErrorsKeysEnum.GQL,
+      );
+
+      return new GraphQLError(graphQLErrorMessages.join(','), {
+        extensions: {
+          code: graphQLErrorCode,
+          messages: graphQLErrorMessages,
+        },
+      });
+    }
+
+    this.logger.error(graphQLErrorMessage, exception.stack, ErrorsKeysEnum.GQL);
 
     return new GraphQLError(graphQLErrorMessage, {
       extensions: {
