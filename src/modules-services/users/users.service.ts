@@ -99,7 +99,7 @@ export class UsersService implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the deleted user.
    */
   public async delete(id: string): Promise<User> {
-    return await this.delete(id);
+    return await this.usersServiceClass.delete(id);
   }
 
   /**

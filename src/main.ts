@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { join } from 'path';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { VALIDATION_PIPE } from './common/util/constants/constants.conts';
 import { TimeOutInterceptor } from './common/intercertors/timeout.interceptor';
 import { json, urlencoded } from 'express';
@@ -33,8 +33,7 @@ async function bootstrap() {
 
   // Start listening for incoming requests on the specified port.
   await app.listen(process.env.PORT);
-  console.log(`Application is running on: ${await app.getUrl()}`);
-  console.log(`Application is running on: ${process.env.PORT}`);
+  Logger.log(`Application is running on: ${await app.getUrl()}`);
 }
 
 // Call the bootstrap function to start the application.

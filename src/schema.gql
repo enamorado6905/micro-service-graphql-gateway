@@ -2,6 +2,32 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Role {
+  _id: ID!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
+  createdAt: String!
+  updatedAt: String!
+  name: String!
+  permissions: [String!]!
+  allPermission: Boolean!
+}
+
+type PaginatedRole {
+  limit: Int
+  page: Int
+  docs: [Role!]
+  totalCount: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  totalPages: Int
+  nextPage: Int
+  prevPage: Int
+  pagingCounter: Int
+  totalDocs: Int
+}
+
 type User {
   _id: ID!
   isLocked: Boolean!
@@ -13,6 +39,7 @@ type User {
   surnames: String!
   email: String!
   language: String!
+  roles: [Role!]!
 }
 
 type PaginatedAuthor {
@@ -37,13 +64,47 @@ type SignInInterface {
   IdToken: String!
 }
 
+type Permission {
+  _id: ID!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
+  createdAt: String!
+  updatedAt: String!
+  name: String!
+  resourcePath: String!
+  description: String!
+}
+
+type PaginatedPermission {
+  limit: Int
+  page: Int
+  docs: [Permission!]
+  totalCount: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  totalPages: Int
+  nextPage: Int
+  prevPage: Int
+  pagingCounter: Int
+  totalDocs: Int
+}
+
 type Query {
   sayHello: String!
-  userTotal: Float!
-  userList(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedAuthor!
-  userId(id: ID!): User!
-  userFindOne(filter: FindOneUserInput!): User!
-  validateRegistration(configSigUpDto: ConfigSigUpDto!): Boolean!
+  USER_TOTAL: Float!
+  USER_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedAuthor!
+  USER_ID(id: ID!): User!
+  USER_FIND_ONE(filter: FindOneUserInput!): User!
+  AUTH_VALIDATE_REGISTRATION(configSigUpDto: ConfigSigUpDto!): Boolean!
+  ROLE_TOTAL: Float!
+  ROLE_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedRole!
+  ROLE_ID(id: ID!): Role!
+  ROLE_FIND_ONE(filter: FindOneRoleInput!): Role!
+  PERMISSION_TOTAL: Float!
+  PERMISSION_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedPermission!
+  PERMISSION_ID(id: ID!): Permission!
+  PERMISSION_FIND_ONE(filter: FindOnePermissionInput!): Permission!
 }
 
 input QueryInput {
@@ -85,12 +146,28 @@ input ConfigSigUpDto {
   code: String!
 }
 
+input FindOneRoleInput {
+  search: String!
+  value: String!
+}
+
+input FindOnePermissionInput {
+  search: String!
+  value: String!
+}
+
 type Mutation {
-  userRegister(createUserInput: CreateUserInput!): User!
-  userUpdate(id: ID!, updateUserInput: UpdateUserInput!): User!
-  userRemove(id: ID!): User!
-  loginCognito(loginAuthDto: LoginAuthDto!): SignInInterface!
-  registerCognito(createUserInput: CreateUserInput!): User!
+  USER_REGISTER(createUserInput: CreateUserInput!): User!
+  USER_UPDATE(id: ID!, updateUserInput: UpdateUserInput!): User!
+  USER_REMOVE(id: ID!): User!
+  LOGIN_COGNITO(loginAuthDto: LoginAuthDto!): SignInInterface!
+  AUTH_COGNITO(createUserInput: CreateUserInput!): User!
+  ROLE_REGISTER(createRoleInput: CreateRoleInput!): Role!
+  ROLE_UPDATE(id: ID!, updateRoleInput: UpdateRoleInput!): Role!
+  ROLE_REMOVE(id: ID!): Role!
+  PERMISSION_REGISTER(createPermissionInput: CreatePermissionInput!): Permission!
+  PERMISSION_UPDATE(id: ID!, updatePermissionInput: UpdatePermissionInput!): Permission!
+  PERMISSION_REMOVE(id: ID!): Permission!
 }
 
 input CreateUserInput {
@@ -119,4 +196,40 @@ input UpdateUserInput {
 input LoginAuthDto {
   userName: String!
   password: String!
+}
+
+input CreateRoleInput {
+  name: String!
+  permissions: [ID!]
+  allPermission: Boolean
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
+}
+
+input UpdateRoleInput {
+  name: String
+  permissions: [ID!]
+  allPermission: Boolean
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
+}
+
+input CreatePermissionInput {
+  name: String!
+  resourcePath: String!
+  description: String
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
+}
+
+input UpdatePermissionInput {
+  name: String
+  resourcePath: String
+  description: String
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
 }

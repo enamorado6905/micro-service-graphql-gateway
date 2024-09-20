@@ -20,6 +20,9 @@ import { readFileSync } from 'fs';
 import { LanguageClass } from './util/class/language.class';
 import { APP_FILTER } from '@nestjs/core';
 import { GraphQLExceptionFilter } from './filter/gql-exception.filter';
+import { RoleServiceClass } from './util/class/service/role.service.class';
+import { PermissionServiceClass } from './util/class/service/permission.service.class';
+import { LoggerClass } from './util/class/logger.class';
 
 /**
  * A NestJS module that acts as a common module for the application.
@@ -31,7 +34,10 @@ import { GraphQLExceptionFilter } from './filter/gql-exception.filter';
     AxiosClass,
     UsersServiceClass,
     CognitoServiceClass,
+    RoleServiceClass,
+    PermissionServiceClass,
     LanguageClass,
+    LoggerClass,
     {
       provide: APP_FILTER,
       useClass: GraphQLExceptionFilter,
@@ -74,7 +80,10 @@ import { GraphQLExceptionFilter } from './filter/gql-exception.filter';
     AxiosClass,
     UsersServiceClass,
     CognitoServiceClass,
+    RoleServiceClass,
+    PermissionServiceClass,
     LanguageClass,
+    LoggerClass,
   ],
 })
 export class CommonModule {}
