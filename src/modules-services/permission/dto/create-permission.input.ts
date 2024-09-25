@@ -1,44 +1,49 @@
 import { InputType, Field } from '@nestjs/graphql';
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MaxLength,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { ExceptionErrorMessageEnum } from '../../../common/enum/error/exception-error-message.enum';
+import { AbstractStatusInput } from '../../../common/abstract/abstract-dto';
 
 @InputType()
-export class CreatePermissionInput {
+export class CreatePermissionInput extends AbstractStatusInput {
   @Field(() => String, {})
-  @IsNotEmpty()
-  @MaxLength(255)
-  @IsString()
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_CREATED_ERROR_0001,
+  })
+  @MaxLength(255, {
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_CREATED_ERROR_0002,
+  })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_CREATED_ERROR_0003,
+  })
   readonly name: string;
 
   @Field(() => String, {})
-  @IsNotEmpty()
-  @MaxLength(255)
-  @IsString()
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_CREATED_ERROR_0004,
+  })
+  @MaxLength(255, {
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_CREATED_ERROR_0005,
+  })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_CREATED_ERROR_0006,
+  })
   readonly resourcePath: string;
 
   @Field(() => String, { nullable: true })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_CREATED_ERROR_0007,
+  })
+  @MaxLength(500, {
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_CREATED_ERROR_0008,
+  })
   @IsOptional()
-  @IsString()
-  @MaxLength(500)
   description: string;
-
-  @Field(() => Boolean, { nullable: true })
-  @IsOptional()
-  @IsBoolean()
-  isLocked?: boolean;
-
-  @Field(() => Boolean, { nullable: true })
-  @IsOptional()
-  @IsBoolean()
-  isDisabled?: boolean;
-
-  @Field(() => Boolean, { nullable: true })
-  @IsOptional()
-  @IsBoolean()
-  isVerified?: boolean;
 }

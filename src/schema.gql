@@ -94,16 +94,16 @@ type Query {
   sayHello: String!
   USER_TOTAL: Float!
   USER_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedAuthor!
-  USER_ID(id: ID!): User!
+  USER_ID(id: FilterByIdUserInput!): User!
   USER_FIND_ONE(filter: FindOneUserInput!): User!
   AUTH_VALIDATE_REGISTRATION(configSigUpDto: ConfigSigUpDto!): Boolean!
   ROLE_TOTAL: Float!
   ROLE_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedRole!
-  ROLE_ID(id: ID!): Role!
+  ROLE_ID(id: FilterByIdRoleInput!): Role!
   ROLE_FIND_ONE(filter: FindOneRoleInput!): Role!
   PERMISSION_TOTAL: Float!
   PERMISSION_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedPermission!
-  PERMISSION_ID(id: ID!): Permission!
+  PERMISSION_ID(id: FilterByIdPermissionInput!): Permission!
   PERMISSION_FIND_ONE(filter: FindOnePermissionInput!): Permission!
 }
 
@@ -136,6 +136,10 @@ input PopulateInput {
   model: String
 }
 
+input FilterByIdUserInput {
+  id: String!
+}
+
 input FindOneUserInput {
   search: String!
   value: String!
@@ -146,9 +150,17 @@ input ConfigSigUpDto {
   code: String!
 }
 
+input FilterByIdRoleInput {
+  id: String!
+}
+
 input FindOneRoleInput {
   search: String!
   value: String!
+}
+
+input FilterByIdPermissionInput {
+  id: String!
 }
 
 input FindOnePermissionInput {
@@ -158,39 +170,40 @@ input FindOnePermissionInput {
 
 type Mutation {
   USER_REGISTER(createUserInput: CreateUserInput!): User!
-  USER_UPDATE(id: ID!, updateUserInput: UpdateUserInput!): User!
-  USER_REMOVE(id: ID!): User!
+  USER_UPDATE(id: FilterByIdUserInput!, updateUserInput: UpdateUserInput!): User!
+  USER_REMOVE(id: FilterByIdUserInput!): User!
   LOGIN_COGNITO(loginAuthDto: LoginAuthDto!): SignInInterface!
   AUTH_COGNITO(createUserInput: CreateUserInput!): User!
   ROLE_REGISTER(createRoleInput: CreateRoleInput!): Role!
-  ROLE_UPDATE(id: ID!, updateRoleInput: UpdateRoleInput!): Role!
-  ROLE_REMOVE(id: ID!): Role!
+  ROLE_UPDATE(id: FilterByIdRoleInput!, updateRoleInput: UpdateRoleInput!): Role!
+  ROLE_REMOVE(id: FilterByIdRoleInput!): Role!
   PERMISSION_REGISTER(createPermissionInput: CreatePermissionInput!): Permission!
-  PERMISSION_UPDATE(id: ID!, updatePermissionInput: UpdatePermissionInput!): Permission!
-  PERMISSION_REMOVE(id: ID!): Permission!
+  PERMISSION_UPDATE(id: FilterByIdPermissionInput!, updatePermissionInput: UpdatePermissionInput!): Permission!
+  PERMISSION_REMOVE(id: FilterByIdPermissionInput!): Permission!
 }
 
 input CreateUserInput {
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
   name: String!
   surnames: String!
   email: String!
   password: String!
   address: String
   language: String
-  isLocked: Boolean
-  isDisabled: Boolean
-  isVerified: Boolean
 }
 
 input UpdateUserInput {
-  name: String
-  email: String
-  address: String
-  surnames: String
-  language: String
   isLocked: Boolean
   isDisabled: Boolean
   isVerified: Boolean
+  name: String
+  surnames: String
+  email: String
+  password: String
+  address: String
+  language: String
 }
 
 input LoginAuthDto {
@@ -199,37 +212,37 @@ input LoginAuthDto {
 }
 
 input CreateRoleInput {
-  name: String!
-  permissions: [ID!]
-  allPermission: Boolean
   isLocked: Boolean
   isDisabled: Boolean
   isVerified: Boolean
+  name: String!
+  permissions: [ID!]
+  allPermission: Boolean
 }
 
 input UpdateRoleInput {
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
   name: String
   permissions: [ID!]
   allPermission: Boolean
-  isLocked: Boolean
-  isDisabled: Boolean
-  isVerified: Boolean
 }
 
 input CreatePermissionInput {
+  isLocked: Boolean
+  isDisabled: Boolean
+  isVerified: Boolean
   name: String!
   resourcePath: String!
   description: String
-  isLocked: Boolean
-  isDisabled: Boolean
-  isVerified: Boolean
 }
 
 input UpdatePermissionInput {
-  name: String
-  resourcePath: String
-  description: String
   isLocked: Boolean
   isDisabled: Boolean
   isVerified: Boolean
+  name: String
+  resourcePath: String
+  description: String
 }

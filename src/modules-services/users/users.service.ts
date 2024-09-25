@@ -3,7 +3,6 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import { PaginateInterface } from '../../common/interfaces/paginated.interface';
-import { AbstractMethodOperation } from '../../common/util/class/abstract-method-operation.class';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
 import { UsersServiceClass } from '../../common/util/class/service/user.service.class';
 import { FindOneUserInput } from './dto/find-one-user.input';
@@ -34,7 +33,7 @@ import { FindOneUserInput } from './dto/find-one-user.input';
  * By the NestJS dependency injection container.
  */
 @Injectable()
-export class UsersService implements AbstractMethodOperation<User> {
+export class UsersService {
   constructor(private readonly usersServiceClass: UsersServiceClass) {}
 
   /**

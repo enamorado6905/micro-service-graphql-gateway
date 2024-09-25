@@ -1,16 +1,16 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { FindOneUserInput } from './dto/find-one-user.input';
 import { PaginatedAuthor, User } from './entities/user.entity';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
-import { AbstractMethodOperation } from '../../common/util/class/abstract-method-operation.class';
 import { UseGuards, UseInterceptors } from '@nestjs/common';
 import { PasswordEncryptionInterceptor } from '../../common/intercertors/password-encryption.interceptor';
 import { RemovePasswordInterceptor } from '../../common/intercertors/remove-password.interceptor';
 import { UserResolverEnum } from '../../common/enum/system/name-resolver/user-resolver.enum';
 import { GqlAuthGuard } from '../../common/guards/graphql.guard';
+import { FilterByIdUserInput } from './dto/filter-by-id.input';
 
 /**
  * The `UsersResolver` class provides GraphQL resolvers for managing users in the application.
@@ -27,7 +27,7 @@ import { GqlAuthGuard } from '../../common/guards/graphql.guard';
 @Resolver(() => User)
 @UseGuards(GqlAuthGuard)
 @UseInterceptors(RemovePasswordInterceptor)
-export class UsersResolver implements AbstractMethodOperation<User> {
+export class UsersResolver {
   /**
    * The constructor of the `UsersResolver` class.
    *
@@ -78,8 +78,8 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    */
   @Query(() => User, { name: UserResolverEnum.USER_ID })
   @UseInterceptors(RemovePasswordInterceptor)
-  async getById(@Args('id', { type: () => ID }) id: string): Promise<User> {
-    return await this.usersService.getById(id);
+  async getById(@Args('id') id: FilterByIdUserInput): Promise<User> {
+    return await this.usersService.getById(id.id);
   }
 
   /**
@@ -100,10 +100,10 @@ export class UsersResolver implements AbstractMethodOperation<User> {
   @Mutation(() => User, { name: UserResolverEnum.USER_UPDATE })
   @UseInterceptors(RemovePasswordInterceptor)
   async update(
-    @Args('id', { type: () => ID }) id: string,
+    @Args('id') id: FilterByIdUserInput,
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ): Promise<User> {
-    return this.usersService.update(id, updateUserInput);
+    return this.usersService.update(id.id, updateUserInput);
   }
 
   /**
@@ -113,7 +113,7 @@ export class UsersResolver implements AbstractMethodOperation<User> {
    */
   @Mutation(() => User, { name: UserResolverEnum.USER_REMOVE })
   @UseInterceptors(RemovePasswordInterceptor)
-  async delete(@Args('id', { type: () => ID }) id: string): Promise<User> {
-    return this.usersService.delete(id);
+  async delete(@Args('id') id: FilterByIdUserInput): Promise<User> {
+    return this.usersService.delete(id.id);
   }
 }

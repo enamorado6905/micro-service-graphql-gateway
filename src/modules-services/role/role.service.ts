@@ -3,7 +3,6 @@ import { CreateRoleInput } from './dto/create-role.input';
 import { UpdateRoleInput } from './dto/update-role.input';
 import { Role } from './entities/role.entity';
 import { PaginateInterface } from '../../common/interfaces/paginated.interface';
-import { AbstractMethodOperation } from '../../common/util/class/abstract-method-operation.class';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
 import { RoleServiceClass } from '../../common/util/class/service/role.service.class';
 import { FindOneRoleInput } from './dto/find-one-role.input';
@@ -34,7 +33,7 @@ import { FindOneRoleInput } from './dto/find-one-role.input';
  * By the NestJS dependency injection container.
  */
 @Injectable()
-export class RoleService implements AbstractMethodOperation<Role> {
+export class RoleService {
   constructor(private readonly roleServiceClass: RoleServiceClass) {}
 
   /**
@@ -55,7 +54,7 @@ export class RoleService implements AbstractMethodOperation<Role> {
    * @param id - The ID of the role to retrieve.
    * @returns A `Promise` that resolves to the role with the specified ID.
    */
-  public async getById(id: string | number): Promise<Role> {
+  public async getById(id: string): Promise<Role> {
     return await this.roleServiceClass.getById(id);
   }
 

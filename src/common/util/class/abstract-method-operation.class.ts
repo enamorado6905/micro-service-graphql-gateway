@@ -27,7 +27,7 @@ export abstract class AbstractMethodOperation<T> {
    * @param id The identifier (string or number) of the instance to find.
    * @returns A Promise containing the found instance of type T, wrapped in a PaginateInterface.
    */
-  abstract getById(id: string | number): Promise<T>;
+  abstract getById(id: string): Promise<T>;
 
   /**
    * Abstract method to find and return a specific instance of type T by its identifier.

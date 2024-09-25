@@ -3,7 +3,6 @@ import { CreatePermissionInput } from './dto/create-permission.input';
 import { UpdatePermissionInput } from './dto/update-permission.input';
 import { Permission } from './entities/permission.entity';
 import { PaginateInterface } from '../../common/interfaces/paginated.interface';
-import { AbstractMethodOperation } from '../../common/util/class/abstract-method-operation.class';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
 import { PermissionServiceClass } from '../../common/util/class/service/permission.service.class';
 import { FindOnePermissionInput } from './dto/find-one-permission.input';
@@ -34,7 +33,7 @@ import { FindOnePermissionInput } from './dto/find-one-permission.input';
  * By the NestJS dependency injection container.
  */
 @Injectable()
-export class PermissionService implements AbstractMethodOperation<Permission> {
+export class PermissionService {
   constructor(
     private readonly permissionServiceClass: PermissionServiceClass,
   ) {}
@@ -57,7 +56,7 @@ export class PermissionService implements AbstractMethodOperation<Permission> {
    * @param id - The ID of the permission to retrieve.
    * @returns A `Promise` that resolves to the permission with the specified ID.
    */
-  public async getById(id: string | number): Promise<Permission> {
+  public async getById(id: string): Promise<Permission> {
     return await this.permissionServiceClass.getById(id);
   }
 

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { IsUniqueAuthType } from '../../../common/decorator/type-auth.decorator';
 
 /**
@@ -17,7 +17,6 @@ export class CustomAuthDto {
    * @IsUniqueAuthType() Ensures the auth type is unique and equals 'AZURE_AD'.
    */
   @IsOptional()
-  @MaxLength(255)
   @IsString()
   @IsUniqueAuthType({
     message: 'Auth type must be unique and equal to AZURE_AD',
@@ -30,7 +29,6 @@ export class CustomAuthDto {
    * @type {string}
    */
   @IsNotEmpty()
-  @MaxLength(255)
   @IsString()
   token: string;
 }
