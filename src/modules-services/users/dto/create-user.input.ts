@@ -1,5 +1,4 @@
 import {
-  IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -7,54 +6,76 @@ import {
   MaxLength,
 } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
+import { AbstractStatusInput } from '../../../common/abstract/abstract-dto';
+import { ExceptionErrorMessageEnum } from '../../../common/enum/error/exception-error-message.enum';
 
 @InputType()
-export class CreateUserInput {
+export class CreateUserInput extends AbstractStatusInput {
   @Field(() => String)
-  @IsNotEmpty()
-  @MaxLength(255)
-  @IsString()
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0001,
+  })
+  @MaxLength(255, {
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0002,
+  })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0003,
+  })
   readonly name: string;
 
   @Field(() => String)
-  @IsNotEmpty()
-  @IsString()
-  @MaxLength(255)
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0004,
+  })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0005,
+  })
+  @MaxLength(255, {
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0006,
+  })
   readonly surnames: string;
 
   @Field(() => String)
-  @IsNotEmpty()
-  @IsEmail()
-  @IsString()
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0007,
+  })
+  @IsEmail(
+    {},
+    {
+      message:
+        ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0008,
+    },
+  )
   readonly email: string;
 
   @Field(() => String)
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0009,
+  })
   @IsString()
   readonly password: string;
 
   @Field(() => String, { nullable: true })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0010,
+  })
   @IsOptional()
-  @IsString()
   readonly address?: string;
 
   @Field(() => String, { nullable: true })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0011,
+  })
   @IsOptional()
-  @IsString()
   readonly language?: string;
-
-  @Field(() => Boolean, { nullable: true })
-  @IsOptional()
-  @IsBoolean()
-  readonly isLocked?: boolean;
-
-  @Field(() => Boolean, { nullable: true })
-  @IsOptional()
-  @IsBoolean()
-  readonly isDisabled: boolean;
-
-  @Field(() => Boolean, { nullable: true })
-  @IsOptional()
-  @IsBoolean()
-  readonly isVerified: boolean;
 }

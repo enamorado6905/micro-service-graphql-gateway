@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Document, Types } from 'mongoose';
-import { AbstractEntity } from '../../../common/abstract-entity/abstract-entity.entity';
+import { AbstractEntity } from '../../../common/abstract/abstract-entity.entity';
 import { Paginated } from '../../../common/util/method/abstract-pagination-entity.method';
 import { UserEntityEnum } from '../../../common/enum/entity/user/user-language.enum';
 import { Role } from '../../role/entities/role.entity';

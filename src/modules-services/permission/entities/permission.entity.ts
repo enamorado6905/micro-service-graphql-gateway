@@ -1,7 +1,7 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Paginated } from '../../../common/util/method/abstract-pagination-entity.method';
-import { AbstractEntity } from '../../../common/abstract-entity/abstract-entity.entity';
+import { AbstractEntity } from '../../../common/abstract/abstract-entity.entity';
 
 @ObjectType()
 export class Permission extends AbstractEntity {

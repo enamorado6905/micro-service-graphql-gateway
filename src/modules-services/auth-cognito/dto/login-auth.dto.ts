@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { ExceptionErrorMessageEnum } from '../../../common/enum/error/exception-error-message.enum';
 
 /**
  * Data Transfer Object for creating authentication data.
@@ -17,9 +18,14 @@ export class LoginAuthDto {
    * @IsString() Ensures the surnames is a string.
    */
   @Field(() => String)
-  @IsNotEmpty()
-  @MaxLength(255)
-  @IsString()
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_DTO_ERROR_0001,
+  })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_DTO_ERROR_0002,
+  })
   userName: string;
 
   /**
@@ -31,8 +37,13 @@ export class LoginAuthDto {
    * @IsString() Ensures the password is a string.
    */
   @Field(() => String)
-  @IsNotEmpty()
-  @MaxLength(255)
-  @IsString()
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_DTO_ERROR_0003,
+  })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_DTO_ERROR_0004,
+  })
   password: string;
 }

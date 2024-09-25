@@ -1,14 +1,14 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PermissionService } from './permission.service';
 import { PaginatedPermission, Permission } from './entities/permission.entity';
 import { CreatePermissionInput } from './dto/create-permission.input';
 import { UpdatePermissionInput } from './dto/update-permission.input';
-import { AbstractMethodOperation } from '../../common/util/class/abstract-method-operation.class';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../../common/guards/graphql.guard';
 import { FindOnePermissionInput } from './dto/find-one-permission.input';
 import { PermissionResolverEnum } from '../../common/enum/system/name-resolver/permission-resolver';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
+import { FilterByIdPermissionInput } from './dto/filter-by-id.input';
 
 /**
  * The `PermissionResolver` class provides GraphQL resolvers for managing permission in the application.
@@ -24,7 +24,7 @@ import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
  */
 @Resolver(() => Permission)
 @UseGuards(GqlAuthGuard)
-export class PermissionResolver implements AbstractMethodOperation<Permission> {
+export class PermissionResolver {
   /**
    * The constructor of the `PermissionResolver` class.
    *
@@ -77,9 +77,9 @@ export class PermissionResolver implements AbstractMethodOperation<Permission> {
    */
   @Query(() => Permission, { name: PermissionResolverEnum.PERMISSION_ID })
   async getById(
-    @Args('id', { type: () => ID }) id: string,
+    @Args('id') id: FilterByIdPermissionInput,
   ): Promise<Permission> {
-    return await this.permissionService.getById(id);
+    return await this.permissionService.getById(id.id);
   }
 
   /**
@@ -103,10 +103,10 @@ export class PermissionResolver implements AbstractMethodOperation<Permission> {
     name: PermissionResolverEnum.PERMISSION_UPDATE,
   })
   async update(
-    @Args('id', { type: () => ID }) id: string,
+    @Args('id') id: FilterByIdPermissionInput,
     @Args('updatePermissionInput') updatePermissionInput: UpdatePermissionInput,
   ): Promise<Permission> {
-    return this.permissionService.update(id, updatePermissionInput);
+    return this.permissionService.update(id.id, updatePermissionInput);
   }
 
   /**
@@ -117,9 +117,7 @@ export class PermissionResolver implements AbstractMethodOperation<Permission> {
   @Mutation(() => Permission, {
     name: PermissionResolverEnum.PERMISSION_REMOVE,
   })
-  async delete(
-    @Args('id', { type: () => ID }) id: string | number,
-  ): Promise<Permission> {
-    return this.permissionService.delete(id);
+  async delete(@Args('id') id: FilterByIdPermissionInput): Promise<Permission> {
+    return this.permissionService.delete(id.id);
   }
 }

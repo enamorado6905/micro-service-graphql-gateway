@@ -12,7 +12,6 @@ import {
   getCodeErrorMessage,
   transformErrorCode,
 } from '../helpers/cast.helper';
-import { ExceptionErrorMessageEnum } from '../enum/error/exception-error-message.enum';
 import { LoggerClass } from '../util/class/logger.class';
 import { ErrorsKeysEnum } from '../enum/error/errors.keys';
 
@@ -118,15 +117,9 @@ export class GraphQLExceptionFilter implements GqlExceptionFilter {
     );
   }
 
-  private getCustomMessage(
-    status: string = 'exception.DEFAULT_MESSAGE',
-    defaultMessage: string,
-  ): string {
-    return this.language.language(
-      `exception.${ExceptionErrorMessageEnum[status]}`,
-      {
-        message: defaultMessage,
-      },
-    );
+  private getCustomMessage(status: string, defaultMessage: string): string {
+    return this.language.language(status, {
+      message: defaultMessage,
+    });
   }
 }

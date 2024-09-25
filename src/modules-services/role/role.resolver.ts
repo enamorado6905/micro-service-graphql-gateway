@@ -1,14 +1,14 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { RoleService } from './role.service';
 import { PaginatedRole, Role } from './entities/role.entity';
 import { CreateRoleInput } from './dto/create-role.input';
 import { UpdateRoleInput } from './dto/update-role.input';
-import { AbstractMethodOperation } from '../../common/util/class/abstract-method-operation.class';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../../common/guards/graphql.guard';
 import { FindOneRoleInput } from './dto/find-one-role.input';
 import { RoleResolverEnum } from '../../common/enum/system/name-resolver/role-resolver.enum';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
+import { FilterByIdRoleInput } from './dto/filter-by-id.input';
 
 /**
  * The `RoleResolver` class provides GraphQL resolvers for managing role in the application.
@@ -24,7 +24,7 @@ import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
  */
 @Resolver(() => Role)
 @UseGuards(GqlAuthGuard)
-export class RoleResolver implements AbstractMethodOperation<Role> {
+export class RoleResolver {
   /**
    * The constructor of the `RoleResolver` class.
    *
@@ -72,8 +72,8 @@ export class RoleResolver implements AbstractMethodOperation<Role> {
    * @returns The found role.
    */
   @Query(() => Role, { name: RoleResolverEnum.ROLE_ID })
-  async getById(@Args('id', { type: () => ID }) id: string): Promise<Role> {
-    return await this.roleService.getById(id);
+  async getById(@Args('id') id: FilterByIdRoleInput): Promise<Role> {
+    return await this.roleService.getById(id.id);
   }
 
   /**
@@ -93,10 +93,10 @@ export class RoleResolver implements AbstractMethodOperation<Role> {
    */
   @Mutation(() => Role, { name: RoleResolverEnum.ROLE_UPDATE })
   async update(
-    @Args('id', { type: () => ID }) id: string,
+    @Args('id') id: FilterByIdRoleInput,
     @Args('updateRoleInput') updateRoleInput: UpdateRoleInput,
   ): Promise<Role> {
-    return this.roleService.update(id, updateRoleInput);
+    return this.roleService.update(id.id, updateRoleInput);
   }
 
   /**
@@ -105,7 +105,7 @@ export class RoleResolver implements AbstractMethodOperation<Role> {
    * @returns The removed role.
    */
   @Mutation(() => Role, { name: RoleResolverEnum.ROLE_REMOVE })
-  async delete(@Args('id', { type: () => ID }) id: string): Promise<Role> {
-    return this.roleService.delete(id);
+  async delete(@Args('id') id: FilterByIdRoleInput): Promise<Role> {
+    return this.roleService.delete(id.id);
   }
 }

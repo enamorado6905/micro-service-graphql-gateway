@@ -69,7 +69,7 @@ export class RoleServiceClass implements AbstractMethodOperation<Role> {
    * @param id - The ID of the role to retrieve.
    * @returns A `Promise` that resolves to the role with the specified ID.
    */
-  public async getById(id: string | number): Promise<Role> {
+  public async getById(id: string): Promise<Role> {
     return await this.proxyRabbitMQ.operations(RolesMsgEnum.FIND_BY_ID, {
       id,
     });
