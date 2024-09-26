@@ -175,6 +175,7 @@ type Mutation {
   LOGIN_COGNITO(loginAuthDto: LoginAuthDto!): SignInInterface!
   AUTH_COGNITO(createUserInput: SigUpDto!): User!
   AUTH_REMOVE_COGNITO(removeUserAuth: RemoveUserAuthDto!): Boolean!
+  RESEND_CONFIMATION_CODE_COGNITO(resendConfirmationCodeAuth: ResendConfirmationCodeAuthDto!): Boolean!
   ROLE_REGISTER(createRoleInput: CreateRoleInput!): Role!
   ROLE_UPDATE(id: FilterByIdRoleInput!, updateRoleInput: UpdateRoleInput!): Role!
   ROLE_REMOVE(id: FilterByIdRoleInput!): Role!
@@ -222,6 +223,10 @@ input SigUpDto {
 }
 
 input RemoveUserAuthDto {
+  userName: String!
+}
+
+input ResendConfirmationCodeAuthDto {
   userName: String!
 }
 

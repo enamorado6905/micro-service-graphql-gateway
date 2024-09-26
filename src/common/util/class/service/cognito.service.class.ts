@@ -9,6 +9,7 @@ import { ExchangeCodeForTokensDto } from '../../../../modules-services/auth-cogn
 import { LogoutAuthDto } from '../../../../modules-services/auth-cognito/dto/logout-auth.dto';
 import { SignInInterface } from '../../../interfaces/sign-in.interface';
 import { RemoveUserAuthDto } from '../../../../modules-services/auth-cognito/dto/remove-user.dto';
+import { ResendConfirmationCodeAuthDto } from '../../../../modules-services/auth-cognito/dto/resend-confirmation-code-auth.dto';
 
 @Injectable()
 export class CognitoServiceClass {
@@ -130,6 +131,31 @@ export class CognitoServiceClass {
     return await this.cognitoProxyRabbitMQ.operations(
       AuthUsersMsgEnum.CONFIG_REMOVE_USER,
       removeUserAuthDto,
+    );
+  }
+
+  /**
+   * The `removeUserCognito` method removes a user from the Cognito user pool.
+   *
+   * @param {string} email - The email of the user to be removed.
+   * @returns {Promise<any>} A promise that resolves to the result of the user removal operation.
+   *
+   * @description
+   * This function communicates with a RabbitMQ server to remove a user from the Cognito user pool.
+   * It uses the `ProxyRabbitMQ` utility class to send a message to the RabbitMQ queue specified by
+   * `RabbitMqEnum.cognitoQueue` with the operation type `AuthUsersMsgEnum.CONFIG_REMOVE_USER` and
+   * the user's email as the data.
+   *
+   * @example
+   * const email = 'user@example.com';
+   * const result = await authService.removeUserCognito(email);
+   */
+  public async resendConfirmationCodeCognito(
+    resendConfirmationCodeAuthDto: ResendConfirmationCodeAuthDto,
+  ): Promise<boolean> {
+    return await this.cognitoProxyRabbitMQ.operations(
+      AuthUsersMsgEnum.CONFIG_RESEND_CONFIRMATION_CODE_USER,
+      resendConfirmationCodeAuthDto,
     );
   }
 }

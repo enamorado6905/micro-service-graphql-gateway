@@ -7,6 +7,7 @@ import { CognitoServiceClass } from '../../common/util/class/service/cognito.ser
 import { SignInInterface } from '../../common/interfaces/sign-in.interface';
 import { RemoveUserAuthDto } from './dto/remove-user.dto';
 import { SigUpDto } from './dto/sig-up-auth.dto';
+import { ResendConfirmationCodeAuthDto } from './dto/resend-confirmation-code-auth.dto';
 
 /**
  * The `AuthService` class provides methods for managing user authentication in the application.
@@ -121,5 +122,29 @@ export class AuthCognitoService {
     removeUserAuthDto: RemoveUserAuthDto,
   ): Promise<boolean> {
     return this.cognitoServiceClass.removeUserCognito(removeUserAuthDto);
+  }
+
+  /**
+   * Resends the confirmation code for validating signup.
+   *
+   * @param {ResendConfirmationCodeAuthDto} resendConfirmationCodeAuthDto - An object that contains the data for resending the confirmation code.
+   * @returns {Promise<boolean>} A promise that resolves to the result of the resend operation.
+   *
+   * @description
+   * This function uses the `cognitoServiceClass` to resend the confirmation code for a user in the Cognito user pool.
+   * It takes a `ResendConfirmationCodeAuthDto` object as a parameter, which contains the `userName` of the user to resend the confirmation code to.
+   * The function then calls the `resendConfirmationCodeCognito` method of the `cognitoServiceClass` with the `userName`
+   * and returns the result of the operation.
+   *
+   * @example
+   * const resendConfirmationCodeAuthDto = { userName: 'user@example.com' };
+   * const result = await authService.resendConfirmationCodeCognito(resendConfirmationCodeAuthDto);
+   */
+  public async resendConfirmationCodeCognito(
+    resendConfirmationCodeAuthDto: ResendConfirmationCodeAuthDto,
+  ): Promise<boolean> {
+    return this.cognitoServiceClass.resendConfirmationCodeCognito(
+      resendConfirmationCodeAuthDto,
+    );
   }
 }

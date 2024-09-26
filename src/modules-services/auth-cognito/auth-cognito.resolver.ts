@@ -7,6 +7,7 @@ import { LoginAuthDto } from './dto/login-auth.dto';
 import { SignInInterface } from '../../common/interfaces/sign-in.interface';
 import { RemoveUserAuthDto } from './dto/remove-user.dto';
 import { SigUpDto } from './dto/sig-up-auth.dto';
+import { ResendConfirmationCodeAuthDto } from './dto/resend-confirmation-code-auth.dto';
 
 @Resolver()
 export class AuthCognitoResolver {
@@ -48,15 +49,22 @@ export class AuthCognitoResolver {
     return this.authCognitoService.confirmSignUpCognito(configSigUpDto);
   }
 
-  /**
-   * Mutation to register a user.
-   * @param {RemoveUserAuthDto} removeUserAuthDto - The input data for removing a user.
-   * @returns The removed user.
-   */
   @Mutation(() => Boolean, { name: AuthResolverEnum.AUTH_REMOVE_COGNITO })
   public async removeUserCognito(
     @Args('removeUserAuth') removeUserAuthDto: RemoveUserAuthDto,
   ): Promise<boolean> {
     return await this.authCognitoService.removeUserCognito(removeUserAuthDto);
+  }
+
+  @Mutation(() => Boolean, {
+    name: AuthResolverEnum.RESEND_CONFIMATION_CODE_COGNITO,
+  })
+  public async resendConfirmationCodeCognito(
+    @Args('resendConfirmationCodeAuth')
+    resendConfirmationCodeAuthDto: ResendConfirmationCodeAuthDto,
+  ): Promise<boolean> {
+    return await this.authCognitoService.resendConfirmationCodeCognito(
+      resendConfirmationCodeAuthDto,
+    );
   }
 }
