@@ -174,7 +174,7 @@ type Mutation {
   USER_REMOVE(id: FilterByIdUserInput!): User!
   LOGIN_COGNITO(loginAuthDto: LoginAuthDto!): SignInInterface!
   AUTH_COGNITO(createUserInput: SigUpDto!): User!
-  AUTH_REMOVE_COGNITO(removeUserAuth: RemoveUserAuthDto!): Float!
+  AUTH_REMOVE_COGNITO(removeUserAuth: RemoveUserAuthDto!): Boolean!
   ROLE_REGISTER(createRoleInput: CreateRoleInput!): Role!
   ROLE_UPDATE(id: FilterByIdRoleInput!, updateRoleInput: UpdateRoleInput!): Role!
   ROLE_REMOVE(id: FilterByIdRoleInput!): Role!

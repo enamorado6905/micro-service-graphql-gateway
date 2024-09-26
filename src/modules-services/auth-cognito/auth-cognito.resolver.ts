@@ -53,11 +53,10 @@ export class AuthCognitoResolver {
    * @param {RemoveUserAuthDto} removeUserAuthDto - The input data for removing a user.
    * @returns The removed user.
    */
-  @Mutation(() => Number, { name: AuthResolverEnum.AUTH_REMOVE_COGNITO })
+  @Mutation(() => Boolean, { name: AuthResolverEnum.AUTH_REMOVE_COGNITO })
   public async removeUserCognito(
     @Args('removeUserAuth') removeUserAuthDto: RemoveUserAuthDto,
-  ): Promise<number> {
-    await this.authCognitoService.removeUserCognito(removeUserAuthDto);
-    return 1;
+  ): Promise<boolean> {
+    return await this.authCognitoService.removeUserCognito(removeUserAuthDto);
   }
 }

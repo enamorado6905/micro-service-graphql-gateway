@@ -119,7 +119,7 @@ export class AuthCognitoService {
    */
   public async removeUserCognito(
     removeUserAuthDto: RemoveUserAuthDto,
-  ): Promise<any> {
+  ): Promise<boolean> {
     return this.cognitoServiceClass.removeUserCognito(removeUserAuthDto);
   }
 }

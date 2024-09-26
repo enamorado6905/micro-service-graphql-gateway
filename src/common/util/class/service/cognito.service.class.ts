@@ -126,7 +126,7 @@ export class CognitoServiceClass {
    */
   public async removeUserCognito(
     removeUserAuthDto: RemoveUserAuthDto,
-  ): Promise<any> {
+  ): Promise<boolean> {
     return await this.cognitoProxyRabbitMQ.operations(
       AuthUsersMsgEnum.CONFIG_REMOVE_USER,
       removeUserAuthDto,
