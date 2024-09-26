@@ -9,6 +9,7 @@ export enum AuthUsersMsgEnum {
   FIND_TOKEN_FOR_CODE = 'FIND_TOKEN_FOR_CODE',
   LOGOUT_USER = 'LOGOUT_AUTH_USER', // Represents the action of logging out an authentication user.
   CONFIG_SIGN_UP = 'CONFIG_SIGN_UP', // Represents the action of confirming an authentication user's sign up.
+  CONFIG_REMOVE_USER = 'CONFIG_REMOVE_USER', // Represents the action of confirming the removal of an authentication user.
   FIND = 'FIND_AUTH_USER', // Represents the action of finding authentication users.
   FIND_BY_ID = 'FIND_BY_ID_AUTH_USER', // Represents the action of finding an authentication user by ID.
   FIND_ONE = 'FIND_ONE_AUTH_USER', // Represents the action of finding a single authentication user.

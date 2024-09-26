@@ -120,11 +120,6 @@ export class UsersServiceClass implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the total number of users.
    */
   public async total(): Promise<number> {
-    try {
-      return await this.proxyRabbitMQ.operations(UsersMsgEnum.TOTAL, {});
-    } catch (error) {
-      // Handle error if needed.
-      throw error;
-    }
+    return await this.proxyRabbitMQ.operations(UsersMsgEnum.TOTAL, {});
   }
 }

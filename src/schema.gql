@@ -173,7 +173,8 @@ type Mutation {
   USER_UPDATE(id: FilterByIdUserInput!, updateUserInput: UpdateUserInput!): User!
   USER_REMOVE(id: FilterByIdUserInput!): User!
   LOGIN_COGNITO(loginAuthDto: LoginAuthDto!): SignInInterface!
-  AUTH_COGNITO(createUserInput: CreateUserInput!): User!
+  AUTH_COGNITO(createUserInput: SigUpDto!): User!
+  AUTH_REMOVE_COGNITO(removeUserAuth: RemoveUserAuthDto!): Float!
   ROLE_REGISTER(createRoleInput: CreateRoleInput!): Role!
   ROLE_UPDATE(id: FilterByIdRoleInput!, updateRoleInput: UpdateRoleInput!): Role!
   ROLE_REMOVE(id: FilterByIdRoleInput!): Role!
@@ -209,6 +210,19 @@ input UpdateUserInput {
 input LoginAuthDto {
   userName: String!
   password: String!
+}
+
+input SigUpDto {
+  name: String!
+  surnames: String!
+  email: String!
+  password: String!
+  address: String
+  language: String
+}
+
+input RemoveUserAuthDto {
+  userName: String!
 }
 
 input CreateRoleInput {

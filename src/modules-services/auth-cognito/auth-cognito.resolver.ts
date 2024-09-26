@@ -2,10 +2,11 @@ import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { AuthCognitoService } from './auth-cognito.service';
 import { User } from '../users/entities/user.entity';
 import { AuthResolverEnum } from '../../common/enum/system/name-resolver/auth-resolver.enum';
-import { CreateUserInput } from '../users/dto/create-user.input';
 import { ConfigSigUpDto } from './dto/confirm-sig-up.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { SignInInterface } from '../../common/interfaces/sign-in.interface';
+import { RemoveUserAuthDto } from './dto/remove-user.dto';
+import { SigUpDto } from './dto/sig-up-auth.dto';
 
 @Resolver()
 export class AuthCognitoResolver {
@@ -23,14 +24,14 @@ export class AuthCognitoResolver {
 
   /**
    * Mutation to register a user.
-   * @param {CreateUserInput} createUserInput - The input data for creating a user.
+   * @param {SigUpDto} sigUpDto - The input data for creating a user.
    * @returns The created user and register user to cognito.
    */
   @Mutation(() => User, { name: AuthResolverEnum.AUTH_COGNITO })
   public async confirmSignUp(
-    @Args('createUserInput') createUserInput: CreateUserInput,
+    @Args('createUserInput') sigUpDto: SigUpDto,
   ): Promise<User> {
-    return this.authCognitoService.registerUserCognito(createUserInput);
+    return this.authCognitoService.registerUserCognito(sigUpDto);
   }
 
   /**
@@ -45,5 +46,18 @@ export class AuthCognitoResolver {
     @Args('configSigUpDto') configSigUpDto: ConfigSigUpDto,
   ): Promise<boolean> {
     return this.authCognitoService.confirmSignUpCognito(configSigUpDto);
+  }
+
+  /**
+   * Mutation to register a user.
+   * @param {RemoveUserAuthDto} removeUserAuthDto - The input data for removing a user.
+   * @returns The removed user.
+   */
+  @Mutation(() => Number, { name: AuthResolverEnum.AUTH_REMOVE_COGNITO })
+  public async removeUserCognito(
+    @Args('removeUserAuth') removeUserAuthDto: RemoveUserAuthDto,
+  ): Promise<number> {
+    await this.authCognitoService.removeUserCognito(removeUserAuthDto);
+    return 1;
   }
 }
