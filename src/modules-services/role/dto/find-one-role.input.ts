@@ -7,22 +7,22 @@ export class FindOneRoleInput {
   @Field(() => String)
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_FIND_ONE_ERROR_0001,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_FIND_ONE_ERROR_0001,
   })
   @IsString({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_FIND_ONE_ERROR_0002,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_FIND_ONE_ERROR_0002,
   })
   search: string;
 
   @Field(() => String)
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_FIND_ONE_ERROR_0003,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_FIND_ONE_ERROR_0003,
   })
   @IsString({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_FIND_ONE_ERROR_0004,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_FIND_ONE_ERROR_0004,
   })
   value: string;
 }

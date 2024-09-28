@@ -18,37 +18,37 @@ export class ConfigSigUpDto {
   @Field(() => String)
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_CONFIRM_SIG_UP_DTO_ERROR_0001,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_CONFIRM_SIG_UP_ERROR_0001,
   })
   @IsString({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_CONFIRM_SIG_UP_DTO_ERROR_0002,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_CONFIRM_SIG_UP_ERROR_0002,
   })
   @IsEmail(
     {},
     {
       message:
-        ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_CONFIRM_SIG_UP_DTO_ERROR_0003,
+        ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_CONFIRM_SIG_UP_ERROR_0003,
     },
   )
-  userName: string;
+  readonly userName: string;
 
   @Field(() => String)
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_CONFIRM_SIG_UP_DTO_ERROR_0004,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_CONFIRM_SIG_UP_ERROR_0004,
   })
   @IsString({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_CONFIRM_SIG_UP_DTO_ERROR_0005,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_CONFIRM_SIG_UP_ERROR_0005,
   })
   @Matches(/^\d+$/, {
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_CONFIRM_SIG_UP_DTO_ERROR_0006,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_CONFIRM_SIG_UP_ERROR_0006,
   })
   @Length(6, 6, {
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_CONFIRM_SIG_UP_DTO_ERROR_0007,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_CONFIRM_SIG_UP_ERROR_0007,
   })
-  code: string;
+  readonly code: string;
 }

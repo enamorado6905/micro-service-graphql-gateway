@@ -7,22 +7,22 @@ export class FindOnePermissionInput {
   @Field(() => String)
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_FIND_ONE_ERROR_0001,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_PERMISSION_FIND_ONE_ERROR_0001,
   })
   @IsString({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_FIND_ONE_ERROR_0002,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_PERMISSION_FIND_ONE_ERROR_0002,
   })
-  search: string;
+  readonly search: string;
 
   @Field(() => String)
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_FIND_ONE_ERROR_0003,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_PERMISSION_FIND_ONE_ERROR_0003,
   })
   @IsString({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_FIND_ONE_ERROR_0004,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_PERMISSION_FIND_ONE_ERROR_0004,
   })
-  value: string;
+  readonly value: string;
 }

@@ -7,15 +7,15 @@ export class FilterByIdRoleInput {
   @Field(() => String)
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_FIND_ID_ERROR_0001,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_FIND_ID_ERROR_0001,
   })
   @IsString({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_FIND_ID_ERROR_0003,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_FIND_ID_ERROR_0003,
   })
   @IsMongoId({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_FIND_ID_ERROR_0004,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_FIND_ID_ERROR_0004,
   })
   readonly id: string;
 }

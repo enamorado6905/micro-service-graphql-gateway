@@ -9,41 +9,25 @@ import { ExceptionErrorMessageEnum } from '../../../common/enum/error/exception-
  */
 @InputType()
 export class LoginAuthDto {
-  /**
-   * The surnames of the user.
-   *
-   * @type {string}
-   * @IsNotEmpty() Ensures the surnames is not empty.
-   * @MaxLength(255) Ensures the surnames is not longer than 255 characters.
-   * @IsString() Ensures the surnames is a string.
-   */
   @Field(() => String)
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_DTO_ERROR_0001,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_LOGIN_ERROR_0001,
   })
   @IsString({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_DTO_ERROR_0002,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_LOGIN_ERROR_0002,
   })
-  userName: string;
+  readonly userName: string;
 
-  /**
-   * The password of the user.
-   *
-   * @type {string}
-   * @IsNotEmpty() Ensures the password is not empty.
-   * @MaxLength(255) Ensures the password is not longer than 255 characters.
-   * @IsString() Ensures the password is a string.
-   */
   @Field(() => String)
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_DTO_ERROR_0003,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_LOGIN_ERROR_0003,
   })
   @IsString({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_DTO_ERROR_0004,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_LOGIN_ERROR_0004,
   })
-  password: string;
+  readonly password: string;
 }
