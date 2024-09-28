@@ -7,13 +7,13 @@ export class RemoveUserAuthDto {
   @Field(() => String)
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_DTO_ERROR_0001,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_REMOVE_USER_ERROR_0001,
   })
   @IsEmail(
     {},
     {
       message:
-        ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_AUTH_DTO_ERROR_0002,
+        ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_REMOVE_USER_ERROR_0002,
     },
   )
   userName: string;
