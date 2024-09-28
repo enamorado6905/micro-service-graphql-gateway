@@ -7,15 +7,15 @@ export class FilterByIdPermissionInput {
   @Field(() => String)
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_FIND_ID_ERROR_0001,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_PERMISSION_FIND_ID_ERROR_0001,
   })
   @IsString({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_FIND_ID_ERROR_0003,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_PERMISSION_FIND_ID_ERROR_0002,
   })
   @IsMongoId({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_PERMISSION_DTO_FIND_ID_ERROR_0004,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_PERMISSION_FIND_ID_ERROR_0003,
   })
   readonly id: string;
 }
