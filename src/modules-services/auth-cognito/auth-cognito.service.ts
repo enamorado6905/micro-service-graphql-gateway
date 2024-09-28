@@ -4,9 +4,10 @@ import { ConfigSigUpDto } from './dto/confirm-sig-up.dto';
 import { LogoutAuthDto } from './dto/logout-auth.dto';
 import { ExchangeCodeForTokensDto } from './dto/exchange-code-for-token.dto';
 import { CognitoServiceClass } from '../../common/util/class/service/cognito.service.class';
-import { UsersServiceClass } from '../../common/util/class/service/user.service.class';
-import { CreateUserInput } from '../users/dto/create-user.input';
 import { SignInInterface } from '../../common/interfaces/sign-in.interface';
+import { RemoveUserAuthDto } from './dto/remove-user.dto';
+import { SigUpDto } from './dto/sig-up-auth.dto';
+import { ResendConfirmationCodeAuthDto } from './dto/resend-confirmation-code-auth.dto';
 
 /**
  * The `AuthService` class provides methods for managing user authentication in the application.
@@ -28,15 +29,12 @@ export class AuthCognitoService {
    * to use for user authentication operations.
    *
    */
-  constructor(
-    private readonly cognitoServiceClass: CognitoServiceClass,
-    private readonly usersServiceClass: UsersServiceClass,
-  ) {}
+  constructor(private readonly cognitoServiceClass: CognitoServiceClass) {}
 
   /**
    * The `registerUserCognito` method registers a new user in the Cognito user pool.
    *
-   * @param {CreateUserInput} createUserInput - An object that contains the data for the user to register.
+   * @param {SigUpDto} sigUpDto - An object that contains the data for the user to register.
    * @returns {Promise<any>} A promise that resolves to the result of the registration operation.
    *
    * @description
@@ -48,14 +46,8 @@ export class AuthCognitoService {
    * const createAuthDto = { surnames: 'test', password: 'password' };
    * const result = await authService.registerUserCognito(createAuthDto);
    */
-  public async registerUserCognito(
-    createUserInput: CreateUserInput,
-  ): Promise<any> {
-    await this.cognitoServiceClass.registerUserCognito({
-      password: createUserInput.password,
-      user: createUserInput.email,
-    });
-    return await this.usersServiceClass.create(createUserInput);
+  public async registerUserCognito(sigUpDto: SigUpDto): Promise<any> {
+    return await this.cognitoServiceClass.registerUserCognito(sigUpDto);
   }
 
   public async confirmSignUpCognito(
@@ -108,5 +100,51 @@ export class AuthCognitoService {
    */
   public async logoutUserCognito(logoutAuthDto: LogoutAuthDto): Promise<any> {
     return this.cognitoServiceClass.logoutUserCognito(logoutAuthDto);
+  }
+
+  /**
+   * The `removeUserCognito` method removes a user from the Cognito user pool.
+   *
+   * @param {RemoveUserAuthDto} removeUserAuthDto - An object that contains the data for the user to remove.
+   * @returns {Promise<any>} A promise that resolves to the result of the removal operation.
+   *
+   * @description
+   * This function uses the `cognitoServiceClass` to remove a user from the Cognito user pool.
+   * It takes a `RemoveUserAuthDto` object as a parameter, which contains the `userName` of the user to be removed.
+   * The function then calls the `removeUserCognito` method of the `cognitoServiceClass` with the `userName`
+   * and returns the result of the operation.
+   *
+   * @example
+   * const removeUserAuthDto = { userName: 'user@example.com' };
+   * const result = await authService.removeUserCognito(removeUserAuthDto);
+   */
+  public async removeUserCognito(
+    removeUserAuthDto: RemoveUserAuthDto,
+  ): Promise<boolean> {
+    return this.cognitoServiceClass.removeUserCognito(removeUserAuthDto);
+  }
+
+  /**
+   * Resends the confirmation code for validating signup.
+   *
+   * @param {ResendConfirmationCodeAuthDto} resendConfirmationCodeAuthDto - An object that contains the data for resending the confirmation code.
+   * @returns {Promise<boolean>} A promise that resolves to the result of the resend operation.
+   *
+   * @description
+   * This function uses the `cognitoServiceClass` to resend the confirmation code for a user in the Cognito user pool.
+   * It takes a `ResendConfirmationCodeAuthDto` object as a parameter, which contains the `userName` of the user to resend the confirmation code to.
+   * The function then calls the `resendConfirmationCodeCognito` method of the `cognitoServiceClass` with the `userName`
+   * and returns the result of the operation.
+   *
+   * @example
+   * const resendConfirmationCodeAuthDto = { userName: 'user@example.com' };
+   * const result = await authService.resendConfirmationCodeCognito(resendConfirmationCodeAuthDto);
+   */
+  public async resendConfirmationCodeCognito(
+    resendConfirmationCodeAuthDto: ResendConfirmationCodeAuthDto,
+  ): Promise<boolean> {
+    return this.cognitoServiceClass.resendConfirmationCodeCognito(
+      resendConfirmationCodeAuthDto,
+    );
   }
 }

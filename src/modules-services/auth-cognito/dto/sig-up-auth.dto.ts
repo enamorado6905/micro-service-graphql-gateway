@@ -1,4 +1,12 @@
-import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
+import { ExceptionErrorMessageEnum } from '../../../common/enum/error/exception-error-message.enum';
+import { Field, InputType } from '@nestjs/graphql';
 
 /**
  * A DTO for confirming sign up.
@@ -15,33 +23,73 @@ import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
  * configSigUpDto.phoneNumber = '+11234567890';
  * configSigUpDto.password = 'Assdsd121s';
  */
+@InputType()
 export class SigUpDto {
-  /**
-   * The surnames of the user.
-   *
-   * @type {string}
-   */
-  @IsNotEmpty()
-  @MaxLength(255)
-  @IsString()
-  readonly user: string;
+  @Field(() => String)
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0001,
+  })
+  @MaxLength(255, {
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0002,
+  })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0003,
+  })
+  readonly name: string;
 
-  /**
-   * The phone number of the user.
-   *
-   * @type {string}
-   */
-  @IsOptional()
-  @MaxLength(255)
-  @IsString()
-  readonly phoneNumber?: string;
+  @Field(() => String)
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0004,
+  })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0005,
+  })
+  @MaxLength(255, {
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0006,
+  })
+  readonly surnames: string;
 
-  /**
-   * The password for confirming sign up.
-   *
-   * @type {string}
-   */
-  @IsNotEmpty()
+  @Field(() => String)
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0007,
+  })
+  @IsEmail(
+    {},
+    {
+      message:
+        ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0008,
+    },
+  )
+  readonly email: string;
+
+  @Field(() => String)
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0009,
+  })
   @IsString()
   readonly password: string;
+
+  @Field(() => String, { nullable: true })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0010,
+  })
+  @IsOptional()
+  readonly address?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsString({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_USER_DTO_CREATED_ERROR_0011,
+  })
+  @IsOptional()
+  readonly language?: string;
 }

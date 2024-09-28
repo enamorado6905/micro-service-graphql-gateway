@@ -53,23 +53,20 @@ export function toBoolean(value: string): boolean {
  * @param opts - An object containing optional parameters: default, min, and max.
  * @returns The number after conversion and applying constraints, if any.
  */
-export function toNumber(value: string, opts: ToNumberOptions = {}): number {
-  let newValue: number = Number.parseInt(value || String(opts.default), 10);
+export function toNumber(
+  value: string,
+  opts: ToNumberOptions = { min: 0, max: Infinity }, // Set default max to Infinity
+): number {
+  const parsedValue = Number.parseFloat(value); // Use parseFloat to handle decimal numbers
 
-  // If the conversion results in NaN, use the default value if provided.
-  if (Number.isNaN(newValue)) {
-    newValue = opts.default;
+  if (Number.isNaN(parsedValue)) {
+    return opts.default ?? 0; // Return default value if parsing fails
   }
 
-  // Apply minimum and maximum constraints if they are provided.
-  if (opts.min !== undefined && newValue < opts.min) {
-    newValue = opts.min;
-  }
-  if (opts.max !== undefined && newValue > opts.max) {
-    newValue = opts.max;
-  }
+  let clampedValue = Math.max(opts.min ?? -Infinity, parsedValue); // Clamp value between min and max
+  clampedValue = Math.min(opts.max ?? Infinity, clampedValue);
 
-  return newValue;
+  return clampedValue;
 }
 
 export function getErrorCode(status: number): string {
@@ -89,9 +86,9 @@ export function getErrorCode(status: number): string {
   }
 }
 
-export function getCodeErrorMessage(code: any): string {
+export function getCodeErrorMessage(code: string): string {
   return (
-    ExceptionErrorMessageEnum[code] ||
+    ExceptionErrorMessageEnum[code as keyof typeof ExceptionErrorMessageEnum] ||
     ExceptionErrorMessageEnum.COGNITO_AUTH_ERROR_0000
   );
 }
