@@ -18,42 +18,42 @@ export class CreateRoleInput extends AbstractStatusInput {
   @Field(() => String, {})
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_CREATED_ERROR_0001,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_CREATED_ERROR_0001,
   })
   @MaxLength(255, {
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_CREATED_ERROR_0002,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_CREATED_ERROR_0002,
   })
   @IsString({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_CREATED_ERROR_0003,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_CREATED_ERROR_0003,
   })
-  name: string;
+  readonly name: string;
 
   @Field(() => [ID], { nullable: true })
   @IsArray({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_CREATED_ERROR_0004,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_CREATED_ERROR_0004,
   })
   @IsNotEmpty({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_CREATED_ERROR_0005,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_CREATED_ERROR_0005,
   })
   @IsMongoId({
     each: true,
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_CREATED_ERROR_0006,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_CREATED_ERROR_0006,
   })
-  permissions: Types.ObjectId[];
+  readonly permissions: Types.ObjectId[];
 
   @Field(() => Boolean, { nullable: true })
   @Validate(NotNullOrUndefined, {
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_CREATED_ERROR_0007,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_CREATED_ERROR_0007,
   })
   @Validate(IsBooleanNotRequeridingValue, {
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ROLE_DTO_CREATED_ERROR_0008,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ROLE_CREATED_ERROR_0008,
   })
-  allPermission?: boolean;
+  readonly allPermission?: boolean;
 }
