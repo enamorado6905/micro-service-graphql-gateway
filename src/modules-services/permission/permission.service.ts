@@ -4,8 +4,8 @@ import { UpdatePermissionInput } from './dto/update-permission.input';
 import { Permission } from './entities/permission.entity';
 import { PaginateInterface } from '../../common/interfaces/paginated.interface';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
-import { PermissionServiceClass } from '../../common/util/class/service/permission.service.class';
 import { FindOnePermissionInput } from './dto/find-one-permission.input';
+import { PermissionRepository } from './repository/permission.service.class';
 
 /**
  * The `PermissionService` class provides methods for managing permission in the application.
@@ -34,9 +34,7 @@ import { FindOnePermissionInput } from './dto/find-one-permission.input';
  */
 @Injectable()
 export class PermissionService {
-  constructor(
-    private readonly permissionServiceClass: PermissionServiceClass,
-  ) {}
+  constructor(private readonly permissionRepository: PermissionRepository) {}
 
   /**
    * The `find` method is an asynchronous method that retrieves a paginated list of permission.
@@ -47,7 +45,7 @@ export class PermissionService {
   public async find(
     paginationArgsDto: PaginationArgsDto,
   ): Promise<PaginateInterface<Permission>> {
-    return await this.permissionServiceClass.find(paginationArgsDto);
+    return await this.permissionRepository.find(paginationArgsDto);
   }
 
   /**
@@ -57,7 +55,7 @@ export class PermissionService {
    * @returns A `Promise` that resolves to the permission with the specified ID.
    */
   public async getById(id: string): Promise<Permission> {
-    return await this.permissionServiceClass.getById(id);
+    return await this.permissionRepository.getById(id);
   }
 
   /**
@@ -67,7 +65,7 @@ export class PermissionService {
    * @returns A `Promise` that resolves to the permission that matches the filter.
    */
   public async getOne(filter: FindOnePermissionInput): Promise<Permission> {
-    return await this.permissionServiceClass.getOne(filter);
+    return await this.permissionRepository.getOne(filter);
   }
 
   /**
@@ -77,7 +75,7 @@ export class PermissionService {
    * @returns A `Promise` that resolves to the created permission.
    */
   public async create(item: CreatePermissionInput): Promise<Permission> {
-    return await this.permissionServiceClass.create(item);
+    return await this.permissionRepository.create(item);
   }
 
   /**
@@ -90,7 +88,7 @@ export class PermissionService {
     id: string | number,
     item: UpdatePermissionInput,
   ): Promise<Permission> {
-    return await this.permissionServiceClass.update(id, item);
+    return await this.permissionRepository.update(id, item);
   }
 
   /**
@@ -100,7 +98,7 @@ export class PermissionService {
    * @returns A `Promise` that resolves to the deleted permission.
    */
   public async delete(id: string | number): Promise<Permission> {
-    return await this.permissionServiceClass.delete(id);
+    return await this.permissionRepository.delete(id);
   }
 
   /**
@@ -109,6 +107,6 @@ export class PermissionService {
    * @returns A `Promise` that resolves to the total number of permission.
    */
   public async total(): Promise<number> {
-    return await this.permissionServiceClass.total();
+    return await this.permissionRepository.total();
   }
 }

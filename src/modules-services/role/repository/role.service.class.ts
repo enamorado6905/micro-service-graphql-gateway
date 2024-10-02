@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractMethodOperation } from '../abstract-method-operation.class';
-import { ProxyRabbitMQ } from '../proxy-rabbit-mq.class';
-import { RabbitMqEnum } from '../../../enum/msg/rabbit-mq.enum';
-import { PaginationArgsDto } from '../../../dto/args/pagination.args.dto';
-import { PaginateInterface } from '../../../interfaces/paginated.interface';
-import { RolesMsgEnum } from '../../../enum/msg/manager-roles.enum';
-import { Role } from '../../../../modules-services/role/entities/role.entity';
-import { CreateRoleInput } from '../../../../modules-services/role/dto/create-role.input';
-import { UpdateRoleInput } from '../../../../modules-services/role/dto/update-role.input';
+import { Role } from '../../../modules-services/role/entities/role.entity';
+import { CreateRoleInput } from '../../../modules-services/role/dto/create-role.input';
+import { UpdateRoleInput } from '../../../modules-services/role/dto/update-role.input';
+import { AbstractMethodOperation } from '../../../common/class/abstract/abstract-method-operation.class';
+import { PaginationArgsDto } from '../../../common/dto/args/pagination.args.dto';
+import { PaginateInterface } from '../../../common/interfaces/paginated.interface';
+import { RolesMsgEnum } from '../../../common/enum/msg/manager-roles.enum';
+import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
+import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
 
 /**
- * The `RoleService` class provides methods for managing role in the application.
+ * The `RoleRepository` class provides methods for managing role in the application.
  *
  * This class implements the `AbstractMethodOperation<Role>` interface, which means
  * It provides methods for creating, retrieving, updating, and deleting `Role` entities.
@@ -35,7 +35,7 @@ import { UpdateRoleInput } from '../../../../modules-services/role/dto/update-ro
  * By the NestJS dependency injection container.
  */
 @Injectable()
-export class RoleServiceClass implements AbstractMethodOperation<Role> {
+export class RoleRepository implements AbstractMethodOperation<Role> {
   /**
    * The `proxyRabbitMQ` property is an instance of the `ProxyRabbitMQ` utility class.
    * This property is used to communicate with a RabbitMQ server.

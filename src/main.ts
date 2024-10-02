@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { join } from 'path';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { VALIDATION_PIPE } from './common/util/constants/constants.conts';
+import { VALIDATION_PIPE } from './common/constants/constants.conts';
 import { TimeOutInterceptor } from './common/intercertors/timeout.interceptor';
 import { json, urlencoded } from 'express';
 import { NestExpressApplication } from '@nestjs/platform-express';

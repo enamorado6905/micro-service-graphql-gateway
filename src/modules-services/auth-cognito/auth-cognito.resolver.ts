@@ -8,6 +8,7 @@ import { SignInInterface } from '../../common/interfaces/sign-in.interface';
 import { RemoveUserAuthDto } from './dto/remove-user.dto';
 import { SigUpDto } from './dto/sig-up-auth.dto';
 import { ResendConfirmationCodeAuthDto } from './dto/resend-confirmation-code-auth.dto';
+import { LogoutAuthDto } from './dto/logout-auth.dto';
 
 @Resolver()
 export class AuthCognitoResolver {
@@ -49,6 +50,11 @@ export class AuthCognitoResolver {
     return this.authCognitoService.confirmSignUpCognito(configSigUpDto);
   }
 
+  /**
+   * Mutation to remove a user.
+   * @param {RemoveUserAuthDto} removeUserAuthDto - The input data for removing a user.
+   * @returns A promise that resolves to a boolean value.
+   */
   @Mutation(() => Boolean, { name: AuthResolverEnum.AUTH_REMOVE_COGNITO })
   public async removeUserCognito(
     @Args('removeUserAuth') removeUserAuthDto: RemoveUserAuthDto,
@@ -56,6 +62,16 @@ export class AuthCognitoResolver {
     return await this.authCognitoService.removeUserCognito(removeUserAuthDto);
   }
 
+  /**
+   * Mutation to resend the confirmation code for a user's registration.
+   *
+   * @param resendConfirmationCodeAuthDto - The input data for resending the confirmation code.
+   * This object should contain the user's email address or phone number.
+   *
+   * @returns A promise that resolves to a boolean value.
+   * If the confirmation code is successfully resent, the promise resolves to `true`.
+   * If there is an error during the resend process, the promise resolves to `false`.
+   */
   @Mutation(() => Boolean, {
     name: AuthResolverEnum.RESEND_CONFIMATION_CODE_COGNITO,
   })
@@ -66,5 +82,29 @@ export class AuthCognitoResolver {
     return await this.authCognitoService.resendConfirmationCodeCognito(
       resendConfirmationCodeAuthDto,
     );
+  }
+
+  /**
+   * Mutation to log out a user from the application.
+   *
+   * This function sends a request to the Cognito service to log out the user.
+   * It takes a `LogoutAuthDto` object as a parameter, which contains the necessary
+   * information to identify the user.
+   *
+   * @param logoutAuthDto - The input data for logging out a user.
+   * This object should contain the user's unique identifier (e.g., username or access token).
+   *
+   * @returns A promise that resolves to a boolean value.
+   * If the user is successfully logged out, the promise resolves to `true`.
+   * If there is an error during the logout process, the promise resolves to `false`.
+   */
+  @Mutation(() => Boolean, {
+    name: AuthResolverEnum.LOGOUT_COGNITO,
+  })
+  public async logoutUserCognito(
+    @Args('logoutUserAuth')
+    logoutAuthDto: LogoutAuthDto,
+  ): Promise<boolean> {
+    return await this.authCognitoService.logoutUserCognito(logoutAuthDto);
   }
 }

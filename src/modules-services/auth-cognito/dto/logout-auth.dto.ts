@@ -20,19 +20,19 @@ export class LogoutAuthDto {
   })
   readonly accessToken: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString({
     message:
       ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_LOGOUT_ERROR_0003,
   })
   @IsOptional()
-  readonly idToken: string;
+  readonly idToken?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString({
     message:
       ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_AUTH_LOGOUT_ERROR_0004,
   })
   @IsOptional()
-  readonly refreshToken: string;
+  readonly refreshToken?: string;
 }

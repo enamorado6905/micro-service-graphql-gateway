@@ -5,26 +5,28 @@ import { ExceptionErrorMessageEnum } from '../enum/error/exception-error-message
 @InputType()
 export abstract class AbstractStatusInput {
   @Field(() => Boolean, { nullable: true })
-  @IsOptional()
   @IsBoolean({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ABSTRACT_STATUS_DTO_ERROR_0001,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ABSTRACT_STATUS_ERROR_0001,
   })
+  @IsOptional()
   isLocked?: boolean;
 
   @Field(() => Boolean, { nullable: true })
-  @IsOptional()
   @IsBoolean({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ABSTRACT_STATUS_DTO_ERROR_0002,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ABSTRACT_STATUS_ERROR_0002,
   })
+  @IsOptional()
+  s;
   isDisabled?: boolean;
 
   @Field(() => Boolean, { nullable: true })
-  @IsOptional()
   @IsBoolean({
     message:
-      ExceptionErrorMessageEnum.GATEWAY_MANAGER_ACCESS_CONTROL_ABSTRACT_STATUS_DTO_ERROR_0003,
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ABSTRACT_STATUS_ERROR_0003,
   })
+  @IsOptional()
   isVerified?: boolean;
+  ss;
 }

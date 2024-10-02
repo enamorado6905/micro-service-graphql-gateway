@@ -3,8 +3,6 @@ import { PermissionService } from './permission.service';
 import { PaginatedPermission, Permission } from './entities/permission.entity';
 import { CreatePermissionInput } from './dto/create-permission.input';
 import { UpdatePermissionInput } from './dto/update-permission.input';
-import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '../../common/guards/graphql.guard';
 import { FindOnePermissionInput } from './dto/find-one-permission.input';
 import { PermissionResolverEnum } from '../../common/enum/system/name-resolver/permission-resolver';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
@@ -23,7 +21,6 @@ import { FilterByIdPermissionInput } from './dto/filter-by-id.input';
  * `Permission` type.
  */
 @Resolver(() => Permission)
-@UseGuards(GqlAuthGuard)
 export class PermissionResolver {
   /**
    * The constructor of the `PermissionResolver` class.

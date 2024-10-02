@@ -11,18 +11,15 @@ import {
   QueryResolver,
 } from 'nestjs-i18n';
 import { GraphQlModule } from '../graph-ql/graph-ql.module';
-import { ExceptionClass } from './util/class/exception.class';
-import { AxiosClass } from './util/class/axios.class';
+import { ExceptionClass } from './class/exception/exception.class';
+import { AxiosClass } from './class/connection/axios.class';
 import { HttpModule } from '@nestjs/axios';
-import { UsersServiceClass } from './util/class/service/user.service.class';
-import { CognitoServiceClass } from './util/class/service/cognito.service.class';
 import { readFileSync } from 'fs';
-import { LanguageClass } from './util/class/language.class';
+import { LanguageClass } from './class/operation/language.class';
 import { APP_FILTER } from '@nestjs/core';
 import { GraphQLExceptionFilter } from './filter/gql-exception.filter';
-import { RoleServiceClass } from './util/class/service/role.service.class';
-import { PermissionServiceClass } from './util/class/service/permission.service.class';
-import { LoggerClass } from './util/class/logger.class';
+import { LoggerClass } from './class/operation/logger.class';
+import { JWT_AUTH_PROVIDERS } from './constants/providers/jwt.providers';
 
 /**
  * A NestJS module that acts as a common module for the application.
@@ -32,16 +29,14 @@ import { LoggerClass } from './util/class/logger.class';
   providers: [
     ExceptionClass,
     AxiosClass,
-    UsersServiceClass,
-    CognitoServiceClass,
-    RoleServiceClass,
-    PermissionServiceClass,
     LanguageClass,
     LoggerClass,
     {
       provide: APP_FILTER,
       useClass: GraphQLExceptionFilter,
     },
+    ...JWT_AUTH_PROVIDERS,
+    // ...AUTHORIZATION_AUTH_PROVIDERS,
   ],
   imports: [
     ConfigModule.forRoot({
@@ -75,15 +70,6 @@ import { LoggerClass } from './util/class/logger.class';
     GraphQlModule,
     HttpModule,
   ],
-  exports: [
-    ExceptionClass,
-    AxiosClass,
-    UsersServiceClass,
-    CognitoServiceClass,
-    RoleServiceClass,
-    PermissionServiceClass,
-    LanguageClass,
-    LoggerClass,
-  ],
+  exports: [ExceptionClass, AxiosClass, LanguageClass, LoggerClass],
 })
 export class CommonModule {}

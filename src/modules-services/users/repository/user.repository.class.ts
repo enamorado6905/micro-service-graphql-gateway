@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractMethodOperation } from '../abstract-method-operation.class';
-import { ProxyRabbitMQ } from '../proxy-rabbit-mq.class';
-import { RabbitMqEnum } from '../../../enum/msg/rabbit-mq.enum';
-import { PaginationArgsDto } from '../../../dto/args/pagination.args.dto';
-import { PaginateInterface } from '../../../interfaces/paginated.interface';
-import { UsersMsgEnum } from '../../../enum/msg/users.enum';
-import { User } from '../../../../modules-services/users/entities/user.entity';
-import { CreateUserInput } from '../../../../modules-services/users/dto/create-user.input';
-import { UpdateUserInput } from '../../../../modules-services/users/dto/update-user.input';
-import { LanguageClass } from '../language.class';
+import { AbstractMethodOperation } from '../../../common/class//abstract/abstract-method-operation.class';
+import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
+import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
+import { PaginationArgsDto } from '../../../common/dto/args/pagination.args.dto';
+import { PaginateInterface } from '../../../common/interfaces/paginated.interface';
+import { UsersMsgEnum } from '../../../common/enum/msg/users.enum';
+import { User } from '../entities/user.entity';
+import { CreateUserInput } from '../dto/create-user.input';
+import { UpdateUserInput } from '../dto/update-user.input';
+import { LanguageClass } from '../../../common/class/operation/language.class';
 
 /**
- * The `UsersService` class provides methods for managing users in the application.
+ * The `UsersRepository` class provides methods for managing users in the application.
  *
  * This class implements the `AbstractMethodOperation<User>` interface, which means
  * It provides methods for creating, retrieving, updating, and deleting `User` entities.
@@ -36,7 +36,7 @@ import { LanguageClass } from '../language.class';
  * By the NestJS dependency injection container.
  */
 @Injectable()
-export class UsersServiceClass implements AbstractMethodOperation<User> {
+export class UsersRepository implements AbstractMethodOperation<User> {
   /**
    * The `proxyRabbitMQ` property is an instance of the `ProxyRabbitMQ` utility class.
    * This property is used to communicate with a RabbitMQ server.

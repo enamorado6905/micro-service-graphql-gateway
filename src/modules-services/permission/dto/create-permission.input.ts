@@ -1,7 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 import { ExceptionErrorMessageEnum } from '../../../common/enum/error/exception-error-message.enum';
-import { AbstractStatusInput } from '../../../common/abstract/abstract-dto';
+import { AbstractStatusInput } from '../../../common/dto/abstract-dto';
 
 @InputType()
 export class CreatePermissionInput extends AbstractStatusInput {

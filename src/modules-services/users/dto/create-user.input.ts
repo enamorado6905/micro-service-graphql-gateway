@@ -6,7 +6,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
-import { AbstractStatusInput } from '../../../common/abstract/abstract-dto';
+import { AbstractStatusInput } from '../../../common/dto/abstract-dto';
 import { ExceptionErrorMessageEnum } from '../../../common/enum/error/exception-error-message.enum';
 
 @InputType()

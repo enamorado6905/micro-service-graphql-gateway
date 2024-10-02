@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Type } from '@nestjs/common';
-import { PaginateInterface } from '../../interfaces/paginated.interface';
+import { PaginateInterface } from '../interfaces/paginated.interface';
 
 /**
  * A higher-order function that creates a GraphQL object type for paginated responses.

@@ -1,4 +1,4 @@
-import { BcryptClass } from '../util/class/bcrypt.class';
+import { BcryptClass } from '../class/bcrypt/bcrypt.class';
 import {
   CallHandler,
   ExecutionContext,

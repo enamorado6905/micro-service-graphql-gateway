@@ -1,7 +1,7 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Paginated } from '../../../common/util/method/abstract-pagination-entity.method';
-import { AbstractEntity } from '../../../common/abstract/abstract-entity.entity';
+import { AbstractEntity } from '../../../common/class/abstract/abstract-entity.entity';
+import { PaginationClass } from '../../../common/class/operation/pagination.class';
 
 @ObjectType()
 export class Permission extends AbstractEntity {
@@ -21,4 +21,6 @@ export class Permission extends AbstractEntity {
 export const RoleSchema = SchemaFactory.createForClass(Permission);
 
 @ObjectType()
-export class PaginatedPermission extends Paginated(Permission) {}
+export class PaginatedPermission extends PaginationClass.Paginated(
+  Permission,
+) {}

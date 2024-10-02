@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { BcryptClass } from '../util/class/bcrypt.class';
+import { BcryptClass } from '../class/bcrypt/bcrypt.class';
 
 @Injectable()
 export class PasswordEncryptionMiddleware implements NestMiddleware {

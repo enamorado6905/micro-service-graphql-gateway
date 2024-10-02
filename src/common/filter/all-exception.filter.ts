@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { GqlArgumentsHost, GqlExceptionFilter } from '@nestjs/graphql';
 import { RpcException } from '@nestjs/microservices';
-import { LanguageClass } from '../util/class/language.class';
+import { LanguageClass } from '../class/operation/language.class';
 
 @Catch(HttpException, RpcException)
 export class GraphQLExceptionFilter implements GqlExceptionFilter {
@@ -57,7 +57,7 @@ export class GraphQLExceptionFilter implements GqlExceptionFilter {
 
   private handleRpcException(exception: RpcException, response: any) {
     const rpcError = exception.getError();
-    const customMessage = this.language.language('exception.RPC_ERROR', {});
+    // const customMessage = this.language.language('exception.RPC_ERROR', {});
 
     console.error('RPC Exception Response:', rpcError);
 

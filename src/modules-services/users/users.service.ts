@@ -4,7 +4,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import { PaginateInterface } from '../../common/interfaces/paginated.interface';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
-import { UsersServiceClass } from '../../common/util/class/service/user.service.class';
+import { UsersRepository } from './repository/user.repository.class';
 import { FindOneUserInput } from './dto/find-one-user.input';
 
 /**
@@ -34,7 +34,7 @@ import { FindOneUserInput } from './dto/find-one-user.input';
  */
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersServiceClass: UsersServiceClass) {}
+  constructor(private readonly usersRepository: UsersRepository) {}
 
   /**
    * The `find` method is an asynchronous method that retrieves a paginated list of users.
@@ -45,7 +45,7 @@ export class UsersService {
   public async find(
     paginationArgsDto: PaginationArgsDto,
   ): Promise<PaginateInterface<User>> {
-    return await this.usersServiceClass.find(paginationArgsDto);
+    return await this.usersRepository.find(paginationArgsDto);
   }
 
   /**
@@ -55,7 +55,7 @@ export class UsersService {
    * @returns A `Promise` that resolves to the user with the specified ID.
    */
   public async getById(id: string | number): Promise<User> {
-    return await this.usersServiceClass.getById(id);
+    return await this.usersRepository.getById(id);
   }
 
   /**
@@ -65,7 +65,7 @@ export class UsersService {
    * @returns A `Promise` that resolves to the user that matches the filter.
    */
   public async getOne(filter: FindOneUserInput): Promise<User> {
-    return await this.usersServiceClass.getOne(filter);
+    return await this.usersRepository.getOne(filter);
   }
 
   /**
@@ -75,7 +75,7 @@ export class UsersService {
    * @returns A `Promise` that resolves to the created user.
    */
   public async create(item: CreateUserInput): Promise<User> {
-    return await this.usersServiceClass.create(item);
+    return await this.usersRepository.create(item);
   }
 
   /**
@@ -88,7 +88,7 @@ export class UsersService {
     id: string | number,
     item: UpdateUserInput,
   ): Promise<User> {
-    return await this.usersServiceClass.update(id, item);
+    return await this.usersRepository.update(id, item);
   }
 
   /**
@@ -98,7 +98,7 @@ export class UsersService {
    * @returns A `Promise` that resolves to the deleted user.
    */
   public async delete(id: string): Promise<User> {
-    return await this.usersServiceClass.delete(id);
+    return await this.usersRepository.delete(id);
   }
 
   /**
@@ -107,6 +107,6 @@ export class UsersService {
    * @returns A `Promise` that resolves to the total number of users.
    */
   public async total(): Promise<number> {
-    return await this.usersServiceClass.total();
+    return await this.usersRepository.total();
   }
 }

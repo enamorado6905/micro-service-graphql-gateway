@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { ProxyRabbitMQ } from '../proxy-rabbit-mq.class';
-import { RabbitMqEnum } from '../../../enum/msg/rabbit-mq.enum';
-import { SigUpDto } from '../../../../modules-services/auth-cognito/dto/sig-up-auth.dto';
-import { AuthUsersMsgEnum } from '../../../enum/msg/auth-users.enum';
-import { ConfigSigUpDto } from '../../../../modules-services/auth-cognito/dto/confirm-sig-up.dto';
-import { LoginAuthDto } from '../../../../modules-services/auth-cognito/dto/login-auth.dto';
-import { ExchangeCodeForTokensDto } from '../../../../modules-services/auth-cognito/dto/exchange-code-for-token.dto';
-import { LogoutAuthDto } from '../../../../modules-services/auth-cognito/dto/logout-auth.dto';
-import { SignInInterface } from '../../../interfaces/sign-in.interface';
-import { RemoveUserAuthDto } from '../../../../modules-services/auth-cognito/dto/remove-user.dto';
-import { ResendConfirmationCodeAuthDto } from '../../../../modules-services/auth-cognito/dto/resend-confirmation-code-auth.dto';
+import { SigUpDto } from '../../../modules-services/auth-cognito/dto/sig-up-auth.dto';
+import { ConfigSigUpDto } from '../../../modules-services/auth-cognito/dto/confirm-sig-up.dto';
+import { LoginAuthDto } from '../../../modules-services/auth-cognito/dto/login-auth.dto';
+import { ExchangeCodeForTokensDto } from '../../../modules-services/auth-cognito/dto/exchange-code-for-token.dto';
+import { LogoutAuthDto } from '../../../modules-services/auth-cognito/dto/logout-auth.dto';
+import { RemoveUserAuthDto } from '../../../modules-services/auth-cognito/dto/remove-user.dto';
+import { ResendConfirmationCodeAuthDto } from '../../../modules-services/auth-cognito/dto/resend-confirmation-code-auth.dto';
+import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
+import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
+import { AuthUsersMsgEnum } from '../../../common/enum/msg/auth-users.enum';
+import { SignInInterface } from '../object-type/sign-in.interface';
 
 @Injectable()
-export class CognitoServiceClass {
+export class CognitoRepository {
   /**
    * The `cognitoProxyRabbitMQ` property is an instance of the `ProxyRabbitMQ` utility class.
    * This property is used to communicate with a RabbitMQ server.
@@ -92,7 +92,7 @@ export class CognitoServiceClass {
   /**
    * The `logoutUserCognito` method logs out a user from the Cognito user pool.
    *
-   * @returns {Promise<any>} A promise that resolves to the result of the logout operation.
+   * @returns {Promise<LogoutObjectType>} A promise that resolves to the result of the logout operation.
    *
    * @description
    * The function works as follows:
@@ -102,7 +102,9 @@ export class CognitoServiceClass {
    * @example
    * const result = await authService.logoutUserCognito();
    */
-  public async logoutUserCognito(logoutAuthDto: LogoutAuthDto): Promise<any> {
+  public async logoutUserCognito(
+    logoutAuthDto: LogoutAuthDto,
+  ): Promise<boolean> {
     return await this.cognitoProxyRabbitMQ.operations(
       AuthUsersMsgEnum.LOGOUT_USER,
       logoutAuthDto,

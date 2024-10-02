@@ -3,8 +3,6 @@ import { RoleService } from './role.service';
 import { PaginatedRole, Role } from './entities/role.entity';
 import { CreateRoleInput } from './dto/create-role.input';
 import { UpdateRoleInput } from './dto/update-role.input';
-import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '../../common/guards/graphql.guard';
 import { FindOneRoleInput } from './dto/find-one-role.input';
 import { RoleResolverEnum } from '../../common/enum/system/name-resolver/role-resolver.enum';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
@@ -23,7 +21,6 @@ import { FilterByIdRoleInput } from './dto/filter-by-id.input';
  * `Role` type.
  */
 @Resolver(() => Role)
-@UseGuards(GqlAuthGuard)
 export class RoleResolver {
   /**
    * The constructor of the `RoleResolver` class.
