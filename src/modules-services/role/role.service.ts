@@ -4,8 +4,8 @@ import { UpdateRoleInput } from './dto/update-role.input';
 import { Role } from './entities/role.entity';
 import { PaginateInterface } from '../../common/interfaces/paginated.interface';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
-import { RoleServiceClass } from '../../common/util/class/service/role.service.class';
 import { FindOneRoleInput } from './dto/find-one-role.input';
+import { RoleRepository } from './repository/role.service.class';
 
 /**
  * The `RoleService` class provides methods for managing role in the application.
@@ -34,7 +34,7 @@ import { FindOneRoleInput } from './dto/find-one-role.input';
  */
 @Injectable()
 export class RoleService {
-  constructor(private readonly roleServiceClass: RoleServiceClass) {}
+  constructor(private readonly roleRepository: RoleRepository) {}
 
   /**
    * The `find` method is an asynchronous method that retrieves a paginated list of role.
@@ -45,7 +45,7 @@ export class RoleService {
   public async find(
     paginationArgsDto: PaginationArgsDto,
   ): Promise<PaginateInterface<Role>> {
-    return await this.roleServiceClass.find(paginationArgsDto);
+    return await this.roleRepository.find(paginationArgsDto);
   }
 
   /**
@@ -55,7 +55,7 @@ export class RoleService {
    * @returns A `Promise` that resolves to the role with the specified ID.
    */
   public async getById(id: string): Promise<Role> {
-    return await this.roleServiceClass.getById(id);
+    return await this.roleRepository.getById(id);
   }
 
   /**
@@ -65,7 +65,7 @@ export class RoleService {
    * @returns A `Promise` that resolves to the role that matches the filter.
    */
   public async getOne(filter: FindOneRoleInput): Promise<Role> {
-    return await this.roleServiceClass.getOne(filter);
+    return await this.roleRepository.getOne(filter);
   }
 
   /**
@@ -75,7 +75,7 @@ export class RoleService {
    * @returns A `Promise` that resolves to the created role.
    */
   public async create(item: CreateRoleInput): Promise<Role> {
-    return await this.roleServiceClass.create(item);
+    return await this.roleRepository.create(item);
   }
 
   /**
@@ -88,7 +88,7 @@ export class RoleService {
     id: string | number,
     item: UpdateRoleInput,
   ): Promise<Role> {
-    return await this.roleServiceClass.update(id, item);
+    return await this.roleRepository.update(id, item);
   }
 
   /**
@@ -98,7 +98,7 @@ export class RoleService {
    * @returns A `Promise` that resolves to the deleted role.
    */
   public async delete(id: string): Promise<Role> {
-    return await this.roleServiceClass.delete(id);
+    return await this.roleRepository.delete(id);
   }
 
   /**
@@ -107,6 +107,6 @@ export class RoleService {
    * @returns A `Promise` that resolves to the total number of role.
    */
   public async total(): Promise<number> {
-    return await this.roleServiceClass.total();
+    return await this.roleRepository.total();
   }
 }

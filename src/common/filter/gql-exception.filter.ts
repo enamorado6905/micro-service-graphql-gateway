@@ -6,13 +6,13 @@ import {
 } from '@nestjs/common';
 import { GqlArgumentsHost, GqlExceptionFilter } from '@nestjs/graphql';
 import { RpcException } from '@nestjs/microservices';
-import { LanguageClass } from '../util/class/language.class';
+import { LanguageClass } from '../class/operation/language.class';
 import { GraphQLError } from 'graphql';
 import {
   getCodeErrorMessage,
   transformErrorCode,
 } from '../helpers/cast.helper';
-import { LoggerClass } from '../util/class/logger.class';
+import { LoggerClass } from '../class/operation/logger.class';
 import { ErrorsKeysEnum } from '../enum/error/errors.keys';
 
 @Catch(HttpException, RpcException)

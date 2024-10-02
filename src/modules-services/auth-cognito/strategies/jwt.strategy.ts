@@ -1,7 +1,7 @@
 // auth/jwt.strategy.ts
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
 import { passportJwtSecret } from 'jwks-rsa';
 import { ConfigService } from '@nestjs/config';
 
@@ -20,7 +20,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      audience: configService.get('COGNITO_AUDIENCE'),
       issuer: configService.get('COGNITO_ISSUER_URI'),
       algorithms: ['RS256'],
       secretOrKeyProvider: passportJwtSecret({
@@ -47,7 +46,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * const payload = { sub: '1234567890', name: 'John Doe', iat: 1516239022 };
    * await jwtStrategy.validate(payload);
    */
-  public async validate(payload: any): Promise<any> {
-    return payload;
+  public async validate(payload: any, done: VerifiedCallback): Promise<void> {
+    return done(null, payload);
   }
 }

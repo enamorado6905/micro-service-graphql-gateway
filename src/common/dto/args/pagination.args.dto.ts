@@ -43,11 +43,11 @@ export class PaginationArgsDto {
 
   @IsOptional()
   @Field(() => SortInput, { nullable: true })
-  sort?: SortInput;
+  readonly sort?: SortInput;
 
   @IsOptional()
   @Field(() => [PopulateInput], { nullable: true })
-  populate?: PopulateInput[];
+  readonly populate?: PopulateInput[];
 
   @Field(() => Boolean, { defaultValue: true, nullable: true })
   @IsBoolean()

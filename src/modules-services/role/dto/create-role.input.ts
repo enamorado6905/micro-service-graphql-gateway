@@ -9,7 +9,7 @@ import {
   Validate,
 } from 'class-validator';
 import { ExceptionErrorMessageEnum } from '../../../common/enum/error/exception-error-message.enum';
-import { AbstractStatusInput } from '../../../common/abstract/abstract-dto';
+import { AbstractStatusInput } from '../../../common/dto/abstract-dto';
 import { NotNullOrUndefined } from '../../../common/validators/not-null-or-undefined.validator';
 import { IsBooleanNotRequeridingValue } from '../../../common/validators/is-boolean-not-requeriding-value.validator';
 

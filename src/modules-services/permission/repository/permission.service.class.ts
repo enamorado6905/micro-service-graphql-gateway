@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractMethodOperation } from '../abstract-method-operation.class';
-import { ProxyRabbitMQ } from '../proxy-rabbit-mq.class';
-import { RabbitMqEnum } from '../../../enum/msg/rabbit-mq.enum';
-import { PaginationArgsDto } from '../../../dto/args/pagination.args.dto';
-import { PaginateInterface } from '../../../interfaces/paginated.interface';
-import { PermissionsMsgEnum } from '../../../enum/msg/manager-permissions.enum';
-import { Permission } from '../../../../modules-services/permission/entities/permission.entity';
-import { CreatePermissionInput } from '../../../../modules-services/permission/dto/create-permission.input';
-import { UpdatePermissionInput } from '../../../../modules-services/permission/dto/update-permission.input';
+import { Permission } from '../../../modules-services/permission/entities/permission.entity';
+import { CreatePermissionInput } from '../../../modules-services/permission/dto/create-permission.input';
+import { UpdatePermissionInput } from '../../../modules-services/permission/dto/update-permission.input';
+import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
+import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
+import { PaginationArgsDto } from '../../../common/dto/args/pagination.args.dto';
+import { PaginateInterface } from '../../../common/interfaces/paginated.interface';
+import { PermissionsMsgEnum } from '../../../common/enum/msg/manager-permissions.enum';
+import { AbstractMethodOperation } from '../../../common/class/abstract/abstract-method-operation.class';
 
 /**
- * The `PermissionService` class provides methods for managing permission in the application.
+ * The `PermissionRepository` class provides methods for managing permission in the application.
  *
  * This class implements the `AbstractMethodOperation<Permission>` interface, which means
  * It provides methods for creating, retrieving, updating, and deleting `Permission` entities.
@@ -35,7 +35,7 @@ import { UpdatePermissionInput } from '../../../../modules-services/permission/d
  * By the NestJS dependency injection container.
  */
 @Injectable()
-export class PermissionServiceClass
+export class PermissionRepository
   implements AbstractMethodOperation<Permission>
 {
   /**

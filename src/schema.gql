@@ -15,9 +15,9 @@ type Role {
 }
 
 type PaginatedRole {
+  nodes: [Role!]
   limit: Int
   page: Int
-  docs: [Role!]
   totalCount: Int
   hasNextPage: Boolean
   hasPrevPage: Boolean
@@ -42,10 +42,10 @@ type User {
   roles: [Role!]!
 }
 
-type PaginatedAuthor {
+type PaginatedUser {
+  nodes: [User!]
   limit: Int
   page: Int
-  docs: [User!]
   totalCount: Int
   hasNextPage: Boolean
   hasPrevPage: Boolean
@@ -77,9 +77,9 @@ type Permission {
 }
 
 type PaginatedPermission {
+  nodes: [Permission!]
   limit: Int
   page: Int
-  docs: [Permission!]
   totalCount: Int
   hasNextPage: Boolean
   hasPrevPage: Boolean
@@ -93,7 +93,7 @@ type PaginatedPermission {
 type Query {
   sayHello: String!
   USER_TOTAL: Float!
-  USER_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedAuthor!
+  USER_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedUser!
   USER_ID(id: FilterByIdUserInput!): User!
   USER_FIND_ONE(filter: FindOneUserInput!): User!
   AUTH_VALIDATE_REGISTRATION(configSigUpDto: ConfigSigUpDto!): Boolean!
@@ -176,6 +176,7 @@ type Mutation {
   AUTH_COGNITO(createUserInput: SigUpDto!): User!
   AUTH_REMOVE_COGNITO(removeUserAuth: RemoveUserAuthDto!): Boolean!
   RESEND_CONFIMATION_CODE_COGNITO(resendConfirmationCodeAuth: ResendConfirmationCodeAuthDto!): Boolean!
+  LOGOUT_COGNITO(logoutUserAuth: LogoutAuthDto!): Boolean!
   ROLE_REGISTER(createRoleInput: CreateRoleInput!): Role!
   ROLE_UPDATE(id: FilterByIdRoleInput!, updateRoleInput: UpdateRoleInput!): Role!
   ROLE_REMOVE(id: FilterByIdRoleInput!): Role!
@@ -186,7 +187,7 @@ type Mutation {
 
 input CreateUserInput {
   isLocked: Boolean
-  isDisabled: Boolean
+  s: Boolean
   isVerified: Boolean
   name: String!
   surnames: String!
@@ -198,7 +199,7 @@ input CreateUserInput {
 
 input UpdateUserInput {
   isLocked: Boolean
-  isDisabled: Boolean
+  s: Boolean
   isVerified: Boolean
   name: String
   surnames: String
@@ -230,9 +231,15 @@ input ResendConfirmationCodeAuthDto {
   userName: String!
 }
 
+input LogoutAuthDto {
+  accessToken: String!
+  idToken: String
+  refreshToken: String
+}
+
 input CreateRoleInput {
   isLocked: Boolean
-  isDisabled: Boolean
+  s: Boolean
   isVerified: Boolean
   name: String!
   permissions: [ID!]
@@ -241,7 +248,7 @@ input CreateRoleInput {
 
 input UpdateRoleInput {
   isLocked: Boolean
-  isDisabled: Boolean
+  s: Boolean
   isVerified: Boolean
   name: String
   permissions: [ID!]
@@ -250,7 +257,7 @@ input UpdateRoleInput {
 
 input CreatePermissionInput {
   isLocked: Boolean
-  isDisabled: Boolean
+  s: Boolean
   isVerified: Boolean
   name: String!
   resourcePath: String!
@@ -259,7 +266,7 @@ input CreatePermissionInput {
 
 input UpdatePermissionInput {
   isLocked: Boolean
-  isDisabled: Boolean
+  s: Boolean
   isVerified: Boolean
   name: String
   resourcePath: String

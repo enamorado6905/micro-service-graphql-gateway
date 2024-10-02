@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Document, Types } from 'mongoose';
-import { AbstractEntity } from '../../../common/abstract/abstract-entity.entity';
-import { Paginated } from '../../../common/util/method/abstract-pagination-entity.method';
+import { AbstractEntity } from '../../../common/class/abstract/abstract-entity.entity';
 import { UserEntityEnum } from '../../../common/enum/entity/user/user-language.enum';
 import { Role } from '../../role/entities/role.entity';
+import { PaginationClass } from '../../../common/class/operation/pagination.class';
 
 // UserDocument is a type that represents a User document in MongoDB.
 export type UserDocument = User & Document;
@@ -52,4 +52,4 @@ export class User extends AbstractEntity {
 export const UserSchema = SchemaFactory.createForClass(User);
 
 @ObjectType()
-export class PaginatedAuthor extends Paginated(User) {}
+export class PaginatedUser extends PaginationClass.Paginated(User) {}

@@ -3,13 +3,12 @@ import { UsersService } from './users.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { FindOneUserInput } from './dto/find-one-user.input';
-import { PaginatedAuthor, User } from './entities/user.entity';
+import { PaginatedUser, User } from './entities/user.entity';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
-import { UseGuards, UseInterceptors } from '@nestjs/common';
+import { UseInterceptors } from '@nestjs/common';
 import { PasswordEncryptionInterceptor } from '../../common/intercertors/password-encryption.interceptor';
 import { RemovePasswordInterceptor } from '../../common/intercertors/remove-password.interceptor';
 import { UserResolverEnum } from '../../common/enum/system/name-resolver/user-resolver.enum';
-import { GqlAuthGuard } from '../../common/guards/graphql.guard';
 import { FilterByIdUserInput } from './dto/filter-by-id.input';
 
 /**
@@ -25,7 +24,6 @@ import { FilterByIdUserInput } from './dto/filter-by-id.input';
  * `User` type.
  */
 @Resolver(() => User)
-@UseGuards(GqlAuthGuard)
 @UseInterceptors(RemovePasswordInterceptor)
 export class UsersResolver {
   /**
@@ -65,7 +63,7 @@ export class UsersResolver {
    * @param paginationArgsDto - The pagination arguments.
    * @returns The paginated list of users.
    */
-  @Query(() => PaginatedAuthor, { name: UserResolverEnum.USER_LIST })
+  @Query(() => PaginatedUser, { name: UserResolverEnum.USER_LIST })
   @UseInterceptors(RemovePasswordInterceptor)
   async find(@Args() paginationArgsDto: PaginationArgsDto) {
     return await this.usersService.find(paginationArgsDto);

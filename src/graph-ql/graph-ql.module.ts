@@ -5,7 +5,7 @@ import { join } from 'path';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { GraphQlResolver } from './graph-ql.resolver';
 import { ApolloServerErrorCode } from '@apollo/server/errors';
-import { FORMATTED_ERROR } from '../common/util/constants/constants.conts';
+import { FORMATTED_ERROR } from '../common/constants/constants.conts';
 import { EnvEnum } from '../common/enum/system/env.enum';
 
 /**

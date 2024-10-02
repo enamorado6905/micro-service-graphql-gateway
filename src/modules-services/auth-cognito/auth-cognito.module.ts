@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
+import { CognitoRepository } from './repository/cognito.service.class';
 
 @Module({
   imports: [
@@ -25,12 +26,13 @@ import { LocalStrategy } from './strategies/local.strategy';
       }),
     }),
   ],
-  exports: [PassportModule],
   providers: [
     AuthCognitoResolver,
     AuthCognitoService,
+    CognitoRepository,
     JwtStrategy,
     LocalStrategy,
   ],
+  exports: [PassportModule, CognitoRepository],
 })
 export class AuthCognitoModule {}
