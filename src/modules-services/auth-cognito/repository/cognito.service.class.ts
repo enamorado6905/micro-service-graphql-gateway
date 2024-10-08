@@ -9,7 +9,8 @@ import { ResendConfirmationCodeAuthDto } from '../../../modules-services/auth-co
 import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
 import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
 import { AuthUsersMsgEnum } from '../../../common/enum/msg/auth-users.enum';
-import { SignInInterface } from '../object-type/sign-in.interface';
+import { RefreshAuthDto } from '../dto/refresh-auth.dto';
+import { SignInRefreshAuthInterface } from '../interfaces/sign-in-refresh-auth.interface';
 
 @Injectable()
 export class CognitoRepository {
@@ -73,7 +74,7 @@ export class CognitoRepository {
    */
   public async loginUserCognito(
     loginAuthDto: LoginAuthDto,
-  ): Promise<SignInInterface> {
+  ): Promise<SignInRefreshAuthInterface> {
     return await this.cognitoProxyRabbitMQ.operations(
       AuthUsersMsgEnum.LOGIN_USER,
       loginAuthDto,
@@ -112,9 +113,33 @@ export class CognitoRepository {
   }
 
   /**
+   * Refreshes the user's access token in the Cognito user pool.
+   *
+   * @param {RefreshAuthDto} refreshAuthDto - An object containing the refresh token to be used for token refresh.
+   * @returns {Promise<RefreshAuthInterface>} A promise that resolves to the result of the token refresh operation.
+   *
+   * @description
+   * This function sends a message to the RabbitMQ queue specified by `RabbitMqEnum.cognitoQueue` with the operation type
+   * `AuthUsersMsgEnum.REFRESH_USER` and the `refreshAuthDto` as the data. It then awaits the response from the RabbitMQ server,
+   * which indicates whether the token refresh was successful.
+   *
+   * @example
+   * const refreshAuthDto = { refreshToken: 'your_refresh_token' };
+   * const result = await authService.refreshUserCognito(refreshAuthDto);
+   */
+  public async refreshUserCognito(
+    refreshAuthDto: RefreshAuthDto,
+  ): Promise<SignInRefreshAuthInterface> {
+    return await this.cognitoProxyRabbitMQ.operations(
+      AuthUsersMsgEnum.REFRESH_USER,
+      refreshAuthDto,
+    );
+  }
+
+  /**
    * The `removeUserCognito` method removes a user from the Cognito user pool.
    *
-   * @param {string} email - The email of the user to be removed.
+   * @param {RemoveUserAuthDto} removeUserAuthDto - The remove user data.
    * @returns {Promise<any>} A promise that resolves to the result of the user removal operation.
    *
    * @description

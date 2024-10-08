@@ -3,11 +3,12 @@ import { LoginAuthDto } from './dto/login-auth.dto';
 import { ConfigSigUpDto } from './dto/confirm-sig-up.dto';
 import { LogoutAuthDto } from './dto/logout-auth.dto';
 import { ExchangeCodeForTokensDto } from './dto/exchange-code-for-token.dto';
-import { SignInInterface } from '../../common/interfaces/sign-in.interface';
 import { RemoveUserAuthDto } from './dto/remove-user.dto';
 import { SigUpDto } from './dto/sig-up-auth.dto';
 import { ResendConfirmationCodeAuthDto } from './dto/resend-confirmation-code-auth.dto';
 import { CognitoRepository } from './repository/cognito.service.class';
+import { RefreshAuthDto } from './dto/refresh-auth.dto';
+import { SignInRefreshAuthInterface } from './interfaces/sign-in-refresh-auth.interface';
 
 /**
  * The `AuthService` class provides methods for managing user authentication in the application.
@@ -89,8 +90,31 @@ export class AuthCognitoService {
    */
   public async loginUserCognito(
     loginAuthDto: LoginAuthDto,
-  ): Promise<SignInInterface> {
+  ): Promise<SignInRefreshAuthInterface> {
     return await this.cognitoRepository.loginUserCognito(loginAuthDto);
+  }
+
+  /**
+   * Refreshes the user's access and refresh tokens using the Cognito service.
+   *
+   * @param {RefreshAuthDto} refreshAuthDto - An object containing the refresh token to be used for token refresh.
+   * @returns {Promise<RefreshAuthInterface>} A promise that resolves to the result of the refresh operation.
+   * The result will contain the refreshed access and refresh tokens if the refresh is successful.
+   *
+   * @description
+   * This function uses the `cognitoRepository` to refresh the user's access and refresh tokens.
+   * It takes a `RefreshAuthDto` object as a parameter, which contains the `refreshToken` to be used for token refresh.
+   * The function then calls the `refreshUserCognito` method of the `cognitoRepository` with the `refreshToken`
+   * and returns the result of the operation.
+   *
+   * @example
+   * const refreshAuthDto = { refreshToken: 'your_refresh_token' };
+   * const result = await authService.refreshUserCognito(refreshAuthDto);
+   */
+  public async refreshUserCognito(
+    refreshAuthDto: RefreshAuthDto,
+  ): Promise<SignInRefreshAuthInterface> {
+    return await this.cognitoRepository.refreshUserCognito(refreshAuthDto);
   }
 
   /**

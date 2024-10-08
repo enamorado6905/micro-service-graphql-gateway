@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Field, ObjectType, Int } from '@nestjs/graphql';
 import { Type } from '@nestjs/common';
-import { PaginateInterface } from '../../interfaces/paginated.interface';
+import { PaginateInterface } from '../../interfaces/pagination/paginated.interface';
 import { IPaginatedType } from '../../interfaces/pagination/pagination-type.interface';
 
 @Injectable()

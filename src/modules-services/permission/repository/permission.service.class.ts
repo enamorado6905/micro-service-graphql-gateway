@@ -5,7 +5,7 @@ import { UpdatePermissionInput } from '../../../modules-services/permission/dto/
 import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
 import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
 import { PaginationArgsDto } from '../../../common/dto/args/pagination.args.dto';
-import { PaginateInterface } from '../../../common/interfaces/paginated.interface';
+import { PaginateInterface } from '../../../common/interfaces/pagination/paginated.interface';
 import { PermissionsMsgEnum } from '../../../common/enum/msg/manager-permissions.enum';
 import { AbstractMethodOperation } from '../../../common/class/abstract/abstract-method-operation.class';
 

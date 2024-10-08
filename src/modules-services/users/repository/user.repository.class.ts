@@ -3,7 +3,7 @@ import { AbstractMethodOperation } from '../../../common/class//abstract/abstrac
 import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
 import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
 import { PaginationArgsDto } from '../../../common/dto/args/pagination.args.dto';
-import { PaginateInterface } from '../../../common/interfaces/paginated.interface';
+import { PaginateInterface } from '../../../common/interfaces/pagination/paginated.interface';
 import { UsersMsgEnum } from '../../../common/enum/msg/users.enum';
 import { User } from '../entities/user.entity';
 import { CreateUserInput } from '../dto/create-user.input';

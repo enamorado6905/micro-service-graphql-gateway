@@ -1,5 +1,5 @@
 import { Status } from '@grpc/grpc-js/build/src/constants';
-import { ToNumberOptions } from '../interfaces/to-number-options.interface';
+import { ToNumberOptions } from '../interfaces/operation/to-number-options.interface';
 import { ExceptionErrorMessageEnum } from '../enum/error/exception-error-message.enum';
 import { INestApplication, Logger } from '@nestjs/common';
 import { GraphQLSchemaHost } from '@nestjs/graphql';

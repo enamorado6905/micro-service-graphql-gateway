@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePermissionInput } from './dto/create-permission.input';
 import { UpdatePermissionInput } from './dto/update-permission.input';
 import { Permission } from './entities/permission.entity';
-import { PaginateInterface } from '../../common/interfaces/paginated.interface';
+import { PaginateInterface } from '../../common/interfaces/pagination/paginated.interface';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
 import { FindOnePermissionInput } from './dto/find-one-permission.input';
 import { PermissionRepository } from './repository/permission.service.class';

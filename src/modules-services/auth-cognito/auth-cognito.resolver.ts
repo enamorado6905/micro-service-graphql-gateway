@@ -4,11 +4,12 @@ import { User } from '../users/entities/user.entity';
 import { AuthResolverEnum } from '../../common/enum/system/name-resolver/auth-resolver.enum';
 import { ConfigSigUpDto } from './dto/confirm-sig-up.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
-import { SignInInterface } from '../../common/interfaces/sign-in.interface';
+import { SignInRefreshAuthInterface } from './interfaces/sign-in-refresh-auth.interface';
 import { RemoveUserAuthDto } from './dto/remove-user.dto';
 import { SigUpDto } from './dto/sig-up-auth.dto';
 import { ResendConfirmationCodeAuthDto } from './dto/resend-confirmation-code-auth.dto';
 import { LogoutAuthDto } from './dto/logout-auth.dto';
+import { RefreshAuthDto } from './dto/refresh-auth.dto';
 
 @Resolver()
 export class AuthCognitoResolver {
@@ -19,8 +20,12 @@ export class AuthCognitoResolver {
    * @param {LoginAuthDto} loginAuthDto - The input data for creating a user.
    * @returns The created user and register user to cognito.
    */
-  @Mutation(() => SignInInterface, { name: AuthResolverEnum.LOGIN_COGNITO })
-  public async login(@Args('loginAuthDto') loginAuthDto: LoginAuthDto) {
+  @Mutation(() => SignInRefreshAuthInterface, {
+    name: AuthResolverEnum.LOGIN_COGNITO,
+  })
+  public async login(
+    @Args('loginAuthDto') loginAuthDto: LoginAuthDto,
+  ): Promise<SignInRefreshAuthInterface> {
     return await this.authCognitoService.loginUserCognito(loginAuthDto);
   }
 
@@ -106,5 +111,15 @@ export class AuthCognitoResolver {
     logoutAuthDto: LogoutAuthDto,
   ): Promise<boolean> {
     return await this.authCognitoService.logoutUserCognito(logoutAuthDto);
+  }
+
+  @Mutation(() => SignInRefreshAuthInterface, {
+    name: AuthResolverEnum.REFRESH_COGNITO,
+  })
+  public async refreshUserCognito(
+    @Args('refreshAuthDto')
+    refreshAuthDto: RefreshAuthDto,
+  ): Promise<SignInRefreshAuthInterface> {
+    return await this.authCognitoService.refreshUserCognito(refreshAuthDto);
   }
 }

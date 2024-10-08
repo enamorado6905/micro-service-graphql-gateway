@@ -8,6 +8,7 @@ export enum AuthUsersMsgEnum {
   LOGIN_USER_CUSTOM = 'LOGIN_USER_CUSTOM', // Represents the action of logging in an authentication user.
   FIND_TOKEN_FOR_CODE = 'FIND_TOKEN_FOR_CODE',
   LOGOUT_USER = 'LOGOUT_AUTH_USER', // Represents the action of logging out an authentication user.
+  REFRESH_USER = 'REFRESH_AUTH_USER', // Represents the action of refreshing an authentication user's tokens.
   CONFIG_SIGN_UP = 'CONFIG_SIGN_UP', // Represents the action of confirming an authentication user's sign up.
   CONFIG_REMOVE_USER = 'CONFIG_REMOVE_USER', // Represents the action of confirming the removal of an authentication user.
   CONFIG_RESEND_CONFIRMATION_CODE_USER = 'CONFIG_RESEND_CONFIRMATION_CODE_USER', // Represents the action of resending a confirmation code to an authentication user.
