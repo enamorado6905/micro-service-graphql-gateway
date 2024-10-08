@@ -56,12 +56,18 @@ type PaginatedUser {
   totalDocs: Int
 }
 
-type SignInInterface {
-  AccessToken: String!
-  ExpiresIn: Float!
-  TokenType: String!
-  RefreshToken: String!
-  IdToken: String!
+type AuthenticationResultTypeGQL {
+  AccessToken: String
+  ExpiresIn: String
+  IdToken: String
+  RefreshToken: String
+  TokenType: String
+}
+
+type SignInRefreshAuthInterface {
+  ChallengeName: String
+  Session: String
+  AuthenticationResult: AuthenticationResultTypeGQL
 }
 
 type Permission {
@@ -172,11 +178,12 @@ type Mutation {
   USER_REGISTER(createUserInput: CreateUserInput!): User!
   USER_UPDATE(id: FilterByIdUserInput!, updateUserInput: UpdateUserInput!): User!
   USER_REMOVE(id: FilterByIdUserInput!): User!
-  LOGIN_COGNITO(loginAuthDto: LoginAuthDto!): SignInInterface!
+  LOGIN_COGNITO(loginAuthDto: LoginAuthDto!): SignInRefreshAuthInterface!
   AUTH_COGNITO(createUserInput: SigUpDto!): User!
   AUTH_REMOVE_COGNITO(removeUserAuth: RemoveUserAuthDto!): Boolean!
   RESEND_CONFIMATION_CODE_COGNITO(resendConfirmationCodeAuth: ResendConfirmationCodeAuthDto!): Boolean!
   LOGOUT_COGNITO(logoutUserAuth: LogoutAuthDto!): Boolean!
+  REFRESH_COGNITO(refreshAuthDto: RefreshAuthDto!): SignInRefreshAuthInterface!
   ROLE_REGISTER(createRoleInput: CreateRoleInput!): Role!
   ROLE_UPDATE(id: FilterByIdRoleInput!, updateRoleInput: UpdateRoleInput!): Role!
   ROLE_REMOVE(id: FilterByIdRoleInput!): Role!
@@ -234,6 +241,10 @@ input ResendConfirmationCodeAuthDto {
 input LogoutAuthDto {
   accessToken: String!
   idToken: String
+  refreshToken: String
+}
+
+input RefreshAuthDto {
   refreshToken: String
 }
 

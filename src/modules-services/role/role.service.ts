@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateRoleInput } from './dto/create-role.input';
 import { UpdateRoleInput } from './dto/update-role.input';
 import { Role } from './entities/role.entity';
-import { PaginateInterface } from '../../common/interfaces/paginated.interface';
+import { PaginateInterface } from '../../common/interfaces/pagination/paginated.interface';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
 import { FindOneRoleInput } from './dto/find-one-role.input';
 import { RoleRepository } from './repository/role.service.class';

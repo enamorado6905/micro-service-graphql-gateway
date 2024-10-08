@@ -4,7 +4,7 @@ import { CreateRoleInput } from '../../../modules-services/role/dto/create-role.
 import { UpdateRoleInput } from '../../../modules-services/role/dto/update-role.input';
 import { AbstractMethodOperation } from '../../../common/class/abstract/abstract-method-operation.class';
 import { PaginationArgsDto } from '../../../common/dto/args/pagination.args.dto';
-import { PaginateInterface } from '../../../common/interfaces/paginated.interface';
+import { PaginateInterface } from '../../../common/interfaces/pagination/paginated.interface';
 import { RolesMsgEnum } from '../../../common/enum/msg/manager-roles.enum';
 import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
 import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';

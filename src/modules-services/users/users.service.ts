@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
-import { PaginateInterface } from '../../common/interfaces/paginated.interface';
+import { PaginateInterface } from '../../common/interfaces/pagination/paginated.interface';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
 import { UsersRepository } from './repository/user.repository.class';
 import { FindOneUserInput } from './dto/find-one-user.input';

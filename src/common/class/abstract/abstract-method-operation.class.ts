@@ -1,5 +1,5 @@
 import { PaginationArgsDto } from '../../dto/args/pagination.args.dto';
-import { PaginateInterface } from '../../interfaces/paginated.interface';
+import { PaginateInterface } from '../../interfaces/pagination/paginated.interface';
 
 /**
  * The `BaseService` class is an abstract generic class designed to define a standard
