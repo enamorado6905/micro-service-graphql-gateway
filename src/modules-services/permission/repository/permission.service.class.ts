@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { Permission } from '../../../modules-services/permission/entities/permission.entity';
 import { CreatePermissionInput } from '../../../modules-services/permission/dto/create-permission.input';
 import { UpdatePermissionInput } from '../../../modules-services/permission/dto/update-permission.input';
-import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
 import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
 import { PaginationArgsDto } from '../../../common/dto/args/pagination.args.dto';
 import { PaginateInterface } from '../../../common/interfaces/pagination/paginated.interface';
 import { PermissionsMsgEnum } from '../../../common/enum/msg/manager-permissions.enum';
 import { AbstractMethodOperation } from '../../../common/class/abstract/abstract-method-operation.class';
+import { OperationClass } from '../../../common/class/operation/operation.class';
 
 /**
  * The `PermissionRepository` class provides methods for managing permission in the application.
@@ -39,13 +39,11 @@ export class PermissionRepository
   implements AbstractMethodOperation<Permission>
 {
   /**
-   * The `proxyRabbitMQ` property is an instance of the `ProxyRabbitMQ` utility class.
-   * This property is used to communicate with a RabbitMQ server.
-   * The `ProxyRabbitMQ` instance is created with the `RabbitMqEnum.permissionQueue` parameter, which
-   * Specifies the name of the RabbitMQ queue to use.
+   * The `operation` property is an instance of the `OperationClass` class, which is used to
+   * perform operations on the RabbitMQ server.
    */
-  private readonly proxyRabbitMQ = new ProxyRabbitMQ(
-    RabbitMqEnum.accessControlQueue,
+  private readonly operation = new OperationClass(
+    RabbitMqEnum.organizationQueue,
   );
 
   constructor() {}
@@ -59,7 +57,7 @@ export class PermissionRepository
   public async find(
     paginationArgsDto: PaginationArgsDto,
   ): Promise<PaginateInterface<Permission>> {
-    return await this.proxyRabbitMQ.operations(
+    return await this.operation.operations(
       PermissionsMsgEnum.FIND,
       paginationArgsDto,
     );
@@ -72,7 +70,7 @@ export class PermissionRepository
    * @returns A `Promise` that resolves to the permission with the specified ID.
    */
   public async getById(id: string | number): Promise<Permission> {
-    return await this.proxyRabbitMQ.operations(PermissionsMsgEnum.FIND_BY_ID, {
+    return await this.operation.operations(PermissionsMsgEnum.FIND_BY_ID, {
       id,
     });
   }
@@ -84,10 +82,7 @@ export class PermissionRepository
    * @returns A `Promise` that resolves to the permission that matches the filter.
    */
   public async getOne(filter: object): Promise<Permission> {
-    return await this.proxyRabbitMQ.operations(
-      PermissionsMsgEnum.FIND_ONE,
-      filter,
-    );
+    return await this.operation.operations(PermissionsMsgEnum.FIND_ONE, filter);
   }
 
   /**
@@ -97,7 +92,7 @@ export class PermissionRepository
    * @returns A `Promise` that resolves to the created permission.
    */
   public create(item: CreatePermissionInput): Promise<Permission> {
-    return this.proxyRabbitMQ.operations(PermissionsMsgEnum.CREATE, item);
+    return this.operation.operations(PermissionsMsgEnum.CREATE, item);
   }
 
   /**
@@ -110,7 +105,7 @@ export class PermissionRepository
     id: string | number,
     item: UpdatePermissionInput,
   ): Promise<Permission> {
-    return this.proxyRabbitMQ.operations(PermissionsMsgEnum.UPDATE, {
+    return this.operation.operations(PermissionsMsgEnum.UPDATE, {
       id,
       item,
     });
@@ -123,7 +118,7 @@ export class PermissionRepository
    * @returns A `Promise` that resolves to the deleted permission.
    */
   public delete(id: string | number): Promise<Permission> {
-    return this.proxyRabbitMQ.operations(PermissionsMsgEnum.DELETE, { id });
+    return this.operation.operations(PermissionsMsgEnum.DELETE, { id });
   }
 
   /**
@@ -132,6 +127,6 @@ export class PermissionRepository
    * @returns A `Promise` that resolves to the total number of permission.
    */
   public async total(): Promise<number> {
-    return await this.proxyRabbitMQ.operations(PermissionsMsgEnum.TOTAL, {});
+    return await this.operation.operations(PermissionsMsgEnum.TOTAL, {});
   }
 }

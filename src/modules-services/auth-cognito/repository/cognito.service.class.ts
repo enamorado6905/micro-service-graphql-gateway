@@ -6,7 +6,6 @@ import { ExchangeCodeForTokensDto } from '../../../modules-services/auth-cognito
 import { LogoutAuthDto } from '../../../modules-services/auth-cognito/dto/logout-auth.dto';
 import { RemoveUserAuthDto } from '../../../modules-services/auth-cognito/dto/remove-user.dto';
 import { ResendConfirmationCodeAuthDto } from '../../../modules-services/auth-cognito/dto/resend-confirmation-code-auth.dto';
-import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
 import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
 import { AuthUsersMsgEnum } from '../../../common/enum/msg/auth-users.enum';
 import { RefreshAuthDto } from '../dto/refresh-auth.dto';
@@ -15,17 +14,16 @@ import { InitiateAccountRecoveryDto } from '../dto/initiate-account-recovery.dto
 import { ConfirmAccountRecoveryDto } from '../dto/confirm-account-recovery.dto';
 import { InitiateAccountRecoveryInterface } from '../interfaces/initiate-account-recovery.dto';
 import { ConfirmForgotPasswordInterface } from '../interfaces/confirm-forgot-password.interface';
+import { OperationClass } from '../../../common/class/operation/operation.class';
 
 @Injectable()
 export class CognitoRepository {
   /**
-   * The `cognitoProxyRabbitMQ` property is an instance of the `ProxyRabbitMQ` utility class.
-   * This property is used to communicate with a RabbitMQ server.
-   * The `ProxyRabbitMQ` instance is created with the `RabbitMqEnum.usersQueue` parameter, which
-   * Specifies the name of the RabbitMQ queue to use.
+   * The `operation` property is an instance of the `OperationClass` class, which is used to
+   * perform operations on the RabbitMQ server.
    */
-  private readonly cognitoProxyRabbitMQ = new ProxyRabbitMQ(
-    RabbitMqEnum.cognitoQueue,
+  private readonly operation = new OperationClass(
+    RabbitMqEnum.organizationQueue,
   );
 
   constructor() {}
@@ -38,7 +36,7 @@ export class CognitoRepository {
    *
    * @description
    * The function works as follows:
-   * 1. It calls the `operations` method of the `cognitoProxyRabbitMQ` instance with `AuthUsersMsgEnum.CREATE` as the operation type and `createAuthDto` as the data.
+   * 1. It calls the `operations` method of the `operation` instance with `AuthUsersMsgEnum.CREATE` as the operation type and `createAuthDto` as the data.
    * 2. It returns the result of the `operations` method.
    *
    * @example
@@ -46,16 +44,13 @@ export class CognitoRepository {
    * const result = await authService.registerUserCognito(createAuthDto);
    */
   public async registerUserCognito(sigUpDto: SigUpDto): Promise<any> {
-    return await this.cognitoProxyRabbitMQ.operations(
-      AuthUsersMsgEnum.CREATE,
-      sigUpDto,
-    );
+    return await this.operation.operations(AuthUsersMsgEnum.CREATE, sigUpDto);
   }
 
   public async confirmSignUpCognito(
     configSigUpDto: ConfigSigUpDto,
   ): Promise<boolean> {
-    return await this.cognitoProxyRabbitMQ.operations(
+    return await this.operation.operations(
       AuthUsersMsgEnum.CONFIG_SIGN_UP,
       configSigUpDto,
     );
@@ -69,7 +64,7 @@ export class CognitoRepository {
    *
    * @description
    * The function works as follows:
-   * 1. It calls the `operations` method of the `cognitoProxyRabbitMQ` instance with `AuthUsersMsgEnum.LOGIN_USER` as the operation type and `loginAuthDto` as the data.
+   * 1. It calls the `operations` method of the `operation` instance with `AuthUsersMsgEnum.LOGIN_USER` as the operation type and `loginAuthDto` as the data.
    * 2. It returns the result of the `operations` method.
    *
    * @example
@@ -79,7 +74,7 @@ export class CognitoRepository {
   public async loginUserCognito(
     loginAuthDto: LoginAuthDto,
   ): Promise<SignInRefreshAuthInterface> {
-    return await this.cognitoProxyRabbitMQ.operations(
+    return await this.operation.operations(
       AuthUsersMsgEnum.LOGIN_USER,
       loginAuthDto,
     );
@@ -103,7 +98,7 @@ export class CognitoRepository {
   public async exchangeCodeForTokenCognito(
     exchangeCodeForTokensDto: ExchangeCodeForTokensDto,
   ): Promise<any> {
-    return await this.cognitoProxyRabbitMQ.operations(
+    return await this.operation.operations(
       AuthUsersMsgEnum.FIND_TOKEN_FOR_CODE,
       exchangeCodeForTokensDto,
     );
@@ -116,7 +111,7 @@ export class CognitoRepository {
    *
    * @description
    * The function works as follows:
-   * 1. It calls the `operations` method of the `cognitoProxyRabbitMQ` instance with `AuthUsersMsgEnum.LOGOUT_USER` as the operation type.
+   * 1. It calls the `operations` method of the `operation` instance with `AuthUsersMsgEnum.LOGOUT_USER` as the operation type.
    * 2. It returns the result of the `operations` method.
    *
    * @example
@@ -125,7 +120,7 @@ export class CognitoRepository {
   public async logoutUserCognito(
     logoutAuthDto: LogoutAuthDto,
   ): Promise<boolean> {
-    return await this.cognitoProxyRabbitMQ.operations(
+    return await this.operation.operations(
       AuthUsersMsgEnum.LOGOUT_USER,
       logoutAuthDto,
     );
@@ -149,7 +144,7 @@ export class CognitoRepository {
   public async refreshUserCognito(
     refreshAuthDto: RefreshAuthDto,
   ): Promise<SignInRefreshAuthInterface> {
-    return await this.cognitoProxyRabbitMQ.operations(
+    return await this.operation.operations(
       AuthUsersMsgEnum.REFRESH_USER,
       refreshAuthDto,
     );
@@ -174,7 +169,7 @@ export class CognitoRepository {
   public async removeUserCognito(
     removeUserAuthDto: RemoveUserAuthDto,
   ): Promise<boolean> {
-    return await this.cognitoProxyRabbitMQ.operations(
+    return await this.operation.operations(
       AuthUsersMsgEnum.CONFIG_REMOVE_USER,
       removeUserAuthDto,
     );
@@ -199,7 +194,7 @@ export class CognitoRepository {
   public async resendConfirmationCodeCognito(
     resendConfirmationCodeAuthDto: ResendConfirmationCodeAuthDto,
   ): Promise<boolean> {
-    return await this.cognitoProxyRabbitMQ.operations(
+    return await this.operation.operations(
       AuthUsersMsgEnum.CONFIG_RESEND_CONFIRMATION_CODE_USER,
       resendConfirmationCodeAuthDto,
     );
@@ -223,7 +218,7 @@ export class CognitoRepository {
   public async initiateAccountRecoveryCognito(
     initiateAccountRecoveryDto: InitiateAccountRecoveryDto,
   ): Promise<InitiateAccountRecoveryInterface> {
-    return await this.cognitoProxyRabbitMQ.operations(
+    return await this.operation.operations(
       AuthUsersMsgEnum.INITIATE_ACCOUNT_RECOVERY,
       initiateAccountRecoveryDto,
     );
@@ -247,7 +242,7 @@ export class CognitoRepository {
   public async confirmAccountRecoveryCognito(
     confirmAccountRecoveryDto: ConfirmAccountRecoveryDto,
   ): Promise<ConfirmForgotPasswordInterface> {
-    return await this.cognitoProxyRabbitMQ.operations(
+    return await this.operation.operations(
       AuthUsersMsgEnum.CONFIRM_ACCOUNT_RECOVERY,
       confirmAccountRecoveryDto,
     );

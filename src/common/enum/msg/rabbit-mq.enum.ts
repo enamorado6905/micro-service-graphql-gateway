@@ -7,4 +7,5 @@ export enum RabbitMqEnum {
   cognitoQueue = 'manager-cognito', // Queue name for manager-cognito operations.
   accessControlQueue = 'accessControl', // Queue name for permission-related operations.
   organizationQueue = 'organization', // Queue name for organization-related operations.
+  orderProcessorServiceQueue = 'orderProcessorService', // Queue name for order processor service operations.
 }

@@ -6,8 +6,8 @@ import { AbstractMethodOperation } from '../../../common/class/abstract/abstract
 import { PaginationArgsDto } from '../../../common/dto/args/pagination.args.dto';
 import { PaginateInterface } from '../../../common/interfaces/pagination/paginated.interface';
 import { RolesMsgEnum } from '../../../common/enum/msg/manager-roles.enum';
-import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
 import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
+import { OperationClass } from '../../../common/class/operation/operation.class';
 
 /**
  * The `RoleRepository` class provides methods for managing role in the application.
@@ -37,13 +37,11 @@ import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
 @Injectable()
 export class RoleRepository implements AbstractMethodOperation<Role> {
   /**
-   * The `proxyRabbitMQ` property is an instance of the `ProxyRabbitMQ` utility class.
-   * This property is used to communicate with a RabbitMQ server.
-   * The `ProxyRabbitMQ` instance is created with the `RabbitMqEnum.roleQueue` parameter, which
-   * Specifies the name of the RabbitMQ queue to use.
+   * The `operation` property is an instance of the `OperationClass` class, which is used to
+   * perform operations on the RabbitMQ server.
    */
-  private readonly proxyRabbitMQ = new ProxyRabbitMQ(
-    RabbitMqEnum.accessControlQueue,
+  private readonly operation = new OperationClass(
+    RabbitMqEnum.organizationQueue,
   );
 
   constructor() {}
@@ -57,7 +55,7 @@ export class RoleRepository implements AbstractMethodOperation<Role> {
   public async find(
     paginationArgsDto: PaginationArgsDto,
   ): Promise<PaginateInterface<Role>> {
-    return await this.proxyRabbitMQ.operations(
+    return await this.operation.operations(
       RolesMsgEnum.FIND,
       paginationArgsDto,
     );
@@ -70,7 +68,7 @@ export class RoleRepository implements AbstractMethodOperation<Role> {
    * @returns A `Promise` that resolves to the role with the specified ID.
    */
   public async getById(id: string): Promise<Role> {
-    return await this.proxyRabbitMQ.operations(RolesMsgEnum.FIND_BY_ID, {
+    return await this.operation.operations(RolesMsgEnum.FIND_BY_ID, {
       id,
     });
   }
@@ -82,7 +80,7 @@ export class RoleRepository implements AbstractMethodOperation<Role> {
    * @returns A `Promise` that resolves to the role that matches the filter.
    */
   public async getOne(filter: object): Promise<Role> {
-    return await this.proxyRabbitMQ.operations(RolesMsgEnum.FIND_ONE, filter);
+    return await this.operation.operations(RolesMsgEnum.FIND_ONE, filter);
   }
 
   /**
@@ -92,7 +90,7 @@ export class RoleRepository implements AbstractMethodOperation<Role> {
    * @returns A `Promise` that resolves to the created role.
    */
   public create(item: CreateRoleInput): Promise<Role> {
-    return this.proxyRabbitMQ.operations(RolesMsgEnum.CREATE, item);
+    return this.operation.operations(RolesMsgEnum.CREATE, item);
   }
 
   /**
@@ -102,7 +100,7 @@ export class RoleRepository implements AbstractMethodOperation<Role> {
    * @returns A `Promise` that resolves to the updated role.
    */
   public update(id: string | number, item: UpdateRoleInput): Promise<Role> {
-    return this.proxyRabbitMQ.operations(RolesMsgEnum.UPDATE, { id, item });
+    return this.operation.operations(RolesMsgEnum.UPDATE, { id, item });
   }
 
   /**
@@ -112,7 +110,7 @@ export class RoleRepository implements AbstractMethodOperation<Role> {
    * @returns A `Promise` that resolves to the deleted role.
    */
   public delete(id: string | number): Promise<Role> {
-    return this.proxyRabbitMQ.operations(RolesMsgEnum.DELETE, { id });
+    return this.operation.operations(RolesMsgEnum.DELETE, { id });
   }
 
   /**
@@ -121,6 +119,6 @@ export class RoleRepository implements AbstractMethodOperation<Role> {
    * @returns A `Promise` that resolves to the total number of role.
    */
   public async total(): Promise<number> {
-    return await this.proxyRabbitMQ.operations(RolesMsgEnum.TOTAL, {});
+    return await this.operation.operations(RolesMsgEnum.TOTAL, {});
   }
 }
