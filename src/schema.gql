@@ -117,6 +117,30 @@ type PaginatedPermission {
   totalDocs: Int
 }
 
+type Organization {
+  _id: ID!
+  isLocked: Boolean!
+  isDisabled: Boolean!
+  isVerified: Boolean!
+  createdAt: String!
+  updatedAt: String!
+  name: String!
+}
+
+type PaginatedOrganization {
+  nodes: [Organization!]
+  limit: Int
+  page: Int
+  totalCount: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  totalPages: Int
+  nextPage: Int
+  prevPage: Int
+  pagingCounter: Int
+  totalDocs: Int
+}
+
 type Query {
   sayHello: String!
   USER_TOTAL: Float!
@@ -132,6 +156,10 @@ type Query {
   PERMISSION_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedPermission!
   PERMISSION_ID(id: FilterByIdPermissionInput!): Permission!
   PERMISSION_FIND_ONE(filter: FindOnePermissionInput!): Permission!
+  ORGANIZATION_TOTAL: Float!
+  ORGANIZATION_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedOrganization!
+  ORGANIZATION_ID(id: FilterByIdOrganizationInput!): Organization!
+  ORGANIZATION_FIND_ONE(filter: FindOneOrganizationInput!): Organization!
 }
 
 input QueryInput {
@@ -195,6 +223,15 @@ input FindOnePermissionInput {
   value: String!
 }
 
+input FilterByIdOrganizationInput {
+  id: String!
+}
+
+input FindOneOrganizationInput {
+  search: String!
+  value: String!
+}
+
 type Mutation {
   USER_REGISTER(createUserInput: CreateUserInput!): User!
   USER_UPDATE(id: FilterByIdUserInput!, updateUserInput: UpdateUserInput!): User!
@@ -213,6 +250,9 @@ type Mutation {
   PERMISSION_REGISTER(createPermissionInput: CreatePermissionInput!): Permission!
   PERMISSION_UPDATE(id: FilterByIdPermissionInput!, updatePermissionInput: UpdatePermissionInput!): Permission!
   PERMISSION_REMOVE(id: FilterByIdPermissionInput!): Permission!
+  ORGANIZATION_REGISTER(createOrganizationInput: CreateOrganizationInput!): Organization!
+  ORGANIZATION_UPDATE(id: FilterByIdOrganizationInput!, updateOrganizationInput: UpdateOrganizationInput!): Organization!
+  ORGANIZATION_REMOVE(id: FilterByIdOrganizationInput!): Organization!
 }
 
 input CreateUserInput {
@@ -315,4 +355,12 @@ input UpdatePermissionInput {
   name: String
   resourcePath: String
   description: String
+}
+
+input CreateOrganizationInput {
+  name: String!
+}
+
+input UpdateOrganizationInput {
+  name: String
 }
