@@ -20,6 +20,8 @@ import { APP_FILTER } from '@nestjs/core';
 import { GraphQLExceptionFilter } from './filter/gql-exception.filter';
 import { LoggerClass } from './class/operation/logger.class';
 import { JWT_AUTH_PROVIDERS } from './constants/providers/jwt.providers';
+import { LifecycleServiceClass } from './class/abstract/abstract-life-cycle-service.class';
+import { OperationClass } from './class/operation/operation.class';
 
 /**
  * A NestJS module that acts as a common module for the application.

@@ -141,4 +141,13 @@ export class ProxyRabbitMQ {
       throw new Error(error.message);
     }
   }
+
+  public async operationsEmit(msg: string, data: object): Promise<any> {
+    try {
+      const clientProxy = this.proxyRabbitMQ();
+      return await firstValueFrom(clientProxy.emit(msg, data));
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
 }

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { AbstractMethodOperation } from '../../../common/class/abstract/abstract-method-operation.class';
-import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
 import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
 import { PaginationArgsDto } from '../../../common/dto/args/pagination.args.dto';
 import { PaginateInterface } from '../../../common/interfaces/pagination/paginated.interface';
@@ -8,7 +7,7 @@ import { OrganizationMsgEnum } from '../../../common/enum/msg/organization.enum'
 import { Organization } from '../entities/organization.entity';
 import { CreateOrganizationInput } from '../dto/create-organization.input';
 import { UpdateOrganizationInput } from '../dto/update-organization.input';
-import { LanguageClass } from '../../../common/class/operation/language.class';
+import { OperationClass } from '../../../common/class/operation/operation.class';
 
 /**
  * The `OrganizationRepository` class provides methods for managing Organization in the application.
@@ -40,16 +39,14 @@ export class OrganizationRepository
   implements AbstractMethodOperation<Organization>
 {
   /**
-   * The `proxyRabbitMQ` property is an instance of the `ProxyRabbitMQ` utility class.
-   * This property is used to communicate with a RabbitMQ server.
-   * The `ProxyRabbitMQ` instance is created with the `RabbitMqEnum.OrganizationQueue` parameter, which
-   * Specifies the name of the RabbitMQ queue to use.
+   * The `operation` property is an instance of the `OperationClass` class, which is used to
+   * perform operations on the RabbitMQ server.
    */
-  private readonly proxyRabbitMQ = new ProxyRabbitMQ(
+  private readonly operation = new OperationClass(
     RabbitMqEnum.organizationQueue,
   );
 
-  constructor(private readonly language: LanguageClass) {}
+  constructor() {}
 
   /**
    * The `find` method is an asynchronous method that retrieves a paginated list of Organization.
@@ -60,7 +57,7 @@ export class OrganizationRepository
   public async find(
     paginationArgsDto: PaginationArgsDto,
   ): Promise<PaginateInterface<Organization>> {
-    return await this.proxyRabbitMQ.operations(
+    return await this.operation.operations(
       OrganizationMsgEnum.FIND,
       paginationArgsDto,
     );
@@ -73,7 +70,7 @@ export class OrganizationRepository
    * @returns A `Promise` that resolves to the organization with the specified ID.
    */
   public async getById(id: string | number): Promise<Organization> {
-    return await this.proxyRabbitMQ.operations(OrganizationMsgEnum.FIND_BY_ID, {
+    return await this.operation.operations(OrganizationMsgEnum.FIND_BY_ID, {
       id,
     });
   }
@@ -85,7 +82,7 @@ export class OrganizationRepository
    * @returns A `Promise` that resolves to the organization that matches the filter.
    */
   public async getOne(filter: object): Promise<Organization> {
-    return await this.proxyRabbitMQ.operations(
+    return await this.operation.operations(
       OrganizationMsgEnum.FIND_ONE,
       filter,
     );
@@ -98,7 +95,7 @@ export class OrganizationRepository
    * @returns A `Promise` that resolves to the created organization.
    */
   public create(item: CreateOrganizationInput): Promise<Organization> {
-    return this.proxyRabbitMQ.operations(OrganizationMsgEnum.CREATE, item);
+    return this.operation.operations(OrganizationMsgEnum.CREATE, item);
   }
 
   /**
@@ -111,7 +108,7 @@ export class OrganizationRepository
     id: string | number,
     item: UpdateOrganizationInput,
   ): Promise<Organization> {
-    return this.proxyRabbitMQ.operations(OrganizationMsgEnum.UPDATE, {
+    return this.operation.operations(OrganizationMsgEnum.UPDATE, {
       id,
       item,
     });
@@ -124,7 +121,7 @@ export class OrganizationRepository
    * @returns A `Promise` that resolves to the deleted organization.
    */
   public delete(id: string): Promise<Organization> {
-    return this.proxyRabbitMQ.operations(OrganizationMsgEnum.DELETE, { id });
+    return this.operation.operations(OrganizationMsgEnum.DELETE, { id });
   }
 
   /**
@@ -133,6 +130,6 @@ export class OrganizationRepository
    * @returns A `Promise` that resolves to the total number of Organization.
    */
   public async total(): Promise<number> {
-    return await this.proxyRabbitMQ.operations(OrganizationMsgEnum.TOTAL, {});
+    return await this.operation.operations(OrganizationMsgEnum.TOTAL, {});
   }
 }

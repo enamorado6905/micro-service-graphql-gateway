@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { AbstractMethodOperation } from '../../../common/class//abstract/abstract-method-operation.class';
-import { ProxyRabbitMQ } from '../../../common/class/connection/proxy-rabbit-mq.class';
 import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
 import { PaginationArgsDto } from '../../../common/dto/args/pagination.args.dto';
 import { PaginateInterface } from '../../../common/interfaces/pagination/paginated.interface';
@@ -8,7 +7,7 @@ import { UsersMsgEnum } from '../../../common/enum/msg/users.enum';
 import { User } from '../entities/user.entity';
 import { CreateUserInput } from '../dto/create-user.input';
 import { UpdateUserInput } from '../dto/update-user.input';
-import { LanguageClass } from '../../../common/class/operation/language.class';
+import { OperationClass } from '../../../common/class/operation/operation.class';
 
 /**
  * The `UsersRepository` class provides methods for managing users in the application.
@@ -38,14 +37,14 @@ import { LanguageClass } from '../../../common/class/operation/language.class';
 @Injectable()
 export class UsersRepository implements AbstractMethodOperation<User> {
   /**
-   * The `proxyRabbitMQ` property is an instance of the `ProxyRabbitMQ` utility class.
-   * This property is used to communicate with a RabbitMQ server.
-   * The `ProxyRabbitMQ` instance is created with the `RabbitMqEnum.usersQueue` parameter, which
-   * Specifies the name of the RabbitMQ queue to use.
+   * The `operation` property is an instance of the `OperationClass` class, which is used to
+   * perform operations on the RabbitMQ server.
    */
-  private readonly proxyRabbitMQ = new ProxyRabbitMQ(RabbitMqEnum.usersQueue);
+  private readonly operation = new OperationClass(
+    RabbitMqEnum.organizationQueue,
+  );
 
-  constructor(private readonly language: LanguageClass) {}
+  constructor() {}
 
   /**
    * The `find` method is an asynchronous method that retrieves a paginated list of users.
@@ -56,7 +55,7 @@ export class UsersRepository implements AbstractMethodOperation<User> {
   public async find(
     paginationArgsDto: PaginationArgsDto,
   ): Promise<PaginateInterface<User>> {
-    return await this.proxyRabbitMQ.operations(
+    return await this.operation.operations(
       UsersMsgEnum.FIND,
       paginationArgsDto,
     );
@@ -69,7 +68,7 @@ export class UsersRepository implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the user with the specified ID.
    */
   public async getById(id: string | number): Promise<User> {
-    return await this.proxyRabbitMQ.operations(UsersMsgEnum.FIND_BY_ID, {
+    return await this.operation.operations(UsersMsgEnum.FIND_BY_ID, {
       id,
     });
   }
@@ -81,7 +80,7 @@ export class UsersRepository implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the user that matches the filter.
    */
   public async getOne(filter: object): Promise<User> {
-    return await this.proxyRabbitMQ.operations(UsersMsgEnum.FIND_ONE, filter);
+    return await this.operation.operations(UsersMsgEnum.FIND_ONE, filter);
   }
 
   /**
@@ -91,7 +90,7 @@ export class UsersRepository implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the created user.
    */
   public create(item: CreateUserInput): Promise<User> {
-    return this.proxyRabbitMQ.operations(UsersMsgEnum.CREATE, item);
+    return this.operation.operations(UsersMsgEnum.CREATE, item);
   }
 
   /**
@@ -101,7 +100,7 @@ export class UsersRepository implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the updated user.
    */
   public update(id: string | number, item: UpdateUserInput): Promise<User> {
-    return this.proxyRabbitMQ.operations(UsersMsgEnum.UPDATE, { id, item });
+    return this.operation.operations(UsersMsgEnum.UPDATE, { id, item });
   }
 
   /**
@@ -111,7 +110,7 @@ export class UsersRepository implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the deleted user.
    */
   public delete(id: string): Promise<User> {
-    return this.proxyRabbitMQ.operations(UsersMsgEnum.DELETE, { id });
+    return this.operation.operations(UsersMsgEnum.DELETE, { id });
   }
 
   /**
@@ -120,6 +119,6 @@ export class UsersRepository implements AbstractMethodOperation<User> {
    * @returns A `Promise` that resolves to the total number of users.
    */
   public async total(): Promise<number> {
-    return await this.proxyRabbitMQ.operations(UsersMsgEnum.TOTAL, {});
+    return await this.operation.operations(UsersMsgEnum.TOTAL, {});
   }
 }
