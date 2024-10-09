@@ -12,6 +12,8 @@ export enum AuthUsersMsgEnum {
   CONFIG_SIGN_UP = 'CONFIG_SIGN_UP', // Represents the action of confirming an authentication user's sign up.
   CONFIG_REMOVE_USER = 'CONFIG_REMOVE_USER', // Represents the action of confirming the removal of an authentication user.
   CONFIG_RESEND_CONFIRMATION_CODE_USER = 'CONFIG_RESEND_CONFIRMATION_CODE_USER', // Represents the action of resending a confirmation code to an authentication user.
+  INITIATE_ACCOUNT_RECOVERY = 'INITIATE_ACCOUNT_RECOVERY', // Represents the action of initiating account recovery for an authentication user.
+  CONFIRM_ACCOUNT_RECOVERY = 'CONFIRM_ACCOUNT_RECOVERY', // Represents the action of confirming account recovery for an authentication
   FIND = 'FIND_AUTH_USER', // Represents the action of finding authentication users.
   FIND_BY_ID = 'FIND_BY_ID_AUTH_USER', // Represents the action of finding an authentication user by ID.
   FIND_ONE = 'FIND_ONE_AUTH_USER', // Represents the action of finding a single authentication user.

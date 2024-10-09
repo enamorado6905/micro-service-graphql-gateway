@@ -11,6 +11,10 @@ import { RabbitMqEnum } from '../../../common/enum/msg/rabbit-mq.enum';
 import { AuthUsersMsgEnum } from '../../../common/enum/msg/auth-users.enum';
 import { RefreshAuthDto } from '../dto/refresh-auth.dto';
 import { SignInRefreshAuthInterface } from '../interfaces/sign-in-refresh-auth.interface';
+import { InitiateAccountRecoveryDto } from '../dto/initiate-account-recovery.dto';
+import { ConfirmAccountRecoveryDto } from '../dto/confirm-account-recovery.dto';
+import { InitiateAccountRecoveryInterface } from '../interfaces/initiate-account-recovery.dto';
+import { ConfirmForgotPasswordInterface } from '../interfaces/confirm-forgot-password.interface';
 
 @Injectable()
 export class CognitoRepository {
@@ -81,6 +85,21 @@ export class CognitoRepository {
     );
   }
 
+  /**
+   * Exchanges an authorization code for access and refresh tokens in the Cognito user pool.
+   *
+   * @param exchangeCodeForTokensDto - An object containing the authorization code to be exchanged.
+   * @returns {Promise<any>} A promise that resolves to the result of the token exchange operation.
+   *
+   * @description
+   * This function sends a message to the RabbitMQ queue specified by `RabbitMqEnum.cognitoQueue` with the operation type
+   * `AuthUsersMsgEnum.FIND_TOKEN_FOR_CODE` and the `exchangeCodeForTokensDto` as the data. It then awaits the response from the RabbitMQ server,
+   * which contains the access and refresh tokens.
+   *
+   * @example
+   * const exchangeCodeForTokensDto = { authorizationCode: 'your_authorization_code' };
+   * const result = await authService.exchangeCodeForTokenCognito(exchangeCodeForTokensDto);
+   */
   public async exchangeCodeForTokenCognito(
     exchangeCodeForTokensDto: ExchangeCodeForTokensDto,
   ): Promise<any> {
@@ -183,6 +202,54 @@ export class CognitoRepository {
     return await this.cognitoProxyRabbitMQ.operations(
       AuthUsersMsgEnum.CONFIG_RESEND_CONFIRMATION_CODE_USER,
       resendConfirmationCodeAuthDto,
+    );
+  }
+
+  /**
+   * Initiates the account recovery process for a user in the Cognito user pool.
+   *
+   * @param {InitiateAccountRecoveryDto} initiateAccountRecoveryDto - An object containing the user's email address for account recovery.
+   * @returns {Promise<boolean>} A promise that resolves to `true` if the account recovery process is initiated successfully, `false` otherwise.
+   *
+   * @description
+   * This function sends a message to the RabbitMQ queue specified by `RabbitMqEnum.cognitoQueue` with the operation type
+   * `AuthUsersMsgEnum.INITIATE_ACCOUNT_RECOVERY` and the `initiateAccountRecoveryDto` as the data. It then awaits the response from the RabbitMQ server,
+   * which indicates whether the account recovery process was initiated successfully.
+   *
+   * @example
+   * const initiateAccountRecoveryDto = { email: 'user@example.com' };
+   * const result = await authService.initiateAccountRecoveryCognito(initiateAccountRecoveryDto);
+   */
+  public async initiateAccountRecoveryCognito(
+    initiateAccountRecoveryDto: InitiateAccountRecoveryDto,
+  ): Promise<InitiateAccountRecoveryInterface> {
+    return await this.cognitoProxyRabbitMQ.operations(
+      AuthUsersMsgEnum.INITIATE_ACCOUNT_RECOVERY,
+      initiateAccountRecoveryDto,
+    );
+  }
+
+  /**
+   * Confirms the account recovery process for a user in the Cognito user pool.
+   *
+   * @param confirmAccountRecoveryDto - An object containing the user's email address and the confirmation code sent to their email.
+   * @returns {Promise<ConfirmForgotPasswordInterface>} A promise that resolves to the result of the account recovery confirmation process.
+   *
+   * @description
+   * This function sends a message to the RabbitMQ queue specified by `RabbitMqEnum.cognitoQueue` with the operation type
+   * `AuthUsersMsgEnum.CONFIRM_ACCOUNT_RECOVERY` and the `confirmAccountRecoveryDto` as the data. It then awaits the response from the RabbitMQ server,
+   * which indicates whether the account recovery process was confirmed successfully.
+   *
+   * @example
+   * const confirmAccountRecoveryDto = { email: 'user@example.com', confirmationCode: '123456' };
+   * const result = await authService.confirmAccountRecoveryCognito(confirmAccountRecoveryDto);
+   */
+  public async confirmAccountRecoveryCognito(
+    confirmAccountRecoveryDto: ConfirmAccountRecoveryDto,
+  ): Promise<ConfirmForgotPasswordInterface> {
+    return await this.cognitoProxyRabbitMQ.operations(
+      AuthUsersMsgEnum.CONFIRM_ACCOUNT_RECOVERY,
+      confirmAccountRecoveryDto,
     );
   }
 }

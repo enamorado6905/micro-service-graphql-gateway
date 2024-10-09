@@ -37,6 +37,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       AuthResolverEnum.AUTH_REMOVE_COGNITO,
       AuthResolverEnum.RESEND_CONFIMATION_CODE_COGNITO,
       AuthResolverEnum.AUTH_VALIDATE_REGISTRATION,
+      AuthResolverEnum.INITIATE_ACCOUNT_RECOVERY_COGNITO,
+      AuthResolverEnum.CONFIRM_ACCOUNT_RECOVERY_COGNITO,
     ];
     const operationName = info?.fieldName;
 

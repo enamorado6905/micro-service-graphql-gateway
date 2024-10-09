@@ -70,6 +70,27 @@ type SignInRefreshAuthInterface {
   AuthenticationResult: AuthenticationResultTypeGQL
 }
 
+type CodeDeliveryDetailsInterface {
+  AttributeName: String
+  DeliveryMedium: String
+  Destination: String
+}
+
+type InitiateAccountRecoveryInterface {
+  CodeDeliveryDetails: CodeDeliveryDetailsInterface
+}
+
+type ResponseMetadataInterface {
+  httpStatusCode: Float
+  requestId: String
+  attempts: Float
+  totalRetryDelay: Float
+}
+
+type ConfirmForgotPasswordInterface {
+  metadata: ResponseMetadataInterface
+}
+
 type Permission {
   _id: ID!
   isLocked: Boolean!
@@ -184,6 +205,8 @@ type Mutation {
   RESEND_CONFIMATION_CODE_COGNITO(resendConfirmationCodeAuth: ResendConfirmationCodeAuthDto!): Boolean!
   LOGOUT_COGNITO(logoutUserAuth: LogoutAuthDto!): Boolean!
   REFRESH_COGNITO(refreshAuthDto: RefreshAuthDto!): SignInRefreshAuthInterface!
+  INITIATE_ACCOUNT_RECOVERY_COGNITO(initiateAccountRecoveryDto: InitiateAccountRecoveryDto!): InitiateAccountRecoveryInterface!
+  CONFIRM_ACCOUNT_RECOVERY_COGNITO(confirmAccountRecoveryDto: ConfirmAccountRecoveryDto!): ConfirmForgotPasswordInterface!
   ROLE_REGISTER(createRoleInput: CreateRoleInput!): Role!
   ROLE_UPDATE(id: FilterByIdRoleInput!, updateRoleInput: UpdateRoleInput!): Role!
   ROLE_REMOVE(id: FilterByIdRoleInput!): Role!
@@ -246,6 +269,16 @@ input LogoutAuthDto {
 
 input RefreshAuthDto {
   refreshToken: String
+}
+
+input InitiateAccountRecoveryDto {
+  userName: String!
+}
+
+input ConfirmAccountRecoveryDto {
+  userName: String!
+  verificationCode: String!
+  newPassword: String!
 }
 
 input CreateRoleInput {
