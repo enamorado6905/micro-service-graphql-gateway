@@ -46,7 +46,6 @@ export class OrganizationResolver {
   @Mutation(() => Organization, {
     name: OrganizationResolverEnum.ORGANIZATION_REGISTER,
   })
-  @UseInterceptors(PasswordEncryptionInterceptor)
   async create(
     @Args('createOrganizationInput')
     createOrganizationInput: CreateOrganizationInput,
@@ -71,7 +70,6 @@ export class OrganizationResolver {
   @Query(() => PaginatedOrganization, {
     name: OrganizationResolverEnum.ORGANIZATION_LIST,
   })
-  @UseInterceptors(RemovePasswordInterceptor)
   async find(@Args() paginationArgsDto: PaginationArgsDto) {
     return await this.organizationsService.find(paginationArgsDto);
   }
