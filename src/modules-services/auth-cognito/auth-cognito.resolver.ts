@@ -10,6 +10,10 @@ import { SigUpDto } from './dto/sig-up-auth.dto';
 import { ResendConfirmationCodeAuthDto } from './dto/resend-confirmation-code-auth.dto';
 import { LogoutAuthDto } from './dto/logout-auth.dto';
 import { RefreshAuthDto } from './dto/refresh-auth.dto';
+import { InitiateAccountRecoveryInterface } from './interfaces/initiate-account-recovery.dto';
+import { InitiateAccountRecoveryDto } from './dto/initiate-account-recovery.dto';
+import { ConfirmAccountRecoveryDto } from './dto/confirm-account-recovery.dto';
+import { ConfirmForgotPasswordInterface } from './interfaces/confirm-forgot-password.interface';
 
 @Resolver()
 export class AuthCognitoResolver {
@@ -121,5 +125,56 @@ export class AuthCognitoResolver {
     refreshAuthDto: RefreshAuthDto,
   ): Promise<SignInRefreshAuthInterface> {
     return await this.authCognitoService.refreshUserCognito(refreshAuthDto);
+  }
+
+  /**
+   * Mutation to initiate the account recovery process for a user.
+   * This function sends a request to the Cognito service to initiate the account recovery process.
+   *
+   * @param initiateAccountRecoveryDto - The input data for initiating the account recovery process.
+   * This object should contain the user's unique identifier (e.g., username or email).
+   *
+   * @returns A promise that resolves to an `InitiateAccountRecoveryInterface` object.
+   * The `InitiateAccountRecoveryInterface` object contains information about the initiated account recovery process,
+   * such as the user's unique identifier and a recovery code.
+   *
+   * If there is an error during the account recovery process, the promise will reject with an appropriate error message.
+   */
+  @Mutation(() => InitiateAccountRecoveryInterface, {
+    name: AuthResolverEnum.INITIATE_ACCOUNT_RECOVERY_COGNITO,
+  })
+  public async initiateAccountRecoveryCognito(
+    @Args('initiateAccountRecoveryDto')
+    initiateAccountRecoveryDto: InitiateAccountRecoveryDto,
+  ): Promise<InitiateAccountRecoveryInterface> {
+    return await this.authCognitoService.initiateAccountRecoveryCognito(
+      initiateAccountRecoveryDto,
+    );
+  }
+
+  /**
+   * Mutation to confirm the account recovery process for a user.
+   * This function sends a request to the Cognito service to confirm the account recovery process.
+   *
+   * @param confirmAccountRecoveryDto - The input data for confirming the account recovery process.
+   * This object should contain the user's unique identifier (e.g., username or email),
+   * the recovery code sent to the user, and the new password for the account.
+   *
+   * @returns A promise that resolves to a `ConfirmForgotPasswordInterface` object.
+   * The `ConfirmForgotPasswordInterface` object contains information about the confirmed account recovery process,
+   * such as the user's unique identifier and a success flag indicating whether the recovery was successful.
+   *
+   * If there is an error during the account recovery confirmation process, the promise will reject with an appropriate error message.
+   */
+  @Mutation(() => ConfirmForgotPasswordInterface, {
+    name: AuthResolverEnum.CONFIRM_ACCOUNT_RECOVERY_COGNITO,
+  })
+  public async confirmAccountRecoveryCognito(
+    @Args('confirmAccountRecoveryDto')
+    confirmAccountRecoveryDto: ConfirmAccountRecoveryDto,
+  ): Promise<ConfirmForgotPasswordInterface> {
+    return await this.authCognitoService.confirmAccountRecoveryCognito(
+      confirmAccountRecoveryDto,
+    );
   }
 }

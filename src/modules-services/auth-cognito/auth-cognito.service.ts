@@ -9,6 +9,10 @@ import { ResendConfirmationCodeAuthDto } from './dto/resend-confirmation-code-au
 import { CognitoRepository } from './repository/cognito.service.class';
 import { RefreshAuthDto } from './dto/refresh-auth.dto';
 import { SignInRefreshAuthInterface } from './interfaces/sign-in-refresh-auth.interface';
+import { InitiateAccountRecoveryDto } from './dto/initiate-account-recovery.dto';
+import { ConfirmForgotPasswordInterface } from './interfaces/confirm-forgot-password.interface';
+import { InitiateAccountRecoveryInterface } from './interfaces/initiate-account-recovery.dto';
+import { ConfirmAccountRecoveryDto } from './dto/confirm-account-recovery.dto';
 
 /**
  * The `AuthService` class provides methods for managing user authentication in the application.
@@ -204,6 +208,54 @@ export class AuthCognitoService {
   ): Promise<boolean> {
     return this.cognitoRepository.resendConfirmationCodeCognito(
       resendConfirmationCodeAuthDto,
+    );
+  }
+
+  /**
+   * Initiates the account recovery process for a user in the Cognito user pool.
+   *
+   * @param {InitiateAccountRecoveryDto} initiateAccountRecoveryDto - An object containing the user's email address or phone number for account recovery.
+   * @returns {Promise<InitiateAccountRecoveryInterface>} A promise that resolves to an object containing the recovery challenge name and the user's ID.
+   *
+   * @description
+   * This function uses the `cognitoRepository` to initiate the account recovery process for a user in the Cognito user pool.
+   * It takes an `InitiateAccountRecoveryDto` object as a parameter, which contains the user's email address or phone number for account recovery.
+   * The function then calls the `initiateAccountRecoveryCognito` method of the `cognitoRepository` with the `initiateAccountRecoveryDto`
+   * and returns the result of the operation.
+   *
+   * @example
+   * const initiateAccountRecoveryDto = { username: 'user@example.com' };
+   * const result = await authService.initiateAccountRecoveryCognito(initiateAccountRecoveryDto);
+   */
+  public async initiateAccountRecoveryCognito(
+    initiateAccountRecoveryDto: InitiateAccountRecoveryDto,
+  ): Promise<InitiateAccountRecoveryInterface> {
+    return this.cognitoRepository.initiateAccountRecoveryCognito(
+      initiateAccountRecoveryDto,
+    );
+  }
+
+  /**
+   * Confirms the account recovery process for a user in the Cognito user pool.
+   *
+   * @param {ConfirmAccountRecoveryDto} confirmAccountRecoveryDto - An object containing the confirmation code and the user's ID for account recovery.
+   * @returns {Promise<ConfirmForgotPasswordInterface>} A promise that resolves to an object containing the status of the account recovery confirmation.
+   *
+   * @description
+   * This function uses the `cognitoRepository` to confirm the account recovery process for a user in the Cognito user pool.
+   * It takes a `ConfirmAccountRecoveryDto` object as a parameter, which contains the `confirmationCode` and the `userId` for account recovery.
+   * The function then calls the `confirmAccountRecoveryCognito` method of the `cognitoRepository` with the `confirmAccountRecoveryDto`
+   * and returns the result of the operation.
+   *
+   * @example
+   * const confirmAccountRecoveryDto = { userId: '1234567890', confirmationCode: '123456' };
+   * const result = await authService.confirmAccountRecoveryCognito(confirmAccountRecoveryDto);
+   */
+  public async confirmAccountRecoveryCognito(
+    confirmAccountRecoveryDto: ConfirmAccountRecoveryDto,
+  ): Promise<ConfirmForgotPasswordInterface> {
+    return this.cognitoRepository.confirmAccountRecoveryCognito(
+      confirmAccountRecoveryDto,
     );
   }
 }
