@@ -69,7 +69,7 @@ export class GraphQLExceptionFilter implements GqlExceptionFilter {
       });
 
       this.logger.error(
-        graphQLErrorMessages,
+        graphQLErrorMessages.toLocaleString(', '),
         exception.stack,
         ErrorsKeysEnum.GQL,
       );

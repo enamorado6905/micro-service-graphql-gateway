@@ -40,9 +40,7 @@ export class UsersRepository implements AbstractMethodOperation<User> {
    * The `operation` property is an instance of the `OperationClass` class, which is used to
    * perform operations on the RabbitMQ server.
    */
-  private readonly operation = new OperationClass(
-    RabbitMqEnum.organizationQueue,
-  );
+  private readonly operation = new OperationClass(RabbitMqEnum.usersQueue);
 
   constructor() {}
 

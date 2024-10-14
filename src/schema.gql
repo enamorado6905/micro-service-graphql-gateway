@@ -91,6 +91,19 @@ type ConfirmForgotPasswordInterface {
   metadata: ResponseMetadataInterface
 }
 
+type CodeDeliveryDetailsTypeInterface {
+  destination: String
+  deliveryMedium: String
+  attributeName: String
+}
+
+type SignUpAuthInterface {
+  userConfirmed: Boolean
+  codeDeliveryDetails: CodeDeliveryDetailsTypeInterface
+  userNameCognito: String
+  metadata: ResponseMetadataInterface
+}
+
 type Permission {
   _id: ID!
   isLocked: Boolean!
@@ -237,7 +250,7 @@ type Mutation {
   USER_UPDATE(id: FilterByIdUserInput!, updateUserInput: UpdateUserInput!): User!
   USER_REMOVE(id: FilterByIdUserInput!): User!
   LOGIN_COGNITO(loginAuthDto: LoginAuthDto!): SignInRefreshAuthInterface!
-  AUTH_COGNITO(createUserInput: SigUpDto!): User!
+  AUTH_COGNITO(createUserInput: SigUpDto!): SignUpAuthInterface!
   AUTH_REMOVE_COGNITO(removeUserAuth: RemoveUserAuthDto!): Boolean!
   RESEND_CONFIMATION_CODE_COGNITO(resendConfirmationCodeAuth: ResendConfirmationCodeAuthDto!): Boolean!
   LOGOUT_COGNITO(logoutUserAuth: LogoutAuthDto!): Boolean!
@@ -257,7 +270,7 @@ type Mutation {
 
 input CreateUserInput {
   isLocked: Boolean
-  s: Boolean
+  isDisabled: Boolean
   isVerified: Boolean
   name: String!
   surnames: String!
@@ -269,7 +282,7 @@ input CreateUserInput {
 
 input UpdateUserInput {
   isLocked: Boolean
-  s: Boolean
+  isDisabled: Boolean
   isVerified: Boolean
   name: String
   surnames: String
@@ -323,7 +336,7 @@ input ConfirmAccountRecoveryDto {
 
 input CreateRoleInput {
   isLocked: Boolean
-  s: Boolean
+  isDisabled: Boolean
   isVerified: Boolean
   name: String!
   permissions: [ID!]
@@ -332,7 +345,7 @@ input CreateRoleInput {
 
 input UpdateRoleInput {
   isLocked: Boolean
-  s: Boolean
+  isDisabled: Boolean
   isVerified: Boolean
   name: String
   permissions: [ID!]
@@ -341,7 +354,7 @@ input UpdateRoleInput {
 
 input CreatePermissionInput {
   isLocked: Boolean
-  s: Boolean
+  isDisabled: Boolean
   isVerified: Boolean
   name: String!
   resourcePath: String!
@@ -350,7 +363,7 @@ input CreatePermissionInput {
 
 input UpdatePermissionInput {
   isLocked: Boolean
-  s: Boolean
+  isDisabled: Boolean
   isVerified: Boolean
   name: String
   resourcePath: String
