@@ -10,7 +10,7 @@ export abstract class AbstractStatusInput {
       ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ABSTRACT_STATUS_ERROR_0001,
   })
   @IsOptional()
-  isLocked?: boolean;
+  readonly isLocked?: boolean;
 
   @Field(() => Boolean, { nullable: true })
   @IsBoolean({
@@ -18,8 +18,7 @@ export abstract class AbstractStatusInput {
       ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ABSTRACT_STATUS_ERROR_0002,
   })
   @IsOptional()
-  s;
-  isDisabled?: boolean;
+  readonly isDisabled?: boolean;
 
   @Field(() => Boolean, { nullable: true })
   @IsBoolean({
@@ -27,6 +26,5 @@ export abstract class AbstractStatusInput {
       ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_ABSTRACT_STATUS_ERROR_0003,
   })
   @IsOptional()
-  isVerified?: boolean;
-  ss;
+  readonly isVerified?: boolean;
 }

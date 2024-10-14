@@ -5,9 +5,6 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { FindOneUserInput } from './dto/find-one-user.input';
 import { PaginatedUser, User } from './entities/user.entity';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
-import { UseInterceptors } from '@nestjs/common';
-import { PasswordEncryptionInterceptor } from '../../common/intercertors/password-encryption.interceptor';
-import { RemovePasswordInterceptor } from '../../common/intercertors/remove-password.interceptor';
 import { UserResolverEnum } from '../../common/enum/system/name-resolver/user-resolver.enum';
 import { FilterByIdUserInput } from './dto/filter-by-id.input';
 
@@ -24,7 +21,6 @@ import { FilterByIdUserInput } from './dto/filter-by-id.input';
  * `User` type.
  */
 @Resolver(() => User)
-@UseInterceptors(RemovePasswordInterceptor)
 export class UsersResolver {
   /**
    * The constructor of the `UsersResolver` class.
@@ -42,7 +38,6 @@ export class UsersResolver {
    * @returns The created user.
    */
   @Mutation(() => User, { name: UserResolverEnum.USER_REGISTER })
-  @UseInterceptors(PasswordEncryptionInterceptor)
   async create(
     @Args('createUserInput') createUserInput: CreateUserInput,
   ): Promise<User> {
@@ -64,7 +59,6 @@ export class UsersResolver {
    * @returns The paginated list of users.
    */
   @Query(() => PaginatedUser, { name: UserResolverEnum.USER_LIST })
-  @UseInterceptors(RemovePasswordInterceptor)
   async find(@Args() paginationArgsDto: PaginationArgsDto) {
     return await this.usersService.find(paginationArgsDto);
   }
@@ -75,7 +69,6 @@ export class UsersResolver {
    * @returns The found user.
    */
   @Query(() => User, { name: UserResolverEnum.USER_ID })
-  @UseInterceptors(RemovePasswordInterceptor)
   async getById(@Args('id') id: FilterByIdUserInput): Promise<User> {
     return await this.usersService.getById(id.id);
   }
@@ -96,7 +89,6 @@ export class UsersResolver {
    * @returns The updated user.
    */
   @Mutation(() => User, { name: UserResolverEnum.USER_UPDATE })
-  @UseInterceptors(RemovePasswordInterceptor)
   async update(
     @Args('id') id: FilterByIdUserInput,
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
@@ -110,7 +102,6 @@ export class UsersResolver {
    * @returns The removed user.
    */
   @Mutation(() => User, { name: UserResolverEnum.USER_REMOVE })
-  @UseInterceptors(RemovePasswordInterceptor)
   async delete(@Args('id') id: FilterByIdUserInput): Promise<User> {
     return this.usersService.delete(id.id);
   }

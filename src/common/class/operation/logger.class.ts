@@ -10,23 +10,18 @@ export class LoggerClass implements NestLoggerService {
     this.logger = winston.createLogger({
       level: 'info',
       format: winston.format.combine(
-        winston.format.colorize({ all: true }),
         winston.format.timestamp({
-          format: () => {
-            const date = new Date();
-            // Format the date to "YYYY-MM-DD HH:mm:ss" without the timezone
-            const year = date.getUTCFullYear();
-            const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // months are 0-indexed
-            const day = String(date.getUTCDate()).padStart(2, '0');
-            const hours = String(date.getUTCHours()).padStart(2, '0');
-            const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-            const seconds = String(date.getUTCSeconds()).padStart(2, '0');
-            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+          format: 'YYYY-MM-DD HH:mm:ss',
+        }),
+        winston.format.printf(
+          ({ timestamp, level, message, context, meta }) => {
+            const logMessage = `${timestamp} [${level}] ${context ? '[' + context + ']' : ''} ${message}`;
+            if (meta) {
+              return `${logMessage} | Data: ${JSON.stringify(meta)}`;
+            }
+            return logMessage;
           },
-        }),
-        winston.format.printf(({ timestamp, level, message, context }) => {
-          return `${timestamp} [${level}] ${context ? '[' + context + ']' : ''} ${message}`;
-        }),
+        ),
       ),
       transports: [
         new winston.transports.Console(),
@@ -42,38 +37,34 @@ export class LoggerClass implements NestLoggerService {
     });
   }
 
-  public log(message: string, context?: string) {
-    this.logger.info(message, { context });
+  /**
+   * Log a message with optional context and object data.
+   * @param message - The log message.
+   * @param context - The context in which the log is occurring.
+   * @param data - The object to log.
+   */
+  public log(message: string, context?: string, data?: object) {
+    this.logger.info(message, { context, meta: data });
   }
 
-  /**
-   * Logs an error message with optional trace and context.
-   *
-   * @param message - The error message to be logged.
-   * @param trace - (Optional) The stack trace associated with the error.
-   * @param context - (Optional) The context or identifier for the error.
-   *
-   * @example error('Failed to fetch data', err.stack, 'data-fetching');
-   *
-   * @returns {void} - This method does not return a value.
-   */
   public error(
-    message: string | string[],
+    message: string,
     trace?: string,
     context?: string,
-  ): void {
-    this.logger.error(`Exception: ${message}`, { trace, context });
+    data?: object,
+  ) {
+    this.logger.error(message, { trace, context, meta: data });
   }
 
-  public warn(message: string, context?: string) {
-    this.logger.warn(message, { context });
+  public warn(message: string, context?: string, data?: object) {
+    this.logger.warn(message, { context, meta: data });
   }
 
-  public debug(message: string, context?: string) {
-    this.logger.debug(message, { context });
+  public debug(message: string, context?: string, data?: object) {
+    this.logger.debug(message, { context, meta: data });
   }
 
-  public verbose(message: string, context?: string) {
-    this.logger.verbose(message, { context });
+  public info(message: string, context?: string, data?: object) {
+    this.logger.info(message, { context, meta: data });
   }
 }

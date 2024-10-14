@@ -41,7 +41,7 @@ export class RoleRepository implements AbstractMethodOperation<Role> {
    * perform operations on the RabbitMQ server.
    */
   private readonly operation = new OperationClass(
-    RabbitMqEnum.organizationQueue,
+    RabbitMqEnum.accessControlQueue,
   );
 
   constructor() {}

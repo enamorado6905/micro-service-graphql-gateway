@@ -8,9 +8,6 @@ import {
   Organization,
 } from './entities/organization.entity';
 import { PaginationArgsDto } from '../../common/dto/args/pagination.args.dto';
-import { UseInterceptors } from '@nestjs/common';
-import { PasswordEncryptionInterceptor } from '../../common/intercertors/password-encryption.interceptor';
-import { RemovePasswordInterceptor } from '../../common/intercertors/remove-password.interceptor';
 import { OrganizationResolverEnum } from '../../common/enum/system/name-resolver/organization-resolver.enum';
 import { FilterByIdOrganizationInput } from './dto/filter-by-id.input';
 
@@ -108,7 +105,6 @@ export class OrganizationResolver {
   @Mutation(() => Organization, {
     name: OrganizationResolverEnum.ORGANIZATION_UPDATE,
   })
-  @UseInterceptors(RemovePasswordInterceptor)
   async update(
     @Args('id') id: FilterByIdOrganizationInput,
     @Args('updateOrganizationInput')
@@ -125,7 +121,6 @@ export class OrganizationResolver {
   @Mutation(() => Organization, {
     name: OrganizationResolverEnum.ORGANIZATION_REMOVE,
   })
-  @UseInterceptors(RemovePasswordInterceptor)
   async delete(
     @Args('id') id: FilterByIdOrganizationInput,
   ): Promise<Organization> {
