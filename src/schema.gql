@@ -104,6 +104,11 @@ type SignUpAuthInterface {
   metadata: ResponseMetadataInterface
 }
 
+type ConfirmSignUpInterface {
+  metadata: ResponseMetadataInterface
+  userName: String
+}
+
 type Permission {
   _id: ID!
   isLocked: Boolean!
@@ -160,7 +165,7 @@ type Query {
   USER_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedUser!
   USER_ID(id: FilterByIdUserInput!): User!
   USER_FIND_ONE(filter: FindOneUserInput!): User!
-  AUTH_VALIDATE_REGISTRATION(configSigUpDto: ConfigSigUpDto!): Boolean!
+  AUTH_VALIDATE_REGISTRATION(configSigUpDto: ConfigSigUpDto!): ConfirmSignUpInterface!
   ROLE_TOTAL: Float!
   ROLE_LIST(limit: Int = 10, page: Int = 0, query: QueryInput, select: String, sort: SortInput, populate: [PopulateInput!], isPaginate: Boolean = true): PaginatedRole!
   ROLE_ID(id: FilterByIdRoleInput!): Role!

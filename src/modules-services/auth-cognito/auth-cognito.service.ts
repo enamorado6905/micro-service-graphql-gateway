@@ -13,6 +13,7 @@ import { InitiateAccountRecoveryDto } from './dto/initiate-account-recovery.dto'
 import { ConfirmForgotPasswordInterface } from './interfaces/confirm-forgot-password.interface';
 import { InitiateAccountRecoveryInterface } from './interfaces/initiate-account-recovery.dto';
 import { ConfirmAccountRecoveryDto } from './dto/confirm-account-recovery.dto';
+import { ConfirmSignUpInterface } from './interfaces/confirm-sign-up.interface';
 
 /**
  * The `AuthService` class provides methods for managing user authentication in the application.
@@ -73,7 +74,7 @@ export class AuthCognitoService {
    */
   public async confirmSignUpCognito(
     configSigUpDto: ConfigSigUpDto,
-  ): Promise<boolean> {
+  ): Promise<ConfirmSignUpInterface> {
     return await this.cognitoRepository.confirmSignUpCognito(configSigUpDto);
   }
 

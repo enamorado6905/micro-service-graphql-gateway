@@ -17,6 +17,7 @@ import { ConfirmForgotPasswordInterface } from './interfaces/confirm-forgot-pass
 import { UseInterceptors } from '@nestjs/common';
 import { PasswordEncryptionInterceptor } from '../../common/intercertors/password-encryption.interceptor';
 import { SignUpAuthInterface } from './interfaces/sign-up-user.interface';
+import { ConfirmSignUpInterface } from './interfaces/confirm-sign-up.interface';
 
 @Resolver()
 export class AuthCognitoResolver {
@@ -54,12 +55,12 @@ export class AuthCognitoResolver {
    * @param {ConfigSigUpDto} configSigUpDto - The input data for validating a registration.
    * @returns The validation result.
    */
-  @Query(() => Boolean, {
+  @Query(() => ConfirmSignUpInterface, {
     name: AuthResolverEnum.AUTH_VALIDATE_REGISTRATION,
   })
   public async validateRegistration(
     @Args('configSigUpDto') configSigUpDto: ConfigSigUpDto,
-  ): Promise<boolean> {
+  ): Promise<ConfirmSignUpInterface> {
     return this.authCognitoService.confirmSignUpCognito(configSigUpDto);
   }
 
