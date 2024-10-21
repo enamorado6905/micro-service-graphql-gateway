@@ -16,6 +16,8 @@ import { ConfirmAccountRecoveryDto } from './dto/confirm-account-recovery.dto';
 import { ConfirmForgotPasswordInterface } from './interfaces/confirm-forgot-password.interface';
 import { SignUpAuthInterface } from './interfaces/sign-up-user.interface';
 import { ConfirmSignUpInterface } from './interfaces/confirm-sign-up.interface';
+import { UseInterceptors } from '@nestjs/common';
+import { OrganizationInterceptor } from '../../common/intercertors/organization.interceptor';
 
 @Resolver()
 export class AuthCognitoResolver {
@@ -41,9 +43,10 @@ export class AuthCognitoResolver {
    * @returns The created user and register user to cognito.
    */
   @Mutation(() => SignUpAuthInterface, { name: AuthResolverEnum.AUTH_COGNITO })
+  @UseInterceptors(OrganizationInterceptor)
   public async registerUserCognito(
     @Args('createUserInput') sigUpDto: SigUpDto,
-  ): Promise<User> {
+  ) {
     return this.authCognitoService.registerUserCognito(sigUpDto);
   }
 

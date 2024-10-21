@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
 import { passportJwtSecret } from 'jwks-rsa';
 import { ConfigService } from '@nestjs/config';
+import { UsersExportsService } from '../../users/users-exports.service';
 
 /**
  * A Passport strategy for handling JWT authentication.
@@ -17,7 +18,10 @@ import { ConfigService } from '@nestjs/config';
  */
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly usersExportsService: UsersExportsService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       issuer: configService.get('COGNITO_ISSUER_URI'),
@@ -47,6 +51,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * await jwtStrategy.validate(payload);
    */
   public async validate(payload: any, done: VerifiedCallback): Promise<void> {
+    const user = await this.usersExportsService.getOne({
+      search: 'userNameCognito',
+      value: payload.sub,
+    });
+    payload = { ...payload, user };
+    // console.log('Payload received:', payload);
+
     return done(null, payload);
   }
 }

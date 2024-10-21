@@ -309,6 +309,7 @@ input SigUpDto {
   password: String!
   address: String
   language: String
+  organization: String
 }
 
 input RemoveUserAuthDto {

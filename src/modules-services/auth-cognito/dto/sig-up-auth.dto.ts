@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -77,4 +78,15 @@ export class SigUpDto {
   })
   @IsOptional()
   readonly language?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsNotEmpty({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_USER_CREATED_ERROR_0012,
+  })
+  @IsMongoId({
+    message:
+      ExceptionErrorMessageEnum.GATEWAY_VALIDATOR_DTO_USER_CREATED_ERROR_0013,
+  })
+  readonly organization: string;
 }
