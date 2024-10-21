@@ -18,7 +18,11 @@ export class OrganizationInterceptor implements NestInterceptor {
     const user = req.user;
     const organizationId = user.user.organization;
     const args = gqlContext.getArgs();
-    args.createUserInput.organization = organizationId;
+
+    // Set organizationId in createUserInput if not provided already
+    if (!args.createUserInput.organization) {
+      args.createUserInput.organization = organizationId;
+    }
 
     return next.handle().pipe(map((data) => data));
   }
