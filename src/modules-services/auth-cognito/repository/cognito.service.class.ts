@@ -15,6 +15,7 @@ import { ConfirmAccountRecoveryDto } from '../dto/confirm-account-recovery.dto';
 import { InitiateAccountRecoveryInterface } from '../interfaces/initiate-account-recovery.dto';
 import { ConfirmForgotPasswordInterface } from '../interfaces/confirm-forgot-password.interface';
 import { OperationClass } from '../../../common/class/operation/operation.class';
+import { ConfirmSignUpInterface } from '../interfaces/confirm-sign-up.interface';
 
 @Injectable()
 export class CognitoRepository {
@@ -47,7 +48,7 @@ export class CognitoRepository {
 
   public async confirmSignUpCognito(
     configSigUpDto: ConfigSigUpDto,
-  ): Promise<boolean> {
+  ): Promise<ConfirmSignUpInterface> {
     return await this.operation.operations(
       AuthUsersMsgEnum.CONFIG_SIGN_UP,
       configSigUpDto,

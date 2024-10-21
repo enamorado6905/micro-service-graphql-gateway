@@ -14,9 +14,10 @@ import { InitiateAccountRecoveryInterface } from './interfaces/initiate-account-
 import { InitiateAccountRecoveryDto } from './dto/initiate-account-recovery.dto';
 import { ConfirmAccountRecoveryDto } from './dto/confirm-account-recovery.dto';
 import { ConfirmForgotPasswordInterface } from './interfaces/confirm-forgot-password.interface';
-import { UseInterceptors } from '@nestjs/common';
-import { PasswordEncryptionInterceptor } from '../../common/intercertors/password-encryption.interceptor';
 import { SignUpAuthInterface } from './interfaces/sign-up-user.interface';
+import { ConfirmSignUpInterface } from './interfaces/confirm-sign-up.interface';
+import { UseInterceptors } from '@nestjs/common';
+import { OrganizationInterceptor } from '../../common/intercertors/organization.interceptor';
 
 @Resolver()
 export class AuthCognitoResolver {
@@ -42,7 +43,7 @@ export class AuthCognitoResolver {
    * @returns The created user and register user to cognito.
    */
   @Mutation(() => SignUpAuthInterface, { name: AuthResolverEnum.AUTH_COGNITO })
-  @UseInterceptors(PasswordEncryptionInterceptor)
+  @UseInterceptors(OrganizationInterceptor)
   public async registerUserCognito(
     @Args('createUserInput') sigUpDto: SigUpDto,
   ): Promise<User> {
@@ -54,12 +55,12 @@ export class AuthCognitoResolver {
    * @param {ConfigSigUpDto} configSigUpDto - The input data for validating a registration.
    * @returns The validation result.
    */
-  @Query(() => Boolean, {
+  @Query(() => ConfirmSignUpInterface, {
     name: AuthResolverEnum.AUTH_VALIDATE_REGISTRATION,
   })
   public async validateRegistration(
     @Args('configSigUpDto') configSigUpDto: ConfigSigUpDto,
-  ): Promise<boolean> {
+  ): Promise<ConfirmSignUpInterface> {
     return this.authCognitoService.confirmSignUpCognito(configSigUpDto);
   }
 

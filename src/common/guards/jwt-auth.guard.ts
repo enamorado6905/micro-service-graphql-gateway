@@ -33,7 +33,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     // List of GraphQL mutations that do not require authentication
     const excludedMutations = [
       AuthResolverEnum.LOGIN_COGNITO,
-      AuthResolverEnum.AUTH_COGNITO,
       AuthResolverEnum.AUTH_REMOVE_COGNITO,
       AuthResolverEnum.RESEND_CONFIMATION_CODE_COGNITO,
       AuthResolverEnum.AUTH_VALIDATE_REGISTRATION,
