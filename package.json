@@ -32,7 +32,7 @@
     "@nestjs/microservices": "^10.3.0",
     "@nestjs/mongoose": "^10.0.6",
     "@nestjs/passport": "^10.0.3",
-    "@nestjs/platform-express": "^10.4.3",
+    "@nestjs/platform-express": "^10.4.5",
     "@nestjs/swagger": "^7.4.2",
     "@nestjs/websockets": "^10.3.10",
     "amqp-connection-manager": "^4.1.14",
