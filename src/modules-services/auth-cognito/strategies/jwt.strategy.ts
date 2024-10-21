@@ -56,8 +56,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       value: payload.sub,
     });
     payload = { ...payload, user };
-    console.log('Payload received:', payload);
-
     return done(null, payload);
   }
 }
