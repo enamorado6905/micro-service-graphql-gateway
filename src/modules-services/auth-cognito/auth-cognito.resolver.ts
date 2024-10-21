@@ -24,9 +24,15 @@ export class AuthCognitoResolver {
   constructor(private readonly authCognitoService: AuthCognitoService) {}
 
   /**
-   * Mutation to login a user.
-   * @param {LoginAuthDto} loginAuthDto - The input data for creating a user.
-   * @returns The created user and register user to cognito.
+   * Performs a login operation using Cognito service.
+   *
+   * @param loginAuthDto - The input data for the login process.
+   * This object should contain the user's unique identifier (e.g., username or email) and password.
+   *
+   * @returns A promise that resolves to a `SignInRefreshAuthInterface` object.
+   * The `SignInRefreshAuthInterface` object contains the user's access token, ID token, and expiration time.
+   *
+   * If the login process fails due to invalid credentials, the promise will reject with an appropriate error message.
    */
   @Mutation(() => SignInRefreshAuthInterface, {
     name: AuthResolverEnum.LOGIN_COGNITO,
@@ -122,6 +128,18 @@ export class AuthCognitoResolver {
     return await this.authCognitoService.logoutUserCognito(logoutAuthDto);
   }
 
+  /**
+   * Mutation to refresh the user's access token and ID token.
+   * This function sends a request to the Cognito service to refresh the user's access token and ID token.
+   *
+   * @param refreshAuthDto - The input data for refreshing the user's tokens.
+   * This object should contain the user's refresh token.
+   *
+   * @returns A promise that resolves to a `SignInRefreshAuthInterface` object.
+   * The `SignInRefreshAuthInterface` object contains the refreshed access token, ID token, and expiration time.
+   *
+   * If there is an error during the token refresh process, the promise will reject with an appropriate error message.
+   */
   @Mutation(() => SignInRefreshAuthInterface, {
     name: AuthResolverEnum.REFRESH_COGNITO,
   })
