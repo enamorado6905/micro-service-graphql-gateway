@@ -46,7 +46,7 @@ export class AuthCognitoResolver {
   @UseInterceptors(OrganizationInterceptor)
   public async registerUserCognito(
     @Args('createUserInput') sigUpDto: SigUpDto,
-  ) {
+  ): Promise<User> {
     return this.authCognitoService.registerUserCognito(sigUpDto);
   }
 
